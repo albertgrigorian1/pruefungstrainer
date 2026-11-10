@@ -1,0 +1,1005 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Staatsbürgerschaftstrainer Salzburg</title>
+<meta name="robots" content="noindex">
+<meta name="referrer" content="no-referrer">
+<meta name="theme-color" content="#6B1626">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Prüfungstrainer">
+<style>:root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0;font:14px system-ui,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Source+Serif+4:opsz,wght@8..60,600&display=swap">
+<style>
+/* Layout: one calm reading column (max 42rem) under a passport-burgundy band; large type, large tap targets, one main action per screen. */
+:root{
+  --bg:#F1F2F5; --surface:#FFFFFF; --ink:#1A1D26; --muted:#565D6E; --line:#D3D7DF; --soft:#E3E6EB;
+  --pass:#6B1626; --on-pass:#F7EBCB;
+  --btn:#6B1626; --on-btn:#FFF8E6;
+  --sel:#6B1626; --sel-bg:#F7ECEE;
+  --good:#17694A; --good-bg:#E2F3EA; --bad:#A8350E; --bad-bg:#FBE8DF; --note-bg:#FFF4D4;
+  --flag:#C8102E; --flag-w:#FFFFFF;
+  --f-body:"Atkinson Hyperlegible",system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;
+  --f-disp:"Source Serif 4",Georgia,"Times New Roman",serif;
+}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){
+  --bg:#13151A; --surface:#1D2027; --ink:#ECEEF2; --muted:#A7AEBC; --line:#383D49; --soft:#2A2E38;
+  --pass:#5A1220; --on-pass:#F3E2BA;
+  --btn:#D2AC55; --on-btn:#1C1606;
+  --sel:#E6A0AE; --sel-bg:#2E1D22;
+  --good:#5CCB98; --good-bg:#14332A; --bad:#F39470; --bad-bg:#3B2018; --note-bg:#352D15;
+  --flag:#C8102E; --flag-w:#EDEDED; color-scheme:dark } }
+:root[data-theme="dark"]{
+  --bg:#13151A; --surface:#1D2027; --ink:#ECEEF2; --muted:#A7AEBC; --line:#383D49; --soft:#2A2E38;
+  --pass:#5A1220; --on-pass:#F3E2BA;
+  --btn:#D2AC55; --on-btn:#1C1606;
+  --sel:#E6A0AE; --sel-bg:#2E1D22;
+  --good:#5CCB98; --good-bg:#14332A; --bad:#F39470; --bad-bg:#3B2018; --note-bg:#352D15;
+  --flag:#C8102E; --flag-w:#EDEDED; color-scheme:dark }
+
+html.big{font-size:118.75%}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:1.0625rem;line-height:1.5;-webkit-text-size-adjust:100%}
+*{box-sizing:border-box}
+.wrap{max-width:42rem;margin-inline:auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+h1,h2,h3,p,ul,ol,dl,dd,figure{margin:0}
+ul,ol{padding:0;list-style:none}
+button,input{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--sel);outline-offset:2px}
+
+/* band */
+.pass{background:var(--pass);color:var(--on-pass)}
+.passin{display:flex;align-items:center;justify-content:space-between;gap:1rem;padding-block:.9rem}
+.pk{font-size:.75rem;letter-spacing:.08em;text-transform:uppercase;opacity:.85}
+.pt{font-family:var(--f-disp);font-weight:600;font-size:1.3rem;line-height:1.2}
+.hbtn{background:transparent;border:1.5px solid var(--on-pass);color:var(--on-pass);border-radius:999px;padding:.45rem 1rem;min-height:2.6rem;cursor:pointer;white-space:nowrap}
+.flag i{display:block;height:3px;background:var(--flag)}
+.flag i:nth-child(2){background:var(--flag-w)}
+
+main{display:flex;flex-direction:column;gap:1.5rem;padding-block:1.5rem 3rem}
+main h1{font-family:var(--f-disp);font-weight:600;font-size:1.7rem;line-height:1.2;text-wrap:balance}
+main h2{font-family:var(--f-disp);font-weight:600;font-size:1.25rem;line-height:1.25;text-wrap:balance}
+main h3{font-size:1rem;font-weight:700}
+.muted{color:var(--muted)}
+.small{font-size:.9rem}
+.stack{display:flex;flex-direction:column;gap:.75rem}
+.stack.lg{gap:1.1rem}
+.row{display:flex;flex-wrap:wrap;gap:.75rem;align-items:center}
+.row>.grow{flex:1 1 12rem;min-width:0}
+
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:.5rem;min-height:3.25rem;padding:.7rem 1.3rem;border-radius:12px;border:2px solid var(--btn);background:var(--btn);color:var(--on-btn);font-weight:700;font-size:1.05rem;cursor:pointer;text-align:center}
+.btn.wide{width:100%}
+.btn.ghost{background:transparent;color:var(--ink);border-color:var(--line)}
+.btn.sm{min-height:2.75rem;padding:.4rem 1rem;font-size:1rem}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+.link{background:none;border:0;padding:.5rem 0;min-height:2.75rem;color:var(--ink);text-decoration:underline;text-underline-offset:3px;cursor:pointer}
+
+.bar{height:.7rem;border-radius:999px;background:var(--soft);overflow:hidden}
+.bar>i{display:block;height:100%;background:var(--good);border-radius:999px;min-width:0}
+.bar.thin{height:.4rem}
+
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:1.1rem}
+.areas{display:flex;flex-direction:column;border:1px solid var(--line);border-radius:14px;background:var(--surface);overflow:hidden}
+.area{display:flex;flex-wrap:wrap;gap:.75rem 1rem;align-items:center;padding:1rem 1.1rem}
+.area+.area{border-top:1px solid var(--line)}
+.area .grow{flex:1 1 14rem;min-width:0;display:flex;flex-direction:column;gap:.4rem}
+.num{font-variant-numeric:tabular-nums}
+
+.tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(11rem,1fr));gap:.75rem}
+.tile{display:flex;flex-direction:column;gap:.2rem;align-items:flex-start;text-align:left;background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:1rem 1.1rem;cursor:pointer;min-height:4.5rem}
+.tile b{font-size:1.05rem}
+.tile span{color:var(--muted);font-size:.9rem}
+
+/* question */
+.qtop{display:flex;justify-content:space-between;align-items:center;gap:1rem}
+.chips{display:flex;flex-wrap:wrap;gap:.5rem}
+.chip{display:inline-block;border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:.15rem .7rem;font-size:.85rem;color:var(--muted)}
+.chip.on{background:var(--btn);border-color:var(--btn);color:var(--on-btn)}
+button.chip{cursor:pointer;min-height:2.5rem;padding:.3rem 1rem;font-size:.95rem}
+h1.q{font-size:1.4rem;line-height:1.3;text-wrap:pretty}
+.opts{display:flex;flex-direction:column;gap:.7rem}
+.opt{position:relative;display:flex;gap:.8rem;align-items:flex-start;padding:.95rem 1rem;border:2px solid var(--line);border-radius:12px;background:var(--surface);cursor:pointer;min-height:3.5rem}
+.opt input{position:absolute;opacity:0;width:1px;height:1px}
+.opt:focus-within{outline:3px solid var(--sel);outline-offset:2px}
+.box{flex:none;width:1.55rem;height:1.55rem;border:2px solid var(--muted);border-radius:6px;display:grid;place-items:center;font-size:1.05rem;line-height:1;font-weight:700;color:var(--surface);margin-top:.05rem}
+.txt{min-width:0;flex:1}
+.txt em{display:block;font-style:normal;font-weight:700;font-size:.85rem;margin-top:.2rem}
+.opt.on{border-color:var(--sel);background:var(--sel-bg)}
+.opt.on .box{background:var(--sel);border-color:var(--sel)}
+.opt.on .box::after{content:"✓"}
+.opt.ok{border-color:var(--good);background:var(--good-bg);cursor:default}
+.opt.ok .box{background:var(--good);border-color:var(--good)}
+.opt.ok em{color:var(--good)}
+.opt.miss{border-color:var(--good);border-style:dashed;cursor:default}
+.opt.miss .box{border-color:var(--good);color:var(--good)}
+.opt.miss .box::after{content:"✓"}
+.opt.miss em{color:var(--good)}
+.opt.bad{border-color:var(--bad);background:var(--bad-bg);cursor:default}
+.opt.bad .box{background:var(--bad);border-color:var(--bad)}
+.opt.bad .box::after{content:"✕"}
+.opt.bad em{color:var(--bad)}
+.opt.off{cursor:default}
+.fb{border-radius:12px;padding:1rem 1.1rem;display:flex;flex-direction:column;gap:.35rem;border:1px solid var(--line);background:var(--surface)}
+.fb.good{background:var(--good-bg);border-color:var(--good)}
+.fb.bad{background:var(--bad-bg);border-color:var(--bad)}
+.fb.part{background:var(--note-bg)}
+.fb b.t{font-size:1.15rem}
+.note{background:var(--note-bg);border:1px solid var(--line);border-radius:12px;padding:.9rem 1.1rem}
+.grid18{display:grid;grid-template-columns:repeat(9,1fr);gap:.4rem}
+.grid18 button{min-height:2.6rem;border-radius:8px;border:1.5px solid var(--line);background:var(--surface);cursor:pointer;font-variant-numeric:tabular-nums}
+.grid18 button.done{background:var(--sel-bg);border-color:var(--sel)}
+.grid18 button.cur{outline:3px solid var(--sel);outline-offset:1px}
+@media (max-width:30rem){.grid18{grid-template-columns:repeat(6,1fr)}}
+
+/* result */
+.verdict{border-radius:14px;padding:1.3rem 1.2rem;border:2px solid var(--line);background:var(--surface);display:flex;flex-direction:column;gap:.4rem}
+.verdict.pass{border-color:var(--good);background:var(--good-bg)}
+.verdict.fail{border-color:var(--bad);background:var(--bad-bg)}
+.verdict .big{font-family:var(--f-disp);font-weight:600;font-size:1.9rem;line-height:1.15}
+.tablewrap{overflow-x:auto}
+table{border-collapse:collapse;width:100%;font-variant-numeric:tabular-nums}
+th,td{text-align:left;padding:.55rem .5rem;border-bottom:1px solid var(--line)}
+td.r,th.r{text-align:right;white-space:nowrap}
+tr.sum td{font-weight:700;border-bottom:0}
+.state{font-weight:700}.state.g{color:var(--good)}.state.b{color:var(--bad)}
+
+/* lists */
+.qlist{display:flex;flex-direction:column;gap:.6rem}
+.qitem{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:.9rem 1rem;display:flex;flex-direction:column;gap:.4rem}
+.qitem .hd{display:flex;flex-wrap:wrap;gap:.4rem .6rem;align-items:center;font-size:.85rem;color:var(--muted)}
+.qitem ul{display:flex;flex-direction:column;gap:.15rem}
+.qitem li{padding-left:1.4rem;position:relative}
+.qitem li::before{content:"✓";position:absolute;left:0;color:var(--good);font-weight:700}
+.qitem li.x::before{content:"✕";color:var(--bad)}
+.qitem li.x{color:var(--muted)}
+.field{width:100%;min-height:3rem;padding:.6rem .9rem;border-radius:10px;border:2px solid var(--line);background:var(--surface)}
+.facts{display:grid;grid-template-columns:minmax(5.5rem,auto) 1fr;gap:.45rem 1rem}
+.facts dt{font-weight:700;font-variant-numeric:tabular-nums}
+.facts dd{min-width:0}
+.plain{display:flex;flex-direction:column;gap:.45rem}
+.plain li{padding-left:1.1rem;position:relative}
+.plain li::before{content:"";position:absolute;left:0;top:.62em;width:.4rem;height:.4rem;border-radius:50%;background:var(--muted)}
+details.panel>summary{cursor:pointer;font-weight:700;min-height:2rem}
+details.panel[open]>summary{margin-bottom:.9rem}
+footer{font-size:.85rem;color:var(--muted);display:flex;flex-direction:column;gap:.4rem}
+footer a,.panel a{color:inherit}
+@media (prefers-reduced-motion:no-preference){.bar>i{transition:width .3s ease}}
+</style>
+
+</head>
+<body>
+<header class="pass">
+  <div class="wrap passin">
+    <div>
+      <p class="pk">Prüfungsvorbereitung · Land Salzburg</p>
+      <p class="pt">Staatsbürgerschaftstrainer</p>
+    </div>
+    <button class="hbtn" id="homebtn" data-act="home" hidden>Übersicht</button>
+  </div>
+  <div class="flag" aria-hidden="true"><i></i><i></i><i></i></div>
+</header>
+<main class="wrap" id="app"></main>
+<script>
+"use strict";
+const AREAS={
+  g:{name:"Geschichte Österreichs",ch:["Frühe Siedler","Die Habsburger","Umbrüche im 19. Jahrhundert","Vielvölkerstaat und Ende der Monarchie","1918–1938: Erste Republik und Ständestaat","Nationalsozialismus und Zweiter Weltkrieg","Die Zweite Republik","Das moderne Österreich","Aufbruch nach Europa"]},
+  d:{name:"Demokratische Grundordnung",ch:["Menschenwürde","Liberaler Staat","Rechtsstaat","Demokratie","Republik","Bundesstaat","Aufteilung der Staatsaufgaben","Europäische Union"]},
+  s:{name:"Land Salzburg",ch:[]}
+};
+const ORDER=["g","d","s"];
+const QS=[];
+function add(a,rows){rows.forEach((r,i)=>QS.push({id:a+(i+1),a,ch:a==="s"?null:r[0],num:a==="s"?r[0]:null,q:r[1],o:r[2].map((t,j)=>({t,c:r[3][j]==="1"})),e:r[4]}))}
+add("g",[
+[0,"Zu welchem Reich gehörte das Gebiet des heutigen Österreich ab Christi Geburt fast 500 Jahre lang?",["Römisches Reich","Osmanisches Reich","Persisches Reich","Russisches Reich"],"1000","Die Römerzeit begann um Christi Geburt und dauerte fast 500 Jahre."],
+[0,"Wer lebte vor rund 2000 Jahren auf dem Gebiet des heutigen Österreich?",["Kelten","Römer","Wikinger","Mongolen"],"1100","Es gab keltische Königreiche. Sie wurden um Christi Geburt Teil des Römischen Reiches."],
+[0,"Welcher Fluss war in der Römerzeit die Grenze des Römischen Reiches?",["Donau","Mur","Salzach","Drau"],"1000","Die Donau bildete damals die Grenze des Römischen Reiches."],
+[0,"Wodurch endete die Römerzeit?",["Durch eine große Völkerwanderung: germanische Völker eroberten das Römische Reich","Durch einen Vertrag mit den Habsburgern","Durch die Revolution von 1848","Durch den Ersten Weltkrieg"],"1000","Germanische Völker wanderten ein und eroberten das Römische Reich."],
+[0,"Welche Gruppen kamen nach dem Ende der Römerzeit in das Gebiet des heutigen Österreich?",["Slawen","Bajuwaren (Vorfahren der Bayern)","Alemannen","Wikinger"],"1110","Zuerst kamen Slawen, im Westen lebten Alemannen, ab etwa 600 kamen Bajuwaren. Ab etwa 900 lebten im Osten auch Ungarn."],
+[0,"In welchem Jahr wurde der Name „Ostarrichi“ (Österreich) zum ersten Mal in einer Urkunde erwähnt?",["996","1273","1804","1918"],"1000","996 steht „Ostarrichi“ erstmals in der Urkunde eines deutschen Kaisers. Gemeint war eine Gegend im Westen von Niederösterreich."],
+[0,"Welche Aussagen über die Römerzeit stimmen?",["Wien hieß „Vindobona“","Linz hieß „Lentia“","Carnuntum war die größte römische Siedlung","Graz hieß „Vindobona“"],"1110","Carnuntum hatte in seiner Blütezeit etwa 50.000 Einwohner."],
+[0,"Warum wird in Österreich heute vorwiegend Deutsch gesprochen?",["Wegen der Zuwanderung der Alemannen und Bajuwaren","Wegen der Herrschaft der Römer","Wegen des Staatsvertrags von 1955","Wegen der Zuwanderung der Slawen"],"1000","Die Zuwanderung der Alemannen und Bajuwaren ist der wichtigste Grund."],
+[0,"Welche Aussagen über Minderheiten in Österreich stimmen?",["Die Slowenen in Kärnten sind Nachfahren slawischer Siedler","Die Vorfahren der Kroaten im Burgenland kamen im 16. Jahrhundert","Im Burgenland gibt es eine kleine ungarischsprachige Minderheit","Die Slowenen leben vor allem in Vorarlberg"],"1110","Slowenen leben in Kärnten, Kroaten und Ungarn im Burgenland."],
+[0,"Welche Namen haben einen slawischen Ursprung?",["Graz","Zwettl","Der Fluss Mur","Vindobona"],"1110","Vindobona ist der lateinische (römische) Name von Wien."],
+
+[1,"Wo lebte die Familie Habsburg ursprünglich?",["In der Schweiz","In Ungarn","In Spanien","In Böhmen"],"1000","Der alte Wohnsitz der Familie war die Habichtsburg in der Schweiz."],
+[1,"Ab welchem Jahr regierten die Habsburger in Österreich?",["1273","996","1500","1804"],"1000","Ab 1273 regierten die Habsburger viele Jahrhunderte lang."],
+[1,"Wie lange haben die Habsburger in Österreich regiert?",["Fast 650 Jahre","Etwa 100 Jahre","Etwa 300 Jahre","Mehr als 1000 Jahre"],"1000","Von 1273 bis 1918, also fast 650 Jahre."],
+[1,"Welche Städte waren neben Wien Haupt- und Residenzstädte der Habsburger?",["Prag","Budapest","Pressburg (Bratislava)","Berlin"],"1110","Neben Wien waren es Prag, Budapest und Pressburg."],
+[1,"Wie wurden die Habsburger ab etwa 1500 in Europa so mächtig?",["Durch erfolgreiche Heiratspolitik","Durch freie Wahlen","Durch den Marshall-Plan","Durch den Beitritt zur EU"],"1000","Bekannter Spruch: Andere mögen Kriege führen, Österreich heiratet."],
+[1,"Welche Länder gewannen die Habsburger durch Hochzeiten?",["Spanien","Böhmen","Ungarn","Russland"],"1110","Auch die Niederlande und Belgien kamen durch Hochzeiten dazu."],
+[1,"Wo herrschten die Habsburger am Anfang?",["In Ober- und Niederösterreich","In der Steiermark","In Salzburg","In Vorarlberg"],"1100","Später kamen Kärnten, Tirol, Vorarlberg und das Burgenland dazu. Salzburg erst im frühen 19. Jahrhundert."],
+[1,"Ab wann wurde Salzburg von den Habsburgern regiert?",["Erst ab dem frühen 19. Jahrhundert","Ab 1273","Ab etwa 1500","Ab 1918"],"1000","Salzburg war bis 1803 ein eigenes geistliches Fürstentum."],
+[1,"Wie hieß Deutschland vom Mittelalter bis zum Beginn des 19. Jahrhunderts? Auch das heutige Österreich gehörte dazu.",["Heiliges Römisches Reich Deutscher Nation","Ostmark","Österreich-Ungarn","Republik Deutsch-Österreich"],"1000","Habsburger waren auch deutsche Könige und römisch-deutsche Kaiser."],
+[1,"Wann wurde das „Kaiserreich Österreich“ gegründet?",["1804","1273","1848","1918"],"1000","Erst seit 1804 gibt es einen eigenen österreichischen Staat."],
+[1,"Wie hieß der Staat der Habsburger von 1867 bis 1918?",["Österreich-Ungarn","Ostmark","Republik Österreich","Heiliges Römisches Reich"],"1000","1867 wurde aus dem Kaiserreich Österreich die Monarchie Österreich-Ungarn."],
+[1,"Welche heutigen Staaten gehörten zeitweise ganz oder teilweise zum Kaiserreich Österreich?",["Tschechien","Slowenien","Kroatien","Portugal"],"1110","Dazu gehörten auch die Slowakei, Ungarn, Bosnien, das südliche Polen, die West-Ukraine sowie Teile von Rumänien und Nord-Italien."],
+[1,"Welche dieser heutigen Staaten gehörten zeitweise zum Kaiserreich Österreich?",["Slowakei","Ungarn","Schweden","Griechenland"],"1100","Schweden und Griechenland gehörten nie dazu."],
+[1,"Welche Reformen gab es unter Maria Theresia?",["Die Schulpflicht wurde eingeführt","Die Folter wurde abgeschafft","Die Militärakademie wurde gegründet","Frauen bekamen das Wahlrecht"],"1110","Unter Maria Theresia begann auch der Aufbau einer einheitlichen Verwaltung. Das Frauenwahlrecht kam erst 1919."],
+[1,"Wann regierte Maria Theresia?",["1740 bis 1780","1848 bis 1916","1273 bis 1300","1918 bis 1938"],"1000","Maria Theresia lebte von 1717 bis 1780 und regierte von 1740 bis 1780."],
+[1,"Wer wurde unter Maria Theresia wegen des Glaubens aus Österreich vertrieben?",["Evangelische Christinnen und Christen (Protestanten)","Katholikinnen und Katholiken","Die Bauern","Niemand"],"1000","Deshalb entspricht das Bild der liebevollen Landesmutter nicht ganz der Realität."],
+
+[2,"Was geschah in der „industriellen Revolution“ im 19. Jahrhundert?",["Die ersten modernen Industriebetriebe entstanden","Eisenbahnen und Dampfschiffe machten Reisen und Transport schneller","Viele Menschen zogen vom Land in die Städte","Die Industrie wurde verboten"],"1110","Österreich wurde im 19. Jahrhundert ein moderner Staat."],
+[2,"Welche Industrien waren im 19. Jahrhundert besonders wichtig?",["Eisen- und Stahlindustrie","Textilindustrie","Computerindustrie","Erdölindustrie"],"1100","Große Bedeutung hatten die Eisen- und Stahlindustrie sowie die Textilindustrie."],
+[2,"Was bedeutet „absolute Herrschaft“?",["Das Staatsoberhaupt herrscht allein, ohne Mitwirkung des Volkes","Das Volk wählt ein Parlament","Mehrere Parteien regieren gemeinsam","Die Gerichte regieren das Land"],"1000","Die Habsburger regierten lange als absolute Herrscher."],
+[2,"Was forderten die Menschen in der Revolution von 1848?",["Freiheit und Bürgerrechte","Eine Verfassung","Wahlen zu einem Parlament","Mehr Macht für den Kaiser"],"1110","Gesetze sollten nicht mehr allein vom Kaiser, sondern von einem Parlament beschlossen werden."],
+[2,"Was wollten die Revolutionäre in Ungarn und Nord-Italien 1848 zusätzlich?",["In einem eigenen, unabhängigen Staat leben","Einen Kaiser aus Ungarn","Den Anschluss an Deutschland","Die Abschaffung der Schulpflicht"],"1000","Sie wollten nicht mehr Teil des Kaiserreichs Österreich sein."],
+[2,"Wie hieß das Parlament, das 1848 gewählt wurde?",["Reichsrat","Nationalrat","Bundesrat","Landtag"],"1000","1848 bekam Österreich seine erste Verfassung und ein Parlament, den Reichsrat."],
+[2,"Wer unterdrückte 1849 die Revolution mit Gewalt?",["Kaiser Franz Josef","Maria Theresia","Karl Renner","Engelbert Dollfuß"],"1000","Parlament und ungarische Regierung wurden wieder aufgelöst."],
+[2,"Was blieb von der Revolution 1848 bestehen?",["Die Bauern wurden von ihren Grundherren befreit","Gemeinden bekamen gewählte Bürgermeister und Gemeinderäte","Bezirksgerichte und Geschworenengerichte wurden eingeführt","Das Parlament (Reichsrat) blieb bestehen"],"1110","Das Parlament wurde 1849 wieder aufgelöst. Justiz und Verwaltung wurden getrennt."],
+[2,"Was bedeutet die Einführung von Geschworenengerichten?",["Normale Bürgerinnen und Bürger dürfen bei Gerichtsprozessen am Urteil mitwirken","Nur der Kaiser spricht Urteile","Richter werden vom Volk gewählt","Gerichte werden abgeschafft"],"1000","Das gilt seit den Reformen nach 1848."],
+
+[3,"Was geschah 1867?",["Aus dem Kaiserreich Österreich wurde Österreich-Ungarn","Ungarn wurde ein eigener Staat mit eigenem Parlament und eigener Regierung","Österreich bekam eine Verfassung (Staatsgrundgesetz)","Österreich wurde eine Republik"],"1110","Republik wurde Österreich erst 1918."],
+[3,"Was hatten Österreich und Ungarn ab 1867 weiterhin gemeinsam?",["Die Armee","Das Außenministerium","Das Staatsoberhaupt: Kaiser Franz Josef","Das Parlament"],"1110","Jedes Land hatte ein eigenes Parlament und eine eigene Regierung."],
+[3,"Wie viele Sprachen waren im 19. Jahrhundert in Österreich offiziell anerkannt?",["Elf","Zwei","Fünf","Zwanzig"],"1000","Deshalb nannte man den Staat einen „Vielvölkerstaat“."],
+[3,"Warum nannte man Österreich im 19. Jahrhundert einen „Vielvölkerstaat“?",["Weil dort viele verschiedene Völker mit verschiedenen Sprachen lebten","Weil viele Menschen auswanderten","Weil es viele Bundesländer gab","Weil es viele Kaiser gab"],"1000","Elf Sprachen waren offiziell anerkannt."],
+[3,"Welche Religionen waren in der Monarchie anerkannt?",["Judentum","Islam","Christentum (katholisch, evangelisch, orthodox)","Hinduismus"],"1110","Judentum und Islam waren in der Monarchie anerkannte Religionen."],
+[3,"Was bedeutet die Idee des Nationalstaates aus dem 19. Jahrhundert?",["In einem Staat soll jeweils nur ein Volk leben","Ein Volk sind alle Menschen mit gemeinsamer Sprache und Kultur","Jeder Staat braucht einen Kaiser","Alle Staaten Europas sollen sich vereinigen"],"1100","So verstand man damals „Volk“ und „Nationalstaat“."],
+[3,"Wie lange regierte Kaiser Franz Josef?",["1848 bis 1916","1740 bis 1780","1804 bis 1848","1916 bis 1918"],"1000","Franz Josef lebte von 1830 bis 1916."],
+[3,"Was geschah 1918 mit Österreich-Ungarn?",["Es zerfiel in einzelne Nationalstaaten","Es wurde Mitglied der Europäischen Union","Es wurde Teil des Deutschen Reiches","Es eroberte Italien"],"1000","Österreich-Ungarn hatte den Ersten Weltkrieg verloren."],
+[3,"Welche Staaten, die 1918 entstanden, waren selbst wieder mehrsprachige Vielvölkerstaaten?",["Tschechoslowakei","Jugoslawien","Portugal","Dänemark"],"1100","Die Tschechoslowakei und Jugoslawien waren selbst mehrsprachig."],
+
+[4,"Von wann bis wann dauerte der Erste Weltkrieg?",["1914 bis 1918","1939 bis 1945","1848 bis 1849","1918 bis 1938"],"1000","Der Zweite Weltkrieg dauerte von 1939 bis 1945."],
+[4,"Mit wem war Österreich-Ungarn im Ersten Weltkrieg verbündet?",["Deutschland","Bulgarien","Türkei","Frankreich"],"1110","Dieses Bündnis verlor den Krieg."],
+[4,"Welche Folgen hatte der Erste Weltkrieg für Österreich?",["Österreich-Ungarn zerfiel","Die Herrschaft der Habsburger endete","Österreich wurde eine Republik","Österreich wurde in vier Besatzungszonen geteilt"],"1110","Die vier Besatzungszonen gab es erst nach dem Zweiten Weltkrieg (1945–1955)."],
+[4,"Welche Staaten entstanden 1918 auf dem Gebiet des alten Österreich-Ungarn?",["Tschechoslowakei","Polen","Jugoslawien","Schweiz"],"1110","Dazu kamen ein verkleinertes Ungarn und ein verkleinertes Österreich."],
+[4,"Wann wurde die Republik Österreich zum ersten Mal ausgerufen?",["Im November 1918","Im März 1938","Im Mai 1955","Im Oktober 1920"],"1000","Am 12. November 1918. Am Tag davor war Kaiser Karl zurückgetreten."],
+[4,"Wer war der erste Staatskanzler (Regierungschef) der Republik Österreich?",["Karl Renner","Engelbert Dollfuß","Leopold Figl","Bruno Kreisky"],"1000","Karl Renner war Staatskanzler von 1918 bis 1920 und Bundespräsident von 1945 bis 1950."],
+[4,"Wie sollte die Republik 1918 ursprünglich heißen?",["Republik Deutsch-Österreich","Ostmark","Alpenrepublik","Österreich-Ungarn"],"1000","Der Friedensvertrag von 1919 legte den Namen „Republik Österreich“ fest."],
+[4,"Was legte der Friedensvertrag von Saint Germain (1919) fest?",["Österreich darf sich nicht mit Deutschland vereinigen","Der Staat heißt „Republik Österreich“","Österreich ist immerwährend neutral","Österreich tritt der Europäischen Union bei"],"1100","Die Neutralität kam erst 1955."],
+[4,"Wann wurde die österreichische Bundesverfassung (B-VG) beschlossen, die heute noch gilt?",["1920","1848","1955","1995"],"1000","Im Oktober 1920. Durch sie ist Österreich ein Bundesstaat."],
+[4,"Was gilt seit 1921?",["Österreich hat neun Bundesländer","Wien ist ein eigenes Bundesland","Das Burgenland ist als neues Bundesland dazugekommen","Südtirol gehört zu Österreich"],"1110","Südtirol wurde nach dem Ersten Weltkrieg abgetrennt und gehört zu Italien."],
+[4,"Welche Krisen erlebte die Erste Republik?",["Hohe Inflation (Geldentwertung) in den 1920er Jahren","Die Krise der Weltwirtschaft ab 1929","Hohe Arbeitslosigkeit","Die Besetzung durch vier Siegermächte"],"1110","Die Besatzung gab es erst nach 1945."],
+[4,"Wer schaltete 1933 das Parlament aus?",["Bundeskanzler Engelbert Dollfuß","Karl Renner","Kaiser Karl","Julius Raab"],"1000","Dollfuß wollte einen autoritären Staat gründen."],
+[4,"Was kennzeichnete den „Ständestaat“?",["Er hatte keine demokratisch gewählten Institutionen","Er stützte sich unter anderem auf die katholische Kirche","Er wollte Österreichs Unabhängigkeit gegenüber Deutschland erhalten","Er wurde von der sozialdemokratischen Partei regiert"],"1110","Die sozialdemokratische Partei war verboten."],
+[4,"Was bedeutet es, wenn eine Regierung „autoritär“ regiert?",["Sie regiert ohne demokratische Kontrolle, also ohne gewähltes Parlament","Sie regiert mit Zustimmung aller Parteien","Sie lässt regelmäßig das Volk abstimmen","Sie regiert gemeinsam mit den Gerichten"],"1000","So regierte der Ständestaat ab 1933."],
+[4,"Was geschah im Jahr 1934?",["Im Februar gab es einen Bürgerkrieg","Nationalsozialisten versuchten einen Putsch und ermordeten Bundeskanzler Dollfuß","Österreich wurde an Deutschland angeschlossen","Der Staatsvertrag wurde unterzeichnet"],"1100","Der „Anschluss“ war 1938, der Staatsvertrag 1955."],
+[4,"Warum stand die Erste Republik von Beginn an unter keinem guten Stern?",["Viele wünschten sich den „Anschluss“ an Deutschland","Viele empfanden die neuen Grenzen als ungerecht, zum Beispiel die Abtrennung Südtirols","Es gab wirtschaftliche Not und politische Radikalisierung","Das Land war von vier Mächten besetzt"],"1110","Auch Antisemitismus vergiftete das Klima."],
+[4,"Was hatten die großen Parteien in der Ersten Republik?",["Eigene bewaffnete Milizen","Eine gemeinsame große Koalition","Ein gemeinsames Parteiprogramm","Ein gemeinsames Heer mit Ungarn"],"1000","Die Parteien sahen einander als Feinde."],
+[4,"Wer trat im März 1938 unter dem Druck Hitler-Deutschlands zurück?",["Die Regierung des Ständestaates unter Kurt Schuschnigg","Kaiser Franz Josef","Bundeskanzler Bruno Kreisky","Bundespräsident Karl Renner"],"1000","Das Bundesheer leistete keinen militärischen Widerstand."],
+
+[5,"Wann wurde Österreich an das nationalsozialistische Deutschland „angeschlossen“?",["Im März 1938","Im November 1918","Im September 1939","Im Mai 1945"],"1000","Im März 1938 marschierten deutsche Soldaten in Österreich ein."],
+[5,"Was stimmt über die Volksabstimmung im April 1938?",["Sie war weder frei noch fair","Sie fand erst nach dem Einmarsch statt","Wer dagegen war, musste mit Verfolgung rechnen","Unabhängige Behörden überwachten sie"],"1110","Die große Mehrheit stimmte bei dieser unfreien Abstimmung für den „Anschluss“."],
+[5,"Welche Gruppen wurden im Nationalsozialismus verfolgt und ermordet?",["Jüdinnen und Juden","Roma und Sinti","Menschen mit Behinderung","Mitglieder der NSDAP"],"1110","Verfolgt wurden auch politische Gegner, Homosexuelle, Angehörige der slowenischen und tschechischen Minderheit sowie Priester und Anhänger der christlichen Kirchen."],
+[5,"Wer wurde im Nationalsozialismus ebenfalls verfolgt?",["Politische Gegner des Nationalsozialismus","Homosexuelle","Angehörige der slowenischen und der tschechischen Minderheit","Anhänger Hitlers"],"1110","Ganze Bevölkerungsgruppen wurden enteignet, verfolgt und ermordet."],
+[5,"Wo war das größte Konzentrationslager auf dem Gebiet des heutigen Österreich?",["In Mauthausen (Oberösterreich)","In Wien","In Graz","In Innsbruck"],"1000","In Mauthausen wurden von 1938 bis 1945 etwa 100.000 Menschen ermordet."],
+[5,"Wie hieß Österreich in der Zeit des Nationalsozialismus?",["Ostmark","Deutsch-Österreich","Alpenland","Österreich-Ungarn"],"1000","Den Staat Österreich gab es von 1938 bis 1945 nicht."],
+[5,"Wie viele österreichische Jüdinnen und Juden wurden etwa in Konzentrationslagern ermordet?",["Etwa 70.000","Etwa 700","Etwa 7.000","Etwa 7 Millionen"],"1000","Etwa 120.000 mussten fliehen. Auch circa 10.000 österreichische Roma und Sinti wurden ermordet."],
+[5,"Welche Aussagen über die NS-Zeit in Österreich stimmen?",["Fast 700.000 Österreicherinnen und Österreicher traten der NSDAP bei","Es gab auch aktiven Widerstand","Rund 2.700 Menschen wurden als Widerstandskämpfer hingerichtet","Österreich blieb ein unabhängiger Staat"],"1110","Es gab Täter und Mitläufer, aber auch Widerstand."],
+[5,"Womit begann der Zweite Weltkrieg?",["Mit dem Überfall Deutschlands auf Polen im September 1939","Mit dem „Anschluss“ Österreichs","Mit der Schlacht bei Stalingrad","Mit der Landung in Frankreich"],"1000","September 1939."],
+[5,"Wo wurde die deutsche Armee Anfang 1943 vernichtend geschlagen?",["Bei Stalingrad","Bei Wien","Bei Paris","Bei Rom"],"1000","Das war die Wende im Krieg."],
+[5,"Wer befreite Wien im April 1945 vom Nationalsozialismus?",["Sowjetische Truppen","Amerikanische Truppen","Britische Truppen","Französische Truppen"],"1000","Achtung: Die Stadt Salzburg wurde am 4. Mai 1945 von US-Truppen besetzt."],
+[5,"Wann endete der Zweite Weltkrieg in Europa?",["Im Mai 1945","Im November 1918","Im März 1938","Im Oktober 1955"],"1000","Im Mai 1945 kapitulierte Deutschland."],
+
+[6,"Welche Länder gehörten zu den Siegern des Zweiten Weltkrieges?",["USA","Großbritannien","Sowjetunion","Italien"],"1110","Die vierte Siegermacht war Frankreich."],
+[6,"Welche dieser Länder waren Besatzungsmächte in Österreich?",["Frankreich","Sowjetunion","Spanien","Japan"],"1100","Die vier Besatzungsmächte: USA, Großbritannien, Frankreich, Sowjetunion."],
+[6,"Was geschah im April 1945?",["Die Republik Österreich wurde erneut ausgerufen","Karl Renner wurde Kanzler einer provisorischen Regierung","Der Staatsvertrag wurde unterzeichnet","Österreich trat der EU bei"],"1100","Das war der Beginn der Zweiten Republik."],
+[6,"Wann fanden die ersten demokratischen Parlamentswahlen der Zweiten Republik statt?",["Im November 1945","Im Mai 1955","Im April 1938","Im Jahr 1995"],"1000","November 1945."],
+[6,"Welche Parteien bildeten nach 1945 lange Zeit eine gemeinsame Regierung?",["ÖVP","SPÖ","KPÖ","FPÖ"],"1110","Österreichische Volkspartei, Sozialistische (heute Sozialdemokratische) Partei und die kleine Kommunistische Partei."],
+[6,"Wie war Österreich von 1945 bis 1955 aufgeteilt?",["In vier Besatzungszonen","In zwei Staaten","In neun unabhängige Länder","Es war nicht aufgeteilt"],"1000","Auch Wien war in vier Zonen geteilt. Salzburg gehörte zur US-Zone."],
+[6,"Was stimmt über den Marshall-Plan?",["Er war ein Hilfsprogramm der USA für den Wiederaufbau Europas","Österreich musste das Geld nicht zurückzahlen","Er war ein Militärbündnis","Er war ein Kredit der Sowjetunion"],"1100","Die Mittel des Marshall-Plans waren ein Geschenk."],
+[6,"Wie heißt der Vertrag von 1955, der Österreich wieder die volle Unabhängigkeit gab?",["Staatsvertrag","Vertrag von Saint Germain","Marshall-Plan","Staatsgrundgesetz"],"1000","Er wurde nach zehn Jahren Verhandlungen mit den Siegermächten geschlossen."],
+[6,"Wer spielte bei den Verhandlungen zum Staatsvertrag eine wichtige Rolle?",["Bundeskanzler Julius Raab","Außenminister Leopold Figl","Bruno Kreisky","Engelbert Dollfuß"],"1100","Raab war damals Bundeskanzler, Figl Außenminister."],
+[6,"Wozu verpflichtete sich Österreich durch den Staatsvertrag von 1955?",["Kein „Anschluss“ an Deutschland","Kein Beitritt zu einem Militärbündnis (immerwährende Neutralität)","Schutz der slowenischen und kroatischen Minderheiten","Abschaffung des Bundesheeres"],"1110","Österreich muss seine Neutralität sogar verteidigen. Dafür gibt es das Bundesheer."],
+[6,"Was beschloss das Parlament am 26. Oktober 1955? Der Tag ist heute Nationalfeiertag.",["Die immerwährende Neutralität","Den Beitritt zur EU","Die Bundesverfassung","Die Einführung des Euro"],"1000","Der 26. Oktober ist der österreichische Nationalfeiertag."],
+[6,"Was geschah im Jahr 1955?",["Der Staatsvertrag wurde unterzeichnet","Die Besatzungszeit ging zu Ende","Der Zweite Weltkrieg ging zu Ende","Der Eiserne Vorhang fiel"],"1100","Kriegsende war 1945, der Eiserne Vorhang fiel 1989."],
+[6,"Was unterscheidet die Zweite Republik von der Ersten Republik?",["Zusammenarbeit statt politischer Gewalt","Die Wirtschaft wuchs und die Währung blieb stabil","ÖVP und SPÖ regierten gemeinsam in einer großen Koalition","Die Parteien hatten bewaffnete Milizen"],"1110","Bewaffnete Milizen gab es in der Ersten Republik."],
+[6,"Was ist die Sozialpartnerschaft?",["Die dauernde Zusammenarbeit von Vertretern der Arbeitgeber, Arbeitnehmer und Bauern","Ein Militärbündnis","Eine politische Partei","Ein Gericht"],"1000","Sie entstand in den späten 1940er Jahren. Es geht zum Beispiel um Lohnverhandlungen."],
+[6,"Welche Organisationen gehören zu den Sozialpartnern?",["Bundesarbeitskammer (AK)","Österreichischer Gewerkschaftsbund (ÖGB)","Wirtschaftskammer Österreich (WKÖ)","Österreichisches Rotes Kreuz"],"1110","Die vierte ist die Landwirtschaftskammer Österreich (LK). Das Rote Kreuz ist eine nichtstaatliche Organisation (NGO)."],
+
+[7,"In wessen Regierungszeit (1970–1983) wurden viele Reformen beschlossen?",["Bruno Kreisky","Julius Raab","Leopold Figl","Karl Renner"],"1000","Bruno Kreisky war Bundeskanzler von 1970 bis 1983."],
+[7,"Welche Reformen veränderten Österreich in den 1970er Jahren?",["Frauen und Männer bekamen im Familienrecht gleiche Rechte und Pflichten","Schülerfreifahrt und kostenlose Schulbücher","Schulen und Universitäten wurden ausgebaut","Die Schulpflicht wurde eingeführt"],"1110","Die Schulpflicht gibt es schon seit Maria Theresia."],
+[7,"Was änderte sich in den 1970er Jahren im Familienrecht?",["Verheiratete Männer sind nicht mehr das „Familienoberhaupt“","Die Ehescheidung wurde einfacher","Frauen verloren das Wahlrecht","Die Ehe wurde abgeschafft"],"1100","Damals wurde auch die Homosexualität legalisiert."],
+[7,"Seit wann können homosexuelle Paare ihre Partnerschaft eintragen lassen?",["Seit 2010","Seit 1955","Seit 1975","Seit 1995"],"1000","Mit der eingetragenen Partnerschaft haben sie ähnliche Rechte und Pflichten wie Ehepaare."],
+[7,"Was geschah wirtschaftlich in den 1970er Jahren?",["Die Zeit des hohen Wirtschaftswachstums endete","Die Eisen- und Stahlindustrie geriet in eine Krise","Die Staatsschulden begannen deutlich zu wachsen","Die Arbeitslosigkeit verschwand völlig"],"1110","Die Arbeitslosigkeit stieg deutlich an."],
+[7,"Welche Folgen hatte es nach dem Jahr 2000, dass Österreich seine Mitschuld an NS-Verbrechen anerkannte?",["Geraubte Kunstwerke werden zurückgegeben oder entschädigt","Familien bekamen Geld für geraubte Häuser und Wohnungen","Ehemalige Zwangsarbeiterinnen und Zwangsarbeiter bekamen Geld","Die Neutralität wurde aufgehoben"],"1110","Über diese Mitschuld wird erst seit den 1980er Jahren offen gesprochen."],
+[7,"Was ist das Ziel der Pensionsreform nach dem Jahr 2000?",["Die staatlichen Pensionen sollen auch in Zukunft bezahlt werden können","Menschen sollen länger im Beruf bleiben und später in Pension gehen","Pensionen sollen abgeschafft werden","Alle sollen früher in Pension gehen"],"1100","Dafür müssen Männer und Frauen länger arbeiten."],
+[7,"Wie veränderte der wirtschaftliche Erfolg zwischen 1950 und 1970 Österreich?",["Viele Menschen zogen vom Land in die Städte","Viele Arbeitskräfte kamen aus dem Ausland","Österreich wurde zu einem Einwanderungsland","Die Industrie verschwand"],"1110","Moderne Industrie- und Dienstleistungsbetriebe entstanden."],
+
+[8,"Was geschah 1989 in Europa?",["Der „Eiserne Vorhang“ fiel","Österreich trat der EU bei","Der Euro wurde eingeführt","Der Staatsvertrag wurde unterzeichnet"],"1000","Die kommunistischen Regime in Mittel- und Osteuropa verschwanden."],
+[8,"Seit wann ist Österreich Mitglied der Europäischen Union (EU)?",["Seit 1995","Seit 1955","Seit 1989","Seit 2002"],"1000","1994 stimmte die Mehrheit bei einer Volksabstimmung für den Beitritt, 1995 trat Österreich bei."],
+[8,"Seit wann bezahlen wir in Österreich mit dem Euro?",["Seit 2002","Seit 1995","Seit 1989","Seit 2011"],"1000","Nicht alle EU-Staaten verwenden den Euro."],
+[8,"Welche Entscheidungen der EU beeinflussen den Alltag in Österreich?",["Der Euro als gemeinsame Währung","Einheitliche Höchsttarife für das Telefonieren mit dem Handy in der EU","Österreichische Studierende können in der ganzen EU studieren","Die EU legt die österreichischen Feiertage fest"],"1110","Feiertage und Pensionen sind keine EU-Entscheidungen."],
+[8,"Was gilt für Bürgerinnen und Bürger anderer EU-Staaten in Österreich?",["Sie dürfen grundsätzlich nicht schlechter behandelt werden als österreichische Staatsbürger","Sie haben fast die gleichen Rechte wie österreichische Staatsbürger","Sie dürfen in Österreich nicht arbeiten","Sie dürfen den Nationalrat wählen"],"1100","Den Nationalrat wählen nur österreichische Staatsbürgerinnen und Staatsbürger."],
+[8,"Was änderte sich für Österreich nach dem Fall des „Eisernen Vorhangs“?",["Österreich lag wieder in der „Mitte“ Europas","Die Wirtschaft wurde viel internationaler","Österreich wurde von vier Mächten besetzt","Die Monarchie wurde wieder eingeführt"],"1100","Vorher lag Österreich an der Grenze zwischen Ost und West."],
+[8,"Wie viele Menschen leben laut Lernunterlage in Österreich?",["8,8 Millionen","2 Millionen","5 Millionen","20 Millionen"],"1000","Laut Lernunterlage wurden 1,7 Millionen davon in einem anderen Land geboren, also etwa jede fünfte Person."]
+]);
+add("d",[
+[0,"Was bedeutet „Menschenwürde“?",["Der Wert aller Menschen ist gleich","Alle Menschen haben Rechte, die ihnen niemand wegnehmen darf","Die Menschenwürde hängt von der Staatsbürgerschaft ab","Die Menschenwürde gilt nur für Erwachsene"],"1100","Menschenwürde haben wir allein dadurch, dass wir Menschen sind."],
+[0,"Wovon ist die Menschenwürde unabhängig?",["Von Herkunft und Staatsbürgerschaft","Von Geschlecht und Alter","Von Religion und Sprache","Sie hängt davon ab, ob jemand eine Vorstrafe hat"],"1110","Sie gilt auch für strafrechtlich verurteilte Personen."],
+[0,"Seit wann steht im Allgemeinen Bürgerlichen Gesetzbuch (ABGB), dass jeder Mensch angeborene Rechte hat?",["Seit 1811","Seit 1848","Seit 1920","Seit 1955"],"1000","Seit 1811: Jeder Mensch ist als Person zu betrachten, die Sklaverei ist verboten."],
+[0,"Welche internationalen Abkommen zum Schutz der Grund- und Menschenrechte hat Österreich unterschrieben?",["Die Europäische Menschenrechtskonvention","Die Grundrechtecharta der Europäischen Union","Die Kinderrechtskonvention der Vereinten Nationen","Die Straßenverkehrsordnung"],"1110","Auch die Genfer Flüchtlingskonvention der Vereinten Nationen gehört dazu."],
+[0,"Wodurch werden Grund- und Menschenrechte in Österreich geschützt?",["Durch internationale Abkommen","Durch die österreichische Bundesverfassung","Durch Parteiprogramme","Durch Zeitungen"],"1100","Die Bundesverfassung bildet den Rahmen für den Schutz der Grundrechte."],
+[0,"Was stimmt über das Verbot der Folter?",["Niemand darf gefoltert werden","Niemand darf unmenschlich oder erniedrigend behandelt werden","Niemand darf in einen Staat abgeschoben werden, in dem Folter droht","In Gefängnissen gilt das Verbot nicht"],"1110","Das Verbot ist gerade in Gefängnissen und bei Polizeieinsätzen wichtig."],
+[0,"Was ist in Österreich verboten?",["Menschenhandel","Sklaverei","Zwangsarbeit","Die freie Wahl des Berufes"],"1110","Menschen dürfen nicht zum Eigentum anderer gemacht werden."],
+[0,"Welche Aussagen zum Verbot der Diskriminierung stimmen?",["Niemand darf wegen seines Geschlechts benachteiligt werden","Niemand darf wegen seiner Religion benachteiligt werden","Eine Benachteiligung wegen einer Behinderung ist erlaubt","Eine Benachteiligung wegen der Sprache ist erlaubt"],"1100","Verboten ist die Benachteiligung auch wegen Behinderung, Sprache, Weltanschauung, politischer Überzeugung, sexueller Ausrichtung oder Zugehörigkeit zu einer nationalen Minderheit."],
+[0,"Welches Recht gilt nur für österreichische Staatsbürgerinnen und Staatsbürger?",["Das Wahlrecht bei nationalen Wahlen","Das Recht auf Leben","Das Verbot der Folter","Die Glaubensfreiheit"],"1000","Die Menschenrechte gelten für alle Menschen, das Wahlrecht bei nationalen Wahlen nur für Staatsbürger."],
+[0,"Was widerspricht der Menschenwürde?",["Rassismus","Sexismus","Fremdenfeindlichkeit","Respekt und Fairness"],"1110","Goldene Regel: Behandle andere so, wie du von ihnen behandelt werden willst."],
+[0,"Wohin kann man sich wenden, wenn man am Arbeitsplatz benachteiligt (diskriminiert) wird?",["An die Gleichbehandlungsanwaltschaft","An die Arbeiterkammer","An die Gewerkschaft","An den Rechnungshof"],"1110","Grundlage ist das Gleichbehandlungsgesetz."],
+[0,"Was regelt das Gleichbehandlungsgesetz?",["Wann eine Behandlung in der Arbeitswelt als Diskriminierung gilt","Wie hoch die Steuern sind","Wer Bundespräsident wird","Wie viele Bundesländer es gibt"],"1000","Beispiel: Jemand bekommt eine Stelle nicht, weil er angeblich zu alt ist oder weil er zugewandert ist."],
+[0,"Was sind die Vereinten Nationen (UN)?",["Eine Organisation von 193 Staaten","Sie setzen sich weltweit für den Frieden ein","Sie setzen sich für den Schutz der Menschenrechte ein","Eine österreichische Partei"],"1110","UN steht für „United Nations“."],
+
+[1,"Was kennzeichnet einen liberalen Staat?",["Die Bürgerinnen und Bürger leben in größtmöglicher Freiheit","Dem Staat sind Grenzen gesetzt: Er darf in viele Lebensbereiche nicht eingreifen","Es gibt keine Gesetze","Der Staat bestimmt Beruf und Wohnort"],"1100","„Liberal“ kommt vom lateinischen Wort „liber“ = frei."],
+[1,"Worüber entscheiden erwachsene Menschen in einem liberalen Staat selbst?",["Über ihren Wohnort","Über ihre Religion","Über ihren Beruf","Über die Höhe ihrer Steuern"],"1110","Die Freiheitsrechte schützen diese Lebensbereiche."],
+[1,"Was garantiert das Recht auf Freizügigkeit?",["Sich in Österreich frei zu bewegen","Zu reisen","Den eigenen Wohnort zu bestimmen","Kostenlos mit dem Zug zu fahren"],"1110","Nur in gesetzlich vorgesehenen Fällen darf die Bewegungsfreiheit eingeschränkt werden, zum Beispiel bei Strafverdacht oder Verurteilung."],
+[1,"Was gilt beim Recht auf Eheschließung und Familiengründung?",["Jeder Mensch entscheidet selbst, ob er heiraten möchte","Man darf den Ehepartner oder die Ehepartnerin frei wählen","Man entscheidet selbst, ob und wie viele Kinder man haben will","Die Eltern bestimmen den Ehepartner"],"1110","Zwangsheirat widerspricht diesem Grundrecht."],
+[1,"Ab welchem Alter dürfen Kinder selbst entscheiden, welche Religion sie ausüben?",["Ab 14 Jahren","Ab 10 Jahren","Ab 16 Jahren","Ab 18 Jahren"],"1000","Davor bestimmen die Eltern über die Religion der Kinder."],
+[1,"Was erlaubt die Glaubensfreiheit?",["Die Religion selbst zu wählen und öffentlich auszuüben","Die Religion zu wechseln","Keine Religion zu haben oder aus einer Religionsgemeinschaft auszutreten","Andere zu einer Religion zu zwingen"],"1110","Man darf seine Religion auch verschweigen."],
+[1,"Was bedeutet das Recht auf Meinungsfreiheit?",["Informationen ohne Zensur bekommen und weitergeben","Die eigene Meinung öffentlich äußern","Andere Menschen beleidigen","Falsche Dokumente ausstellen"],"1100","Wer die Ehre einer anderen Person verletzt (Beleidigung), überschreitet die Meinungsfreiheit."],
+[1,"Was ist „Zensur“?",["Inhalte von Medien werden vor der Veröffentlichung vom Staat geprüft","Eine Note in der Schule","Eine Wahl","Ein Gericht"],"1000","Zensur ist in Österreich verboten. Das schützt die Pressefreiheit und die Meinungsfreiheit."],
+[1,"Was bedeutet das Recht auf Privatsphäre?",["Jeder Mensch hat das Recht auf ein privates Leben","Man muss niemandem berichten, was man in der Freizeit macht","Man muss dem Staat seine Freunde melden","Man darf keine Geheimnisse haben"],"1100","Das gilt gegenüber staatlichen Stellen und gegenüber Mitmenschen."],
+[1,"Was bedeutet das Recht auf Schutz des Eigentums?",["Niemand darf uns unser Eigentum wegnehmen","Es gibt nur wenige, gesetzlich genau geregelte Ausnahmen","Der Staat darf jederzeit alles wegnehmen","Eigentum ist verboten"],"1100","Eigentum ist ein Freiheitsrecht."],
+[1,"Was gilt für die freie Berufswahl?",["Man darf den Beruf frei wählen, unabhängig vom Beruf der Eltern","Arbeit und Beruf werden durch Gesetze geregelt","Die Eltern bestimmen den Beruf","Der Staat teilt jedem einen Beruf zu"],"1100","Die freie Berufswahl ist ein Grundrecht."],
+[1,"Welche Freiheiten gibt es in der Wirtschaft?",["Die Erwerbsfreiheit","Die Freiheit, ein Unternehmen zu gründen","Die Freiheit, Verträge zu schließen","Die Freiheit, keine Steuern zu zahlen"],"1110","Diese Freiheiten sind eine Grundlage der Marktwirtschaft."],
+[1,"Was bedeutet „soziale Marktwirtschaft“?",["Wirtschaftliche Freiheit mit sozialer Verantwortung","Schutz der Arbeiterinnen und Arbeiter vor unfairen Entscheidungen der Unternehmen","Schutz durch die Sozialversicherung","Die Wirtschaft hat keine Grenzen"],"1110","Dazu gehört auch, die Umwelt für die nächsten Generationen zu erhalten."],
+[1,"Wo endet die eigene Freiheit?",["Dort, wo sie in die Freiheit anderer Personen eingreift","Sie endet nie","Beim 18. Geburtstag","An der Landesgrenze"],"1000","Was ein Eingriff ist, bestimmen die Gesetze. Bei Konflikten entscheiden Gerichte und Behörden."],
+
+[2,"Was sind Merkmale eines Rechtsstaates?",["Die Rechtsordnung gilt für alle, auch für den Staat selbst","Gesetze dürfen die Grund- und Menschenrechte nicht verletzen","Die Einhaltung der Gesetze kann kontrolliert werden","Richterinnen und Richter bekommen Anweisungen von der Regierung"],"1110","Das garantiert Gleichheit vor dem Gesetz und faire Verfahren."],
+[2,"Was sind die wichtigsten Grundlagen der Rechtsordnung in Österreich?",["Die österreichische Bundesverfassung","Das Recht der Europäischen Union","Die Parteiprogramme","Die Tageszeitungen"],"1100","Zusammen sind sie die rechtliche Grundlage für das Funktionieren der Republik."],
+[2,"Was regelt die Bundesverfassung?",["Die Staatsform (Republik)","Den Aufbau des Staates (Bundesstaat)","Die Grundrechte des Einzelnen","Die Preise im Supermarkt"],"1110","Sie regelt auch die wichtigsten Aufgaben des Staates: Gesetzgebung, Verwaltung und Gerichtsbarkeit."],
+[2,"Was legt der liberale Rechtsstaat fest?",["Menschen dürfen alles tun, was nicht durch das Gesetz verboten ist","Der Staat darf nur das tun, was das Gesetz erlaubt","Der Staat darf alles tun","Menschen dürfen nur tun, was ausdrücklich erlaubt ist"],"1100","Die Gesetze sind Grundlage und Grenze der staatlichen Macht."],
+[2,"Was kontrolliert der Verfassungsgerichtshof?",["Ob die Bundesverfassung eingehalten wird","Ob Gesetze zur Verfassung passen","Ob die Fußballregeln eingehalten werden","Ob öffentliche Gelder sparsam verwendet werden"],"1100","Öffentliche Gelder prüft der Rechnungshof."],
+[2,"Was kontrolliert der Verwaltungsgerichtshof?",["Die Entscheidungen der staatlichen Verwaltung, zum Beispiel einer Bezirkshauptmannschaft","Die Wahlprogramme der Parteien","Die Arbeit der Zeitungen","Die Preise"],"1000","Er stellt sicher, dass sich die gesamte Verwaltung an die Gesetze hält."],
+[2,"Was gilt für Richterinnen und Richter in Österreich?",["Sie sind unabhängig","Sie sind unabsetzbar","Sie sind unversetzbar","Sie sind dem Innenministerium unterstellt"],"1110","Niemand darf ihnen etwas anordnen. Die Gerichte sind von der Verwaltung getrennt."],
+[2,"Was bedeutet es, dass Richterinnen und Richter „unabsetzbar“ sind?",["Sie können nicht wegen einer getroffenen Entscheidung entlassen werden","Sie bleiben bis zum Tod im Amt","Sie dürfen nie in Pension gehen","Sie müssen jedes Jahr neu gewählt werden"],"1000","„Unversetzbar“ heißt: Sie können nicht gegen ihren Willen an ein anderes Gericht versetzt werden."],
+[2,"Wer ist in einem Strafverfahren der Ankläger oder die Anklägerin?",["Der Staatsanwalt oder die Staatsanwältin","Der Bürgermeister","Die Polizei","Der Bundespräsident"],"1000","Die Staatsanwaltschaft vertritt die Republik Österreich. Am Ende entscheidet ein unabhängiger Richter über schuldig oder unschuldig."],
+[2,"Worum geht es in einem zivilrechtlichen Verfahren?",["Um Streitigkeiten zwischen Privatpersonen oder Unternehmen","Zum Beispiel um den Anspruch auf Lohn","Zum Beispiel um Schadenersatz nach einem Unfall","Um die Bestrafung eines Diebes"],"1110","Diebstahl oder Körperverletzung werden im Strafverfahren behandelt."],
+[2,"Was ist ein „Amtstag“ am Bezirksgericht?",["Man bekommt dort einfache Rechtsauskünfte","Die Beratung ist kostenlos","Man kann dort mündlich Klage erheben","Dort werden Reisepässe ausgestellt"],"1110","Der Amtstag findet in der Regel einmal pro Woche am Dienstag statt."],
+[2,"Wie viele Instanzen gibt es laut Lernunterlage?",["Im Zivilverfahren drei Instanzen","Im Strafverfahren zwei Instanzen","Im Zivilverfahren nur eine Instanz","Im Strafverfahren fünf Instanzen"],"1100","Entscheidungen können meist von einem höheren Gericht überprüft werden (nächste Instanz)."],
+[2,"Welches Gericht entscheidet in letzter Instanz über alle wichtigen Fragen des Zivil- und Strafrechts?",["Der Oberste Gerichtshof","Das Bezirksgericht","Der Rechnungshof","Die Volksanwaltschaft"],"1000","Für Zivil- und Strafverfahren ist der Oberste Gerichtshof die letzte Instanz."],
+[2,"Wie müssen staatliche Stellen die Gesetze anwenden?",["Ohne Benachteiligung und ohne Bevorzugung","Unabhängig von Geschlecht, Herkunft, Religion oder Hautfarbe","Für Staatsbürger günstiger als für andere","So, wie es der Beamte gerade möchte"],"1100","Alle Einwohner können darauf vertrauen, dass sich der Staat an die Gesetze hält, unabhängig von Staatsangehörigkeit und Aufenthaltsdauer."],
+
+[3,"Was bedeutet das Wort „Demokratie“?",["Volksherrschaft","Alleinherrschaft","Herrschaft der Polizei","Herrschaft des Kaisers"],"1000","Das Gegenteil ist die Diktatur. Die Idee entstand im alten Griechenland."],
+[3,"Was ist das Gegenteil einer Demokratie?",["Eine Diktatur, in der ein Alleinherrscher oder eine einzige Partei alles bestimmt","Eine Republik","Ein Bundesstaat","Ein Rechtsstaat"],"1000","In einer Diktatur gibt es keine Mitbestimmung des Volkes."],
+[3,"Was sind die wichtigsten Merkmale einer Demokratie?",["Die politische Mitbestimmung","Das Wahlrecht","Ein Kaiser","Nur eine einzige Partei"],"1100","Die Bundesverfassung sagt: Österreich ist eine demokratische Republik."],
+[3,"Von wem geht laut Bundesverfassung das Recht in Österreich aus?",["Vom Volk","Vom Bundespräsidenten","Von den Gerichten","Von der Europäischen Union"],"1000","„Österreich ist eine demokratische Republik. Ihr Recht geht vom Volk aus.“"],
+[3,"Ab welchem Alter dürfen österreichische Staatsbürgerinnen und Staatsbürger wählen?",["Ab 16 Jahren","Ab 14 Jahren","Ab 18 Jahren","Ab 21 Jahren"],"1000","Das gilt für Frauen und Männer gleich und in ganz Österreich."],
+[3,"Wann durften Frauen in Österreich zum ersten Mal wählen?",["1919","1848","1907","1945"],"1000","Bei den ersten Wahlen der Republik im Jahr 1919."],
+[3,"Welche Jahreszahlen zur Geschichte des Wahlrechts stimmen?",["1848: erste demokratische Wahlen","1907: allgemeines und gleiches Wahlrecht für Männer","1919: Frauen dürfen zum ersten Mal wählen","1955: erste Wahlen überhaupt"],"1110","1848 war das Revolutionsjahr."],
+[3,"Bei welchen Wahlen dürfen auch Bürgerinnen und Bürger anderer EU-Staaten wählen, die in Österreich leben?",["Bei Gemeinderatswahlen","Bei Wahlen zum EU-Parlament","Bei Nationalratswahlen","Bei der Wahl des Bundespräsidenten"],"1100","Nationalrat, Landtag und Bundespräsident wählen nur österreichische Staatsbürger."],
+[3,"Was heißt „indirekte Demokratie“?",["Das Volk wählt Abgeordnete, und diese beschließen die Gesetze","Das Volk stimmt selbst über jedes Gesetz ab","Die Gerichte beschließen die Gesetze","Der Bundespräsident beschließt die Gesetze"],"1000","Gewählt werden Abgeordnete für den Nationalrat, die Landtage und das Europäische Parlament."],
+[3,"Welche Formen der direkten Demokratie gibt es in Österreich?",["Volksabstimmung","Volksbefragung","Volksbegehren","Nationalratswahl"],"1110","Bei der direkten Demokratie entscheidet das Volk selbst unmittelbar mit."],
+[3,"Was stimmt über eine Volksabstimmung?",["Es wird über ein Gesetz des Nationalrates abgestimmt","Man stimmt mit „Ja“ oder „Nein“","Das Volk entscheidet, ob das Gesetz in Kraft tritt","Das Ergebnis ist nicht bindend"],"1110","1994 gab es eine Volksabstimmung über den EU-Beitritt. Die Mehrheit stimmte mit „Ja“."],
+[3,"Was stimmt über eine Volksbefragung?",["Die Bürgerinnen und Bürger werden zu einem Thema befragt","Das Ergebnis ist für die Politik nicht bindend","Das Ergebnis ist immer bindend","Sie wird nur von Gerichten durchgeführt"],"1100","Bindend ist nur die Volksabstimmung."],
+[3,"Wie viele Unterschriften braucht ein Volksbegehren auf Bundesebene, damit sich der Nationalrat damit beschäftigen muss?",["Mindestens 100.000","Mindestens 1.000","Mindestens 10.000","Mindestens 1 Million"],"1000","Beim Volksbegehren kommt die Initiative direkt vom Volk."],
+[3,"Worüber stimmten die Österreicherinnen und Österreicher 1994 bei einer Volksabstimmung ab?",["Über den Beitritt zur Europäischen Union","Über die Neutralität","Über die Einführung der Republik","Über den Staatsvertrag"],"1000","Die Mehrheit stimmte mit „Ja“, 1995 trat Österreich der EU bei."],
+[3,"Welche Grundsätze gelten in Österreich für das Wahlrecht?",["Allgemein und gleich","Unmittelbar und persönlich","Geheim und frei","Öffentlich und verpflichtend"],"1110","Sechs Grundsätze: allgemein, gleich, unmittelbar, persönlich, geheim, frei."],
+[3,"Was bedeutet der Grundsatz „gleiches Wahlrecht“?",["Jede Stimme zählt gleich viel","Alle müssen dieselbe Partei wählen","Männer und Frauen wählen getrennt","Ältere haben mehr Stimmen"],"1000","„Allgemein“ bedeutet: Alle Staatsbürger haben ab einem bestimmten Alter das Recht zu wählen."],
+[3,"Was bedeutet der Grundsatz „geheimes Wahlrecht“?",["Auf dem Stimmzettel steht kein Name: Niemand darf feststellen, wer wen gewählt hat","Der Wahltag wird geheim gehalten","Die Ergebnisse werden nicht veröffentlicht","Nur geheime Parteien dürfen antreten"],"1000","„Frei“ bedeutet: Die Stimmabgabe muss ohne Zwang erfolgen."],
+[3,"Was bedeutet der Grundsatz „persönliches Wahlrecht“?",["Jede Stimme muss persönlich abgegeben werden: Man kann keinen Stellvertreter schicken","Man darf nur Personen wählen, die man persönlich kennt","Man muss dem Wahlleiter sagen, wen man wählt","Man wählt nur für die eigene Familie"],"1000","Briefwahl ist möglich, wenn man nicht ins Wahllokal kommen kann."],
+[3,"Wie viele Abgeordnete hat der Nationalrat?",["183","36","100","9"],"1000","Der Salzburger Landtag hat 36 Abgeordnete."],
+[3,"Wie oft findet die Nationalratswahl statt?",["Spätestens fünf Jahre nach der letzten Nationalratswahl","Jedes Jahr","Alle zehn Jahre","Nur bei einer Krise"],"1000","Die Wahl entscheidet, wie viele Abgeordnete die Parteien haben."],
+[3,"Aus welchen zwei Teilen besteht das österreichische Parlament?",["Nationalrat","Bundesrat","Landtag","Gemeinderat"],"1100","Nationalrat und Bundesrat beschließen gemeinsam die Bundesgesetze."],
+[3,"Was sind Aufgaben des Nationalrates?",["Bundesgesetze beraten und beschließen","Die Bundesregierung kontrollieren","Gerichtsurteile fällen","Reisepässe ausstellen"],"1100","Bundesgesetze gelten in ganz Österreich."],
+[3,"Was ist eine Koalition?",["Der Zusammenschluss von zwei oder mehreren Parteien, die gemeinsam die Regierung bilden","Eine Partei, die allein regiert","Ein Gericht","Ein Bundesland"],"1000","Eine Koalition gibt es meist, wenn keine Partei die absolute Mehrheit hat."],
+[3,"Was ist die „Opposition“?",["Die Parteien im Parlament, die nicht an der Bundesregierung beteiligt sind","Sie kontrolliert die Bundesregierung","Die Regierungsparteien","Die Gerichte"],"1100","Regierung und Opposition gehören beide zur Demokratie."],
+[3,"Was bedeutet „absolute Mehrheit“ im Parlament?",["Mehr als die Hälfte aller Abgeordneten","Alle Abgeordneten","Ein Drittel der Abgeordneten","Die Stimmen der größten Partei"],"1000","Eine Regierung braucht die Unterstützung von mehr als der Hälfte der Abgeordneten."],
+[3,"Was beschließen die Landtage?",["Landesgesetze, die nur im jeweiligen Bundesland gelten","Bundesgesetze für ganz Österreich","Gesetze der Europäischen Union","Gerichtsurteile"],"1000","Landtage sind die Parlamente der Bundesländer."],
+[3,"Was sind Aufgaben politischer Parteien?",["Sie vertreten die Interessen der Bevölkerung oder bestimmter Gruppen","Sie wirken an der öffentlichen Meinungsbildung mit","Sie sind Teil der Regierung oder kontrollieren sie als Opposition","Sie sprechen Gerichtsurteile"],"1110","Eine Partei ist eine Vereinigung von Menschen mit ähnlichen politischen Zielen."],
+[3,"Was stimmt über das Wählen in Österreich?",["Alle Wahlberechtigten sind automatisch in einem Register erfasst","Im Wahllokal muss man sich ausweisen, zum Beispiel mit Reisepass oder Führerschein","Mit Wahlkarte oder Briefwahl kann man auch außerhalb der eigenen Gemeinde wählen","Man muss sich vor jeder Wahl selbst als Wähler registrieren"],"1110","Unabhängige Wahlbehörden überwachen den Ablauf. Briefwahl ist auch aus dem Ausland möglich."],
+[3,"Wer wird in Österreich direkt vom Volk gewählt?",["Der Bundespräsident oder die Bundespräsidentin","Der Bundeskanzler oder die Bundeskanzlerin","Die Richterinnen und Richter","Die Bundesministerinnen und Bundesminister"],"1000","Der Bundespräsident wird als Person direkt vom Volk gewählt. Die Bundesregierung wird vom Bundespräsidenten ernannt."],
+
+[4,"Was ist das Merkmal einer Republik?",["Das Staatsoberhaupt wird gewählt","Die Krone wird vererbt","Ein König regiert auf Lebenszeit","Es gibt keine Gesetze"],"1000","Die Republik ist das Gegenteil der Monarchie."],
+[4,"Wann wurde in Österreich die Republik ausgerufen?",["Am 12. November 1918","Am 26. Oktober 1955","Am 1. Jänner 1995","Am 15. Mai 1955"],"1000","Von der Provisorischen Nationalversammlung. Am Tag davor war Kaiser Karl zurückgetreten."],
+[4,"Wer ist das Staatsoberhaupt der Republik Österreich?",["Der Bundespräsident oder die Bundespräsidentin","Der Bundeskanzler oder die Bundeskanzlerin","Die Landeshauptfrau","Der Präsident des Nationalrates"],"1000","Der Bundespräsident vertritt die Republik im Inland und im Ausland."],
+[4,"Wie heißt der österreichische Bundespräsident?",["Alexander Van der Bellen","Karl Renner","Heinz Fischer","Bruno Kreisky"],"1000","Alexander Van der Bellen ist seit Jänner 2017 Bundespräsident."],
+[4,"Wie lange dauert die Amtszeit des Bundespräsidenten?",["Sechs Jahre","Vier Jahre","Fünf Jahre","Zehn Jahre"],"1000","Er wird direkt vom Volk gewählt. Landtag und Nationalrat: fünf Jahre."],
+[4,"Welche Aufgaben hat der Bundespräsident?",["Er ernennt und entlässt die Bundesregierung","Er unterschreibt Bundesgesetze","Er ist Oberbefehlshaber des Bundesheeres","Er beschließt die Gesetze"],"1110","Er schließt auch Staatsverträge ab. Gesetze beschließt das Parlament."],
+[4,"Womit wird das öffentliche Bildungssystem (Schulen) hauptsächlich finanziert?",["Mit Steuern","Mit Spenden","Mit Vereinsbeiträgen","Mit Krankenversicherungsbeiträgen"],"1000","Alle zahlen mit, damit Kinder und Jugendliche eine gute Ausbildung bekommen."],
+[4,"Wer finanziert das System der Sozialversicherung?",["Arbeitnehmerinnen und Arbeitnehmer mit ihren Beiträgen","Arbeitgeberinnen und Arbeitgeber mit ihren Beiträgen","Nur die Gemeinden","Nur Spender"],"1100","Daraus werden Pensionen und medizinische Versorgung bezahlt."],
+[4,"Was bedeutet „Solidarität“ in einer republikanischen Gesellschaft?",["Gegenseitige Verantwortung und Verpflichtung der Menschen","Jeder sorgt nur für sich selbst","Der Kaiser sorgt für alle","Nur der Staat hilft"],"1000","Deshalb nennt man die Republik Österreich auch einen „Sozialstaat“."],
+[4,"Wozu sind alle männlichen Staatsbürger Österreichs verpflichtet?",["Grundwehrdienst oder Zivildienst zu leisten","Einer Partei beizutreten","Bei der Feuerwehr zu arbeiten","Im Ausland zu studieren"],"1000","Wer aus Gewissensgründen keinen Dienst mit der Waffe leisten möchte, macht Zivildienst."],
+[4,"Welche Beispiele zeigen freiwilliges Engagement in Österreich?",["Freiwillige Feuerwehren in fast allen Gemeinden","Freiwillige Rettungsdienste","Mitarbeit in Vereinen","Das Bezahlen von Steuern"],"1110","In Wien gibt es auch eine Berufsrettung, in den anderen Bundesländern freiwillige Rettungsdienste."],
+[4,"Was garantiert die Verfassung im Zusammenhang mit Vereinen?",["Die Freiheit, einen Verein zu gründen","Die Freiheit, einem Verein anzugehören","Die Pflicht, einem Verein beizutreten","Das Verbot aller Vereine"],"1100","Vereine sind „Bausteine“ einer solidarischen Gesellschaft."],
+
+[5,"Was ist ein Bundesstaat?",["Ein Staat mit mindestens zwei Ebenen: Bund und Bundesländer","Ein Staat mit nur einer Gesetzgebung für das ganze Land","Ein Staat ohne Regierung","Ein Staat mit einem König"],"1000","Das Gegenteil ist der Zentralstaat."],
+[5,"Wie viele Bundesländer hat Österreich?",["Neun","Sieben","Zwölf","Sechzehn"],"1000","Burgenland, Kärnten, Niederösterreich, Oberösterreich, Salzburg, Steiermark, Tirol, Vorarlberg und Wien."],
+[5,"Welche sind österreichische Bundesländer?",["Vorarlberg","Kärnten","Burgenland","Bayern"],"1110","Bayern ist ein Bundesland in Deutschland."],
+[5,"Welche sind österreichische Bundesländer?",["Steiermark","Tirol","Südtirol","Unterösterreich"],"1100","Südtirol gehört zu Italien. „Unterösterreich“ gibt es nicht, es heißt Niederösterreich."],
+[5,"Was stimmt über die Gemeinden in Österreich?",["Es gibt über 2000 Gemeinden","Die Gemeinde Wien ist zugleich ein Bundesland","An der Spitze jeder Gemeinde steht ein Bürgermeister oder eine Bürgermeisterin","Gemeinden beschließen Bundesgesetze"],"1110","Im Land Salzburg gibt es 119 Gemeinden."],
+[5,"Wo ist geregelt, welche Aufgaben der Bund und welche die Bundesländer haben?",["In der österreichischen Bundesverfassung","In der Europäischen Menschenrechtskonvention","In der Charta der Vereinten Nationen","Im Staatsvertrag"],"1000","Die Bundesverfassung legt die Aufgaben von Bund und Ländern fest."],
+[5,"Wofür ist der Bund allein zuständig?",["Vertretung Österreichs gegenüber dem Ausland","Bundesfinanzen und Zollwesen","Militärische Angelegenheiten und Zivildienst","Kindergärten"],"1110","Für Kindergärten sind die Bundesländer zuständig."],
+[5,"Wofür sind die Bundesländer allein zuständig?",["Kindergärten","Jugendschutz","Naturschutz","Bundesheer"],"1110","Die Länder bestimmen auch, wo und was gebaut werden darf (Raumordnung und Baurecht)."],
+[5,"Welche sind Behörden des Bundes?",["Die Finanzämter","Die österreichischen Botschaften im Ausland","Die Bezirkshauptmannschaften","Die Gemeindeämter"],"1100","Bezirkshauptmannschaften und Magistrate gehören zur Landesverwaltung."],
+[5,"Wer steht an der Spitze der Landesregierung eines Bundeslandes?",["Der Landeshauptmann oder die Landeshauptfrau","Die Landesrätinnen und Landesräte","Der Bundespräsident","Der Bundeskanzler"],"1100","Die Landesregierung ist die oberste Behörde jedes Bundeslandes. In Wien stehen Bürgermeister und Stadträte an der Spitze."],
+[5,"Wofür sind die Gemeinden zuständig?",["Örtliche Bauangelegenheiten","Örtliche Raumplanung","Örtliche Gesundheit","Das Bundesheer"],"1110","Die Gemeinden bekommen keine direkten Anordnungen von Bund und Land, aber das Land achtet darauf, dass sie ihre Aufgaben erfüllen."],
+[5,"Welche Staaten sind ebenfalls Bundesstaaten?",["Deutschland","Schweiz","USA","Frankreich"],"1110","Weitere Beispiele aus der Lernunterlage: Brasilien, Indien, Indonesien, Russland, Belgien."],
+[5,"Welchen Vorteil hat der Bundesstaat für die Bürgerinnen und Bürger?",["Politische Entscheidungen liegen näher bei den Menschen","Es gibt mehr Wahlen, bei denen man mitbestimmen kann","Es ist leichter, sich in Gemeinde oder Bundesland politisch zu engagieren","Es gibt keine Steuern"],"1110","Die politische Macht ist auf Bund, Länder und Gemeinden verteilt."],
+[5,"Wer bestimmt über den Euro, also das Geld, das wir täglich verwenden?",["Die Europäische Zentralbank","Der Salzburger Landtag","Die Gemeinden","Der Rechnungshof"],"1000","Seit dem EU-Beitritt 1995 gibt es Bereiche, die auf europäischer Ebene entschieden werden."],
+
+[6,"Was sind die drei großen Staatsaufgaben?",["Gesetzgebung","Verwaltung","Gerichtsbarkeit","Sozialpartnerschaft"],"1110","Verwaltung und Gerichtsbarkeit nennt man zusammen auch „Vollziehung“."],
+[6,"Warum sind die Staatsaufgaben auf verschiedene Institutionen aufgeteilt?",["Damit die Macht des Staates nicht an einer Stelle konzentriert ist","Damit der Staat seine Macht nicht gegenüber der Bevölkerung missbraucht","Damit die Institutionen einander kontrollieren","Damit die Medien kontrolliert werden"],"1110","Das nennt man Gewaltenteilung."],
+[6,"Wer beschließt die Bundesgesetze?",["Der Nationalrat","Der Bundesrat","Die Gerichte","Die Bezirkshauptmannschaften"],"1100","Nationalrat und Bundesrat bilden das Parlament."],
+[6,"Aus wem besteht die Bundesregierung?",["Bundeskanzler oder Bundeskanzlerin","Vizekanzler oder Vizekanzlerin","Bundesministerinnen und Bundesminister","Landeshauptleute"],"1110","Die Bundesregierung ist für die obersten Verwaltungsaufgaben zuständig."],
+[6,"Was ist die Aufgabe der Verwaltung?",["Die Durchführung der Gesetze","Das Beschließen der Gesetze","Das Fällen von Gerichtsurteilen","Das Wählen des Bundespräsidenten"],"1000","Zur Verwaltung gehört auch der Betrieb von öffentlichen Schulen, Krankenhäusern und Pflegeheimen."],
+[6,"Welche sind Verwaltungsbehörden?",["Bezirkshauptmannschaften","Finanzämter","Magistrate","Der Nationalrat"],"1110","Auch die Polizei ist Teil der Verwaltung."],
+[6,"Was sind typische Aufgaben von Verwaltungsbehörden?",["Einen Reisepass ausstellen","Eine Gewerbeberechtigung erteilen","Einen Strafzettel ausstellen","Ein Bundesgesetz beschließen"],"1110","Gesetze beschließt das Parlament."],
+[6,"Was ist die Aufgabe der Gerichtsbarkeit?",["Gesetze durch unabhängige Richterinnen und Richter zu vollziehen","Gesetze zu beschließen","Die Regierung zu ernennen","Steuern einzuheben"],"1000","Unabhängig heißt: Niemand darf Richtern eine Anweisung geben."],
+[6,"Was macht die Volksanwaltschaft?",["Sie kümmert sich um Beschwerden von Menschen, die sich von der Verwaltung schlecht behandelt fühlen","Sie fördert und schützt die Menschenrechte","Sie unterstützt das Parlament bei der Kontrolle der Verwaltung","Sie beschließt Gesetze"],"1110","Sie kontrolliert auch Einrichtungen wie Gefängnisse, Polizeidienststellen oder Pflegeheime."],
+[6,"Was prüft der Rechnungshof?",["Ob öffentliche Gelder sparsam und zweckmäßig verwendet werden","Ob Gesetze zur Verfassung passen","Ob Wahlen geheim sind","Ob Richter unabhängig sind"],"1000","Geprüft werden zum Beispiel Bund, Länder, gewisse Gemeinden und Kammern."],
+[6,"Welche sind wichtige Kontrollinstitutionen in Österreich?",["Die Volksanwaltschaft","Der Rechnungshof","Die Sozialpartnerschaft","Das Arbeitsmarktservice (AMS)"],"1100","Dazu kommen als Kontrollorgane der Gerichtsbarkeit der Verfassungsgerichtshof und der Verwaltungsgerichtshof."],
+[6,"Was ist eine „Rechtsmittelbelehrung“?",["Sie steht meist am Ende einer Entscheidung, zum Beispiel eines Bescheides","Sie informiert, was man gegen die Entscheidung tun kann und wie lange man Zeit hat","Sie ist ein Strafzettel","Sie ist ein Wahlprogramm"],"1100","Sie nennt auch das Gericht oder die Behörde, die darüber entscheidet."],
+[6,"Was kann man tun, wenn man meint, dass eine Verwaltungsbehörde falsch entschieden hat?",["Ein Rechtsmittel gegen die Entscheidung einlegen","Die Entscheidung von einer höheren Stelle überprüfen lassen","Nichts, Entscheidungen sind immer endgültig","Die Entscheidung selbst ändern"],"1100","Das ist Rechtsschutz für die Bürgerinnen und Bürger."],
+[6,"Welche Rolle haben die Medien?",["Sie berichten über Politik, Wirtschaft und Gesellschaft","Sie können auf Missstände und Fehler hinweisen","Sie beschließen Gesetze","Sie ernennen die Regierung"],"1100","Medien sind wichtig für die Kontrolle in einer Demokratie."],
+[6,"Welche gehören zu den nichtstaatlichen Organisationen (NGOs)?",["Österreichisches Rotes Kreuz","Caritas","Amnesty International","Wirtschaftskammer Österreich"],"1110","Wirtschaftskammer und Arbeiterkammer sind gesetzliche Interessenvertretungen, keine NGOs."],
+[6,"Welche gehören zu den nichtstaatlichen Organisationen (NGOs)?",["Diakonie","World Wide Fund for Nature (WWF)","Bundesarbeitskammer","Finanzamt"],"1100","NGO bedeutet „Non-Governmental Organization“ = nichtstaatliche Organisation."],
+[6,"Was können wir alle als Einzelne tun?",["Uns aktiv in die Gesellschaft einbringen","Auf Missstände aufmerksam machen","Die Polizei verständigen, wenn andere in Gefahr sind","Wegschauen, wenn andere in Gefahr sind"],"1110","Oft genügt es schon, nicht wegzuschauen."],
+
+[7,"Seit wann ist Österreich Mitglied der Europäischen Union?",["Seit 1995","Seit 1955","Seit 2002","Seit 1918"],"1000","Seither werden viele Entscheidungen und Gesetze von der EU mitbestimmt."],
+[7,"Welche sind Institutionen der Europäischen Union?",["Europäische Kommission","Europäisches Parlament","Europäischer Rat","Verfassungsgerichtshof"],"1110","Dazu kommt der Rat der EU. Der Verfassungsgerichtshof ist ein österreichisches Gericht."],
+[7,"Welche sind weitere Institutionen der Europäischen Union?",["Rat der EU","Gerichtshof der Europäischen Union","Europäische Zentralbank","Oberster Gerichtshof"],"1110","Der Oberste Gerichtshof ist ein österreichisches Gericht."],
+[7,"Was stimmt über die Europäische Kommission?",["Sie ist die Verwaltung der EU und wird auch „Regierung der EU“ genannt","Aus jedem Mitgliedsland kommt eine Kommissarin oder ein Kommissar","Sie überwacht die Einhaltung des EU-Rechts","Die Kommissare vertreten nur ihr eigenes Herkunftsland"],"1110","Die Kommissare sind den gemeinsamen Interessen der EU verpflichtet. Die Kommission kann EU-Staaten verklagen."],
+[7,"Wer wählt die Präsidentin oder den Präsidenten der Europäischen Kommission?",["Das Europäische Parlament","Der österreichische Nationalrat","Die Vereinten Nationen","Die Europäische Zentralbank"],"1000","Das Europäische Parlament wird direkt von den EU-Bürgern gewählt."],
+[7,"Was stimmt über den Europäischen Rat?",["Er legt die allgemeinen politischen Ziele der EU fest","Er besteht aus den Staats- und Regierungschefs der EU-Staaten","Für Österreich nimmt der Bundeskanzler oder die Bundeskanzlerin teil","Er wird direkt vom Volk gewählt"],"1110","Direkt gewählt wird das Europäische Parlament."],
+[7,"Was stimmt über den Rat der EU?",["Er entscheidet gemeinsam mit dem Europäischen Parlament über europäische Gesetze","Er besteht aus den jeweiligen Fachministerinnen und Fachministern der EU-Staaten","Er ist ein Gericht","Er bestimmt die österreichischen Landesgesetze"],"1100","Beispiel: Bei sozialen Themen trifft sich der Rat der Sozialminister."],
+[7,"Was stimmt über das Europäische Parlament?",["Es wird direkt von den EU-Bürgerinnen und EU-Bürgern gewählt","Es entscheidet gemeinsam mit dem Rat der EU über europäische Gesetze","Es wird von den Regierungen ernannt","Es ist ein Gericht"],"1100","Deshalb ist es wichtig, bei Europa-Wahlen wählen zu gehen."],
+[7,"Was macht der Gerichtshof der Europäischen Union?",["Er sorgt dafür, dass das EU-Recht in allen EU-Staaten angewendet wird","Er entscheidet, ob ein Land gegen EU-Recht verstößt","Er wählt den Bundespräsidenten","Er beschließt österreichische Gesetze"],"1100","Aus jedem EU-Staat kommt eine Richterin oder ein Richter."],
+[7,"Wer gestaltet die Währungs- und Geldpolitik der EU?",["Die Europäische Zentralbank","Die Eurogruppe","Der Verwaltungsgerichtshof","Die Volksanwaltschaft"],"1100","Die Europäische Zentralbank bestimmt über den Euro."],
+[7,"Was ist die offizielle Währung der Mehrheit der EU-Mitgliedstaaten?",["Euro","Schweizer Franken","Britisches Pfund","Dollar"],"1000","In Österreich bezahlen wir seit 2002 mit dem Euro."],
+[7,"Welche Rechte haben österreichische Staatsbürgerinnen und Staatsbürger als Bürger der Europäischen Union?",["Sich in den EU-Staaten frei zu bewegen und aufzuhalten","In allen EU-Ländern einen Wohnsitz zu nehmen und einen Beruf auszuüben","Das Europäische Parlament zu wählen","Kostenlos alle Verkehrsmittel in der EU zu benutzen"],"1110","Das nennt man Unionsbürgerschaft. Deshalb steht auf dem Reisepass „Europäische Union“."],
+[7,"Welche gehören zu den vier Grundfreiheiten des europäischen Binnenmarktes?",["Freier Personenverkehr","Freier Warenverkehr","Freier Dienstleistungsverkehr","Freie Wahl der Steuerhöhe"],"1110","Die vierte Grundfreiheit ist der freie Kapital- und Zahlungsverkehr."],
+[7,"Was bedeutet der „freie Warenverkehr“ in der EU?",["Zölle und andere Handelshemmnisse innerhalb der EU sind grundsätzlich verboten","Alle Waren sind gratis","Waren dürfen nicht über Grenzen gebracht werden","Nur Österreich darf Waren verkaufen"],"1000","Freier Personenverkehr heißt: EU-Bürger können grundsätzlich in der ganzen EU arbeiten und sich niederlassen."],
+[7,"Was steht vorne auf jedem österreichischen Reisepass?",["„Europäische Union“","„Vereinte Nationen“","„Land Salzburg“","„Schengen“"],"1000","Jede Staatsbürgerin und jeder Staatsbürger ist zugleich Bürger der EU."]
+]);
+add("s",[
+[1,"Welches Volk regierte das Land Salzburg vor rund 2.000 Jahren fast 500 Jahre lang?",["Die Römer","Die Kelten","Die Bajuwaren","Die Slawen"],"1000","Die Römer eroberten den Alpenraum. Zentrum war die Stadt Juvavum im Bereich der heutigen Salzburger Altstadt. Die Kelten lebten schon vorher hier."],
+[2,"Welche christlichen Heiligen waren im 7. und 8. Jahrhundert wichtig für die Verbreitung des Christentums in Stadt und Land Salzburg?",["Der Heilige Rupert","Der Heilige Virgil","Der Heilige Florian","Der Heilige Leopold"],"1100","Rupert gründete Ende des 7. Jahrhunderts das Kloster St. Peter. Bischof Virgil ließ den ersten Dom bauen (774 fertig)."],
+[3,"Salzburg war bis zum Beginn des 19. Jahrhunderts ein eigenständiges geistliches Fürstentum. Wer regierte das Land in dieser Zeit?",["Ein Erzbischof","Ein Kaiser aus dem Haus Habsburg","Der Herzog von Bayern","Ein gewählter Landeshauptmann"],"1000","Der Erzbischof war bis 1803 zugleich religiöses Oberhaupt und weltlicher Herrscher."],
+[4,"Welche berühmten Komponisten standen im 18. Jahrhundert im Dienst des Salzburger Erzbischofs?",["Wolfgang Amadeus Mozart","Johann Michael Haydn","Franz Schubert","Johann Strauss"],"1100","Mozart wurde 1756 in Salzburg geboren. Michael Haydn wirkte von 1763 bis 1806 in Salzburg."],
+[5,"Wann wurde Salzburg endgültig ein Teil von Österreich?",["1816","1803","1850","1918"],"1000","1803 endete das geistliche Fürstentum, 1816 kam Salzburg endgültig zu Österreich, 1850 wurde es wieder ein eigenständiges Land."],
+[6,"Wann fanden in Salzburg die ersten allgemeinen, demokratischen Landtagswahlen statt, bei denen auch Frauen wählen durften?",["Im April 1919","Im Jahr 1861","Im Jahr 1907","Im Jahr 1945"],"1000","1861 gab es schon einen Landtag, er wurde aber noch nicht demokratisch gewählt."],
+[7,"Welche drei Bauwerke aus der Zwischenkriegszeit (1918–1939) zählen bis heute zu den „Highlights“ des Salzburger Fremdenverkehrs?",["Das Festspielhaus","Die Gaisbergstraße","Die Großglockner Hochalpenstraße","Die Festung Hohensalzburg"],"1110","Festspielhaus 1925–1927, Gaisbergstraße 1929, Großglockner Hochalpenstraße 1935. Die Festung stammt aus dem Mittelalter."],
+[8,"In der NS-Zeit (1938–1945) wurde an großen Speicherkraftwerken gebaut, auch mit Zwangsarbeitern. Welche Kraftwerke wurden erst nach Kriegsende fertiggestellt?",["Die Tauernkraftwerke Kaprun","Die Kraftwerksgruppe Stubachtal (Uttendorf)","Das Donaukraftwerk Freudenau (Wien)","Das Kraftwerk Zwentendorf (Niederösterreich)"],"1100","Kaprun wurde im September 1955 endgültig fertig und galt als Symbol für den Wiederaufbau."],
+[9,"Wie heißt die derzeitige Landeshauptfrau von Salzburg?",["Karoline Edtstadler","Gabi Burgstaller","Marlene Svazek","Wilfried Haslauer"],"1000","Mag. Karoline Edtstadler ist seit 2. Juli 2025 Landeshauptfrau. Wilfried Haslauer war ihr Vorgänger."],
+[10,"Wie heißt das Landesparlament von Salzburg und wie viele Abgeordnete hat es?",["Salzburger Landtag mit 36 Abgeordneten","Salzburger Landtag mit 183 Abgeordneten","Salzburger Gemeinderat mit 40 Abgeordneten","Salzburger Bundesrat mit 9 Abgeordneten"],"1000","183 Abgeordnete hat der Nationalrat in Wien."],
+[11,"In welchen Abständen finden in Salzburg Landtagswahlen statt?",["Alle fünf Jahre","Alle vier Jahre","Alle sechs Jahre","Jedes Jahr"],"1000","Die letzte Landtagswahl war am 23. April 2023."],
+[12,"Welche dieser Parteien sind derzeit im Salzburger Landtag vertreten?",["ÖVP","KPÖ","Grüne","NEOS"],"1110","Im Landtag: ÖVP (12 Mandate), FPÖ (10), SPÖ (7), KPÖ (4), Grüne (3). Die NEOS sind nicht vertreten."],
+[12,"Welche dieser Parteien sind derzeit im Salzburger Landtag vertreten?",["FPÖ","SPÖ","NEOS","Team Stronach"],"1100","Fünf Parteien: ÖVP, FPÖ, SPÖ, KPÖ und Grüne."],
+[13,"Welche Voraussetzungen muss man erfüllen, um in Salzburg bei Landtagswahlen wählen zu dürfen?",["Österreichische Staatsbürgerschaft","Hauptwohnsitz im Land Salzburg","Das 16. Lebensjahr vollendet","Es genügt die Staatsbürgerschaft eines anderen EU-Landes"],"1110","EU-Bürger dürfen bei Gemeindewahlen wählen, aber nicht bei Landtagswahlen."],
+[14,"Aus wie vielen Mitgliedern besteht derzeit die Salzburger Landesregierung?",["Sieben","Fünf","Neun","36"],"1000","Die Landeshauptfrau hat den Vorsitz. 36 ist die Zahl der Abgeordneten im Landtag."],
+[15,"Wie sieht das Wappen des Landes Salzburg aus?",["Links ein schwarzer Löwe auf goldenem Grund, rechts Rot-Weiß-Rot, darüber ein Fürstenhut","Links drei schwarze Löwen auf goldenem Grund, rechts Rot-Weiß-Rot","Ein roter Adler auf weißem Grund","Ein weißes Kreuz auf rotem Grund"],"1000","Merke: EIN Löwe und oben der Fürstenhut. Drei Löwen hat Kärnten, der rote Adler gehört zu Tirol, das weiße Kreuz zu Wien. Schau dir das Wappen in der Lernunterlage auf Seite 15 an, in der Prüfung werden wahrscheinlich Bilder gezeigt."],
+[16,"In welchem „Gau“ befindet sich die Bezirkshauptmannschaft Tamsweg?",["Im Lungau","Im Pinzgau","Im Pongau","Im Tennengau"],"1000","Tamsweg = Lungau, Zell am See = Pinzgau, St. Johann = Pongau, Hallein = Tennengau, Seekirchen = Flachgau."],
+[17,"Das Land Salzburg gliedert sich in 119 Gemeinden. Wer steht an der Spitze jeder Gemeinde?",["Ein Bürgermeister oder eine Bürgermeisterin","Ein Bezirkshauptmann","Die Landeshauptfrau","Ein Landesrat"],"1000","Der Bürgermeister wird alle fünf Jahre gewählt."],
+[18,"Wie viele Einwohner hat das Bundesland Salzburg ungefähr?",["Knapp 570.000","Etwa 160.000","Etwa 250.000","Etwa 1,5 Millionen"],"1000","Rund 160.000 Menschen leben in der Stadt Salzburg."],
+[19,"Wie groß ist die Fläche des Bundeslandes Salzburg ungefähr?",["Etwas mehr als 7.000 km²","Etwa 2.500 km²","Etwa 12.000 km²","Etwa 19.000 km²"],"1000","Salzburg zählt zu den kleineren Bundesländern."],
+[20,"Welche sind die beiden wichtigsten Flüsse im Bundesland Salzburg?",["Salzach","Saalach","Inn","Donau"],"1100","Beide fließen nördlich der Stadt Salzburg am „Saalachspitz“ zusammen."],
+[21,"Der Chiemseehof ist das Zentrum der Salzburger Landespolitik. Was stimmt?",["Der Salzburger Landtag tritt dort zusammen","Die Landeshauptfrau hat dort ihren Amtssitz","Der Bürgermeister der Stadt Salzburg hat dort seinen Amtssitz","Der Nationalrat tagt dort"],"1100","Der Magistrat der Stadt Salzburg hat seinen Sitz am Mirabellplatz."],
+[22,"Welches ist der größte Sakralbau (das größte Gotteshaus) im Land Salzburg? Er wurde im Zweiten Weltkrieg schwer beschädigt und 1959 neu eingeweiht.",["Der Salzburger Dom","Die Franziskanerkirche","Die Kollegienkirche","Die Stiftskirche St. Peter"],"1000","Bomben beschädigten 1944/45 die Kuppel des Doms."],
+[23,"Welche Sehenswürdigkeiten befinden sich in der Salzburger Altstadt, die seit 1997 zum UNESCO-Weltkulturerbe gehört?",["Der Salzburger Dom","Die Festung Hohensalzburg","Das Glockenspiel","Die Festung Hohenwerfen"],"1110","Die Festung Hohenwerfen steht in Werfen im Pongau."],
+[24,"Welche sind die größten Burgen, die die Salzburger Erzbischöfe zum Schutz des Landes errichten ließen?",["Festung Hohensalzburg","Festung Hohenwerfen","Festung Kufstein","Burg Kreuzenstein"],"1100","Beide werden jedes Jahr von tausenden Gästen besucht."],
+[25,"Mit welchen Ländern hat das Land Salzburg eine gemeinsame Staatsgrenze?",["Deutschland (Bayern)","Italien (Südtirol)","Schweiz","Slowenien"],"1100","Salzburg grenzt an zwei Staaten: Deutschland und Italien."],
+[26,"An welche dieser österreichischen Bundesländer grenzt das Land Salzburg?",["Oberösterreich","Tirol","Vorarlberg","Niederösterreich"],"1100","Salzburg grenzt an Oberösterreich, Steiermark, Kärnten und Tirol."],
+[26,"An welche dieser österreichischen Bundesländer grenzt das Land Salzburg?",["Steiermark","Kärnten","Burgenland","Wien"],"1100","Salzburg grenzt an Oberösterreich, Steiermark, Kärnten und Tirol."],
+[27,"Die kürzeste Straßenverbindung von der Stadt Salzburg in den Bezirk Zell am See (Pinzgau) führt über deutsches Staatsgebiet. Wie nennt man sie?",["Kleines Deutsches Eck","Großes Deutsches Eck","Tauernautobahn","Großglockner Hochalpenstraße"],"1000","Das „Große Deutsche Eck“ ist die Autobahnverbindung von Salzburg nach Tirol über Rosenheim."],
+[28,"Wie heißen die zwei größten Städte des Landes Salzburg?",["Salzburg","Hallein","Zell am See","St. Johann im Pongau"],"1100","Salzburg hat ca. 160.000, Hallein ca. 21.000 Einwohner. Beide liegen an der Salzach."],
+[29,"Wie heißt die lokale Bahnlinie, die von der Stadt Salzburg ausgeht und den nördlichen Teil des Bezirks Salzburg-Umgebung erschließt?",["Salzburger Lokalbahn","Tauernbahn","Pinzgauer Lokalbahn","Murtalbahn"],"1000","Sie ist für Pendler aus den nördlichen Umlandgemeinden sehr wichtig."],
+[30,"Welche Autobahnen verlaufen durch das Bundesland Salzburg?",["Westautobahn (A 1)","Tauernautobahn (A 10)","Südautobahn (A 2)","Inntalautobahn (A 12)"],"1100","A 1 = wichtigste West-Ost-Verbindung, A 10 = wichtigste Nord-Süd-Verbindung."],
+[31,"Welche beiden Bundesländer verbindet die 1935 eröffnete Großglockner Hochalpenstraße?",["Salzburg","Kärnten","Tirol","Steiermark"],"1100","Höchster Punkt ist das „Hochtor“ auf 2.504 m."],
+[32,"Wie wird der Salzburger Flughafen offiziell bezeichnet?",["Salzburg Airport W. A. Mozart","Salzburg Airport Herbert von Karajan","Flughafen Salzburg-Hallein","Salzburg Airport Hl. Rupert"],"1000","Er ist einer der wichtigsten Bundesländerflughäfen Österreichs."],
+[33,"Wo wurde in Salzburg seit rund 3.000 Jahren (mit Unterbrechungen) bis 1989 Salz abgebaut?",["Am Dürrnberg bei Hallein","Am Gaisberg","Am Mönchsberg","In Tamsweg"],"1000","Der Salzhandel machte schon die Kelten reich. Funde zeigt das Keltenmuseum Hallein."],
+[34,"Welche Bundesländer haben Anteil am Nationalpark Hohe Tauern, dem größten Nationalpark Österreichs (seit 1971)?",["Salzburg","Kärnten","Tirol","Steiermark"],"1110","Der Nationalpark liegt im Herzen der österreichischen Alpen."],
+[35,"Welche Krankenhäuser in der Stadt Salzburg sind Universitätsklinikum der Paracelsus Medizinischen Privatuniversität?",["Das Landeskrankenhaus Salzburg (St. Johanns-Spital)","Die Christian-Doppler-Klinik","Das AKH Wien","Die Landesklinik Tamsweg"],"1100","Das Landeskrankenhaus liegt im Stadtteil Mülln, die Christian-Doppler-Klinik im Stadtteil Liefering."],
+[36,"Was wurde am 1. Jänner 1997 in die UNESCO-Liste des Weltkulturerbes aufgenommen?",["Die Altstadt von Salzburg","Der Nationalpark Hohe Tauern","Die Großglockner Hochalpenstraße","Die Festung Hohenwerfen"],"1000","Die prächtigen Bauten der Erzbischöfe prägen die Altstadt bis heute."],
+[37,"Welche weltweit berühmte kulturelle Großveranstaltung findet seit 1920 im Sommer in Salzburg statt?",["Die Salzburger Festspiele","Der Rupertikirtag","Die Mozartwoche","Die Bregenzer Festspiele"],"1000","Die Festspiele fanden 1920 zum ersten Mal statt."],
+[38,"Wo wird bei den Salzburger Festspielen seit 1920 bei Schönwetter der „Jedermann“ aufgeführt?",["Auf dem Domplatz","Auf dem Residenzplatz","Auf dem Mirabellplatz","Auf dem Kapitelplatz"],"1000","Der „Jedermann“ stammt von Hugo von Hofmannsthal."],
+[39,"Wer prägte die Salzburger Festspiele in der zweiten Hälfte des 20. Jahrhunderts bis zu seinem Tod 1989 entscheidend?",["Herbert von Karajan","Hugo von Hofmannsthal","Max Reinhardt","Michael Haydn"],"1000","Herbert von Karajan war Dirigent."],
+[40,"Wie heißt das neue Bühnenhaus, das zum Mozartjahr 2006 durch den Umbau eines Teils des Festspielhauses entstand?",["Haus für Mozart","Großes Festspielhaus","Felsenreitschule","Mozarteum"],"1000","Das Große Festspielhaus wurde schon 1960 eröffnet."],
+[41,"Wohin wendet man sich, wenn man die e-card verloren hat?",["An den jeweiligen Krankenversicherungsträger","An die Bezirkshauptmannschaft","An die Polizei","An das AMS"],"1000","Der Krankenversicherungsträger stellt die e-card aus. Es gibt sie seit 2005."],
+[42,"Auf der Rückseite der e-card ist die Europäische Krankenversicherungskarte (EKVK). In welchen Staaten ist sie gültig?",["In den Staaten der Europäischen Union","In der Schweiz und in Liechtenstein","In Norwegen","In allen Staaten der Welt"],"1110","Dort braucht man keinen Urlaubskrankenschein mehr."],
+[43,"Das Salzburg Museum zeigt seine Sammlungen seit 2006/07 in einem Palast am Residenzplatz. Wie heißt dieser Palast?",["Neue Residenz","Alte Residenz","Schloss Mirabell","Chiemseehof"],"1000","In der Neuen Residenz befindet sich auch das Glockenspiel."],
+[44,"Wo befindet sich der 1986 fertiggestellte Neubau der Naturwissenschaftlichen Fakultät der Universität Salzburg?",["In Freisaal (Stadt Salzburg)","In Mülln","In Liefering","In Hallein"],"1000","Die Universität Salzburg wurde 1962 wiedererrichtet."],
+[45,"Wer veranstaltet in Salzburg seit vielen Jahren während der Festspielzeit ein internationales Avantgarde-Festival?",["Die „Szene Salzburg“","Das Salzburg Museum","Die Universität Salzburg","Das Keltenmuseum Hallein"],"1000","Die Szene Salzburg steht für moderne Gegenwartskultur."],
+[46,"Von wem stammt das Weihnachtslied „Stille Nacht, Heilige Nacht“, das 1818 in Oberndorf zum ersten Mal aufgeführt wurde?",["Josef Mohr (Text)","Franz Xaver Gruber (Melodie)","Wolfgang Amadeus Mozart","Michael Haydn"],"1100","Erstaufführung in der St. Nikolaus-Pfarrkirche in Oberndorf bei Salzburg."],
+[47,"Wo können österreichische Staatsbürgerinnen und Staatsbürger einen neuen Reisepass beantragen?",["Bei jeder Passbehörde","Nur beim Innenministerium in Wien","Beim Finanzamt","Beim AMS"],"1000","Für EU-Staaten genügt ein Personalausweis, für die meisten anderen Staaten braucht man einen Reisepass."],
+[48,"An welche Einrichtung kann man sich bei Arbeitslosigkeit oder bei einem Jobwechsel wenden?",["An das AMS (Arbeitsmarktservice)","An das SIR","An das Finanzamt","An das Salzburg Museum"],"1000","Das AMS hat Geschäftsstellen in Bischofshofen, Hallein, Salzburg, Tamsweg und Zell am See."],
+[49,"Welche Rufnummer wählt man, um im Notfall die Rettung zu erreichen?",["144","133","122","140"],"1000","144 = Rettung. 133 ist die Polizei, 122 die Feuerwehr, 140 die Bergrettung. Auch der Euro-Notruf 112 funktioniert rund um die Uhr."],
+[50,"Welche Sportart hat eine besonders große Werbewirksamkeit für den Wintertourismus in Salzburg?",["Schifahren","Eislaufen","Rodeln","Eishockey"],"1000","Heute kommen die meisten Urlauber in den Wintermonaten."],
+[51,"Welche Institution ist in Salzburg die erste Anlaufstelle für Fragen zu Wohnen und Wohnbauförderung?",["Das SIR (Salzburger Institut für Raumordnung und Wohnen)","Das AMS","Die Arbeiterkammer","Das Landesarchiv"],"1000","Das SIR bietet seit Juni 1993 im Auftrag des Landes Wohnberatung an (Schillerstraße 25)."],
+[52,"Wie heißt die freiwillige Interessenvertretung der Arbeitnehmerinnen und Arbeitnehmer in Österreich?",["Österreichischer Gewerkschaftsbund (ÖGB)","Wirtschaftskammer","Arbeitsmarktservice (AMS)","Landwirtschaftskammer"],"1000","Jede Österreicherin und jeder Österreicher hat das Recht, Mitglied einer Gewerkschaft zu werden. Die Arbeiterkammer ist dagegen eine gesetzliche Interessenvertretung."],
+
+[0,"Wer ist der Landespatron von Salzburg?",["Der Heilige Rupert","Der Heilige Virgil","Der Heilige Florian","Der Heilige Leopold"],"1000","Nach ihm sind der Rupertikirtag und der Landesfeiertag benannt."],
+[0,"Wann ist der Salzburger Landesfeiertag?",["Am 24. September","Am 26. Oktober","Am 1. Mai","Am 15. November"],"1000","Der 26. Oktober ist der österreichische Nationalfeiertag."],
+[0,"Wie hieß die römische Stadt im Bereich der heutigen Salzburger Altstadt?",["Juvavum","Vindobona","Lentia","Carnuntum"],"1000","Vindobona = Wien, Lentia = Linz."],
+[0,"Was gründete der Heilige Rupert am Fuß des Mönchsbergs?",["Das Kloster St. Peter","Die Festung Hohensalzburg","Die Universität","Das Festspielhaus"],"1000","Das Kloster St. Peter besteht bis heute."],
+[0,"In welchem Jahr wurde Wolfgang Amadeus Mozart in Salzburg geboren?",["1756","1656","1791","1816"],"1000","Mozart starb 1791 in Wien."],
+[0,"Welcher ist der höchste Berg des Bundeslandes Salzburg?",["Großvenediger (3.674 m)","Gaisberg","Untersberg","Mönchsberg"],"1000","Der größte Teil des Landes ist Hochgebirge."],
+[0,"Wie ist das Land Salzburg politisch gegliedert?",["In fünf politische Bezirke („Gaue“) und die Stadt Salzburg","In 119 Gemeinden","In neun Bundesländer","In 36 Bezirke"],"1100","Flachgau, Tennengau, Pongau, Pinzgau, Lungau und die Stadt Salzburg."],
+[0,"Wie wird der Bezirk Salzburg-Umgebung auch genannt?",["Flachgau","Tennengau","Pongau","Lungau"],"1000","Er liegt als einziger Bezirk zum Großteil im Flachland."],
+[0,"Wo befinden sich diese Bezirkshauptmannschaften? Was stimmt?",["Zell am See liegt im Pinzgau","St. Johann liegt im Pongau","Hallein liegt im Tennengau","Seekirchen liegt im Lungau"],"1110","Seekirchen liegt im Flachgau (Bezirk Salzburg-Umgebung)."],
+[0,"Welche Farben hat das Bundesland Salzburg?",["Rot-Weiß","Blau-Weiß","Grün-Weiß","Schwarz-Gold"],"1000","Das Landessiegel zeigt das Wappen mit der Umschrift „Land Salzburg“."],
+[0,"Welche Partei hat derzeit die meisten Mandate im Salzburger Landtag?",["ÖVP (12 Mandate)","FPÖ (10 Mandate)","SPÖ (7 Mandate)","KPÖ (4 Mandate)"],"1000","Die Grünen haben 3 Mandate. Zusammen sind das 36."],
+[0,"Wer darf bei Gemeindevertretungs- und Bürgermeisterwahlen in Salzburg wählen (ab 16 Jahren, mit Hauptwohnsitz in der Gemeinde)?",["Österreichische Staatsbürgerinnen und Staatsbürger","Staatsbürger anderer EU-Mitgliedsstaaten","Alle Touristen","Nur Personen über 30"],"1100","Bei Landtagswahlen dürfen nur österreichische Staatsbürger wählen."],
+[0,"Womit wurden die Salzburger Festspiele 1920 eröffnet?",["Mit dem „Jedermann“ von Hugo von Hofmannsthal","Mit einem Konzert von Herbert von Karajan","Mit „Stille Nacht“","Mit einer Oper im Haus für Mozart"],"1000","Der „Jedermann“ ist das Spiel vom Leben und Sterben des reichen Mannes."],
+[0,"Zu welcher Besatzungszone gehörte das Bundesland Salzburg von 1945 bis 1955?",["Zur Zone der USA","Zur Zone der Sowjetunion","Zur Zone Frankreichs","Zur Zone Großbritanniens"],"1000","Die Stadt Salzburg wurde am 4. Mai 1945 kampflos von US-Truppen besetzt."],
+[0,"Was stimmt über den Euro-Notruf 112?",["Er ist gebührenfrei","Er funktioniert in jedem Mobilfunk-Netz","Er funktioniert auch ohne SIM-Karte","Er gilt nur in Österreich"],"1110","112 gilt europaweit und funktioniert auch bei eingeschalteter Tastensperre."],
+[0,"Was ist heute der wichtigste Wirtschaftszweig im Land Salzburg?",["Der Dienstleistungssektor, vor allem der Tourismus","Der Bergbau","Die Schifffahrt","Der Weinbau"],"1000","Salzburg hat mehr als 25 Millionen Gästenächtigungen im Jahr."],
+[0,"Welche Universitäten gibt es laut Lernunterlage in Salzburg?",["Die Universität Salzburg (1962 wiedererrichtet)","Die Paracelsus Medizinische Privatuniversität (seit 2003)","Die Universität Klagenfurt","Die Universität Innsbruck"],"1100","Die Naturwissenschaftliche Fakultät steht in Freisaal."]
+]);
+
+
+/* ---------- storage ---------- */
+const KEY="stb-salzburg-v1";
+const S={p:{},days:{},exams:[],date:"2026-11-20",big:false,u:0,rst:0};
+try{const raw=localStorage.getItem(KEY);if(raw){const o=JSON.parse(raw);if(o&&typeof o==="object")Object.assign(S,o)}}catch(e){}
+function saveLocal(){try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}}
+function save(){saveLocal();queuePush()}
+
+/* ---------- account backup (db capability): the signed-in viewer's own private document ---------- */
+let cloudRef=null,cloudState="check",cloudKind="claude",pushing=false,dirty=false,pushTimer=null,pushFails=0,initTries=0;
+const FATAL=["invalid_argument","revoked","not_granted","capability_disabled","capability_removed","transform_error","quota_exceeded"];
+function saveNote(){
+  if(cloudKind==="gh"){
+    if(cloudState==="ok")return `<span class="state g">Online gesichert.</span> Der Fortschritt bleibt erhalten, auch mit einem anderen Handy oder Browser.`;
+    if(cloudState==="check"||cloudState==="ready")return `Online-Sicherung wird geprüft …`;
+    return `<span class="state b">Online-Sicherung gerade nicht möglich.</span> Der Fortschritt ist vorerst nur auf diesem Gerät gespeichert und wird beim nächsten Öffnen mit Internet nachgetragen.`;
+  }
+  if(cloudState==="ok")return `<span class="state g">Im Claude-Konto gesichert.</span> Der Fortschritt bleibt erhalten, auch auf einem anderen Gerät mit demselben Konto.`;
+  if(cloudState==="ready")return `Claude-Konto erkannt. Die Sicherung im Konto startet mit der nächsten Antwort.`;
+  if(cloudState==="check")return `Speicherung wird geprüft …`;
+  return `<span class="state b">Nur auf diesem Gerät gespeichert.</span> Immer in diesem Browser üben und die Browserdaten nicht löschen.`;
+}
+function setCloud(st){cloudState=st;const el=document.getElementById("savenote");if(el)el.innerHTML=saveNote()}
+function snapshotState(){return JSON.parse(JSON.stringify({p:S.p,days:S.days,exams:S.exams,date:S.date||"",big:!!S.big,u:S.u||0,rst:S.rst||0}))}
+function mergeRemote(r){
+  let newer=false;const lr=S.rst||0,rr=+r.rst||0;
+  if(rr>lr){S.p={};S.days={};S.exams=[];S.rst=rr}
+  if(lr>rr)newer=true;
+  else{
+    const rp=r.p&&typeof r.p==="object"?r.p:{};
+    for(const k in rp){if(!/^[gds]\d+$/.test(k))continue;const a=S.p[k],b=rp[k];if(b&&typeof b==="object"&&(!a||(+b.t||0)>(a.t||0)))S.p[k]={s:b.s|0,n:b.n|0,t:+b.t||0}}
+    for(const k in S.p){const b=rp[k];if(!b||(S.p[k].t||0)>(+b.t||0))newer=true}
+    const rd=r.days&&typeof r.days==="object"?r.days:{};
+    for(const k in rd)if(/^\d{4}-\d{2}-\d{2}$/.test(k)&&(rd[k]|0)>(S.days[k]||0))S.days[k]=rd[k]|0;
+    for(const k in S.days)if((S.days[k]||0)>(rd[k]|0))newer=true;
+    const re=Array.isArray(r.exams)?r.exams.filter(x=>x&&typeof x==="object"):[];
+    const seen=new Set(S.exams.map(x=>x.t)),rseen=new Set(re.map(x=>x.t));
+    if(S.exams.some(x=>!rseen.has(x.t)))newer=true;
+    re.forEach(x=>{if(!seen.has(x.t))S.exams.push({t:+x.t||0,g:+x.g||0,d:+x.d||0,s:+x.s||0,pass:!!x.pass})});
+    S.exams.sort((a,b)=>a.t-b.t);S.exams=S.exams.slice(-10);
+  }
+  if((+r.u||0)>(S.u||0)){if(typeof r.date==="string")S.date=r.date;S.big=!!r.big;S.u=+r.u}
+  else if((S.u||0)>(+r.u||0))newer=true;
+  return newer;
+}
+async function flush(){
+  if(!cloudRef||pushing||!dirty)return;
+  pushing=true;dirty=false;
+  try{await cloudRef.set(snapshotState());pushFails=0;setCloud("ok")}
+  catch(e){
+    if(FATAL.includes(e&&e.code)||++pushFails>5){cloudRef=null;setCloud("local")}
+    else dirty=true;
+  }
+  pushing=false;
+  if(dirty&&cloudRef){clearTimeout(pushTimer);pushTimer=setTimeout(flush,4000)}
+}
+function queuePush(){if(!cloudRef)return;dirty=true;clearTimeout(pushTimer);pushTimer=setTimeout(flush,cloudKind==="gh"?3000:1200)}
+
+/* GitHub backup: progress.json in a (private) repository, written through the GitHub API.
+   Activated by a link ending in #sync=<owner>/<repo>,<token>; the pair is remembered in this browser. */
+function ghConfig(){
+  const m=/^#sync=([\w.-]+\/[\w.-]+),([\w-]+)$/.exec(location.hash||"");
+  if(m){try{localStorage.setItem(KEY+"-sync",m[1]+","+m[2])}catch(e){}return{repo:m[1],token:m[2]}}
+  try{const v=localStorage.getItem(KEY+"-sync");if(v){const i=v.indexOf(",");if(i>0)return{repo:v.slice(0,i),token:v.slice(i+1)}}}catch(e){}
+  return null;
+}
+function ghBackend(repo,token){
+  const url="https://api.github.com/repos/"+repo+"/contents/progress.json";
+  const H={"Accept":"application/vnd.github+json","Authorization":"Bearer "+token,"X-GitHub-Api-Version":"2022-11-28"};
+  let sha=null;
+  const enc=o=>btoa(unescape(encodeURIComponent(JSON.stringify(o))));
+  const dec=b=>JSON.parse(decodeURIComponent(escape(atob(String(b).replace(/\s/g,"")))));
+  const denied=st=>st===401||st===403;
+  async function get(){
+    const r=await fetch(url+"?t="+Date.now(),{headers:H,cache:"no-store"});
+    if(r.status===404){sha=null;return{exists:false,data:()=>null}}
+    if(!r.ok)throw{code:denied(r.status)?"not_granted":"unavailable"};
+    const j=await r.json();sha=j.sha;const d=dec(j.content);
+    return{exists:true,data:()=>d};
+  }
+  function put(data){
+    const body={message:"Lernfortschritt "+today(),content:enc(data)};if(sha)body.sha=sha;
+    return fetch(url,{method:"PUT",headers:Object.assign({"Content-Type":"application/json"},H),body:JSON.stringify(body),keepalive:true});
+  }
+  async function set(data){
+    let r=await put(data);
+    if(r.status===409||r.status===422){           // someone else wrote in between: merge, then write again
+      const cur=await get();if(cur.exists){mergeRemote(cur.data());saveLocal()}
+      r=await put(snapshotState());
+    }
+    if(denied(r.status)||r.status===404)throw{code:"not_granted"};
+    if(!r.ok)throw{code:"unavailable"};
+    const j=await r.json();sha=j.content&&j.content.sha||sha;
+  }
+  return{get,set};
+}
+async function initCloud(){
+  try{
+    let ref;const gh=ghConfig();
+    if(gh){cloudKind="gh";ref=ghBackend(gh.repo,gh.token)}
+    else{
+      const c=window.claude;
+      if(!c||typeof c.use!=="function"){setCloud("local");return}
+      const [db,user]=await Promise.all([c.use("db"),c.use("user")]);
+      if(!db||!user){setCloud("local");return}
+      const uid=await user.id();
+      if(!uid){setCloud("local");return}
+      ref=db.doc("data/users/"+uid+"/progress");
+    }
+    const snap=await Promise.race([ref.get(),new Promise((_,rej)=>setTimeout(()=>rej({code:"timeout"}),10000))]);
+    const remote=snap.exists?snap.data():null;
+    const before=JSON.stringify(snapshotState());
+    const newer=remote?mergeRemote(remote):(cloudKind==="gh"||Object.keys(S.p).length>0||S.exams.length>0);
+    saveLocal();cloudRef=ref;
+    setCloud(remote?"ok":"ready");
+    if(newer){dirty=true;flush()}
+    if(JSON.stringify(snapshotState())!==before&&view!=="quiz")render();
+  }catch(e){
+    setCloud("local");
+    if(cloudKind==="gh"&&!FATAL.includes(e&&e.code)&&initTries++<20)setTimeout(initCloud,15000);
+  }
+}
+document.addEventListener("visibilitychange",()=>{if(document.hidden&&dirty){clearTimeout(pushTimer);flush()}});
+
+/* ---------- helpers ---------- */
+const app=document.getElementById("app");
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const rnd=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};
+const fmt=n=>(Math.round(n*100)/100).toLocaleString("de-AT",{maximumFractionDigits:2});
+const pad=n=>String(n).padStart(2,"0");
+const today=()=>{const d=new Date();return d.getFullYear()+"-"+pad(d.getMonth()+1)+"-"+pad(d.getDate())};
+const P=id=>S.p[id]||{s:0,n:0};
+const sits=q=>P(q.id).s>=2;
+const isWrong=q=>{const p=P(q.id);return p.n>0&&p.s===0};
+const byArea=a=>QS.filter(q=>q.a===a);
+const pts1=n=>fmt(n)+(n===1?" Punkt":" Punkte");
+function score(q,sel){
+  let ok=0;const total=q.o.filter(o=>o.c).length;
+  for(const i of sel){if(!q.o[i].c)return 0;ok++}
+  return Math.round(ok/total*100)/100;
+}
+function record(q,full){
+  const p=S.p[q.id]||(S.p[q.id]={s:0,n:0});
+  p.n++;p.s=full?Math.min(p.s+1,3):0;p.t=Date.now();
+  const d=today();S.days[d]=(S.days[d]||0)+1;save();
+}
+function daysLeft(){
+  if(!/^\d{4}-\d{2}-\d{2}$/.test(S.date||""))return null;
+  const [y,m,d]=S.date.split("-").map(Number);
+  const t=new Date(y,m-1,d),n=new Date();n.setHours(0,0,0,0);
+  return Math.round((t-n)/864e5);
+}
+function label(q){
+  if(q.a==="s")return q.num?"Offizielle Frage Nr. "+q.num:"Zusatzwissen";
+  return AREAS[q.a].ch[q.ch];
+}
+const correctList=q=>q.o.filter(o=>o.c).map(o=>"<li>"+esc(o.t)+"</li>").join("");
+
+/* ---------- picking questions ---------- */
+function pickLearn(a,n){
+  if(!a){ // mixed: balanced over the three areas
+    const per=Math.ceil(n/3);let out=[];
+    ORDER.forEach(x=>{out=out.concat(pickLearn(x,per))});
+    return rnd(out).slice(0,n);
+  }
+  const pool=byArea(a).map((q,i)=>({q,i,r:Math.random()}));
+  const bucket=q=>{const p=P(q.id);if(p.n&&!p.s)return 0;if(!p.n)return 1;if(p.s===1)return 2;return 3};
+  pool.sort((x,y)=>{
+    const bx=bucket(x.q),by=bucket(y.q);
+    if(bx!==by)return bx-by;
+    if(bx===1)return x.i-y.i;            // new questions in chapter order
+    if(bx===3)return (P(x.q.id).t||0)-(P(y.q.id).t||0); // longest not seen first
+    return x.r-y.r;
+  });
+  return pool.slice(0,n).map(x=>x.q);
+}
+function pickExam(){
+  const out=[];
+  ["g","d"].forEach(a=>{out.push(...rnd(byArea(a)).slice(0,6))});
+  const byNum={};byArea("s").forEach(q=>{if(q.num)(byNum[q.num]=byNum[q.num]||[]).push(q)});
+  rnd(Object.keys(byNum)).slice(0,6).forEach(k=>out.push(rnd(byNum[k])[0]));
+  return out;
+}
+
+/* ---------- state ---------- */
+let view="home",ses=null,res=null,sum=null,confirmReset=false;
+let browse={a:"s",t:""};
+const mk=q=>({q,ord:rnd([0,1,2,3]),sel:new Set(),done:false,rep:false,pts:0});
+function go(v){view=v;render();window.scrollTo(0,0)}
+function startLearn(a,list,title){
+  const qs=list||pickLearn(a,10);if(!qs.length)return;
+  ses={mode:"learn",a,title:title||"",items:qs.map(mk),i:0,right:0,first:qs.length,missed:[]};go("quiz");
+}
+function startExam(){ses={mode:"exam",items:pickExam().map(mk),i:0,warned:false};go("quiz")}
+
+/* ---------- views ---------- */
+function vHome(){
+  const dl=daysLeft(),tot=QS.length,m=QS.filter(sits).length,wr=QS.filter(isWrong).length,td=S.days[today()]||0;
+  let head;
+  if(dl===null)head="Prüfungstermin unten eintragen";
+  else if(dl>1)head="Noch "+dl+" Tage bis zur Prüfung";
+  else if(dl===1)head="Morgen ist die Prüfung";
+  else if(dl===0)head="Heute ist die Prüfung. Viel Erfolg!";
+  else head="Weiter üben";
+  let h=`<section class="stack lg">
+    <h1>${head}</h1>
+    <div class="stack">
+      <div class="row" style="justify-content:space-between"><b class="num">${m} von ${tot} Fragen sitzen</b><span class="muted num">Heute geübt: ${td}</span></div>
+      <div class="bar"><i style="width:${tot?m/tot*100:0}%"></i></div>
+      <p class="muted small">Eine Frage sitzt, wenn du sie zweimal hintereinander ganz richtig beantwortet hast.</p>
+      <p class="small" id="savenote">${saveNote()}</p>
+    </div>
+    <button class="btn wide" data-act="learn" data-a="">Jetzt üben (10 Fragen)</button>
+    ${wr?`<button class="btn ghost wide" data-act="wrong">Fehler wiederholen (${wr})</button>`:""}
+  </section>`;
+  h+=`<section class="stack"><h2>Die drei Prüfungsgebiete</h2><div class="areas">`;
+  ORDER.forEach(a=>{const all=byArea(a),k=all.filter(sits).length;
+    h+=`<div class="area"><div class="grow"><h3>${AREAS[a].name}</h3><div class="bar thin"><i style="width:${k/all.length*100}%"></i></div><span class="muted small num">${k} von ${all.length} sitzen · 6 Fragen in der Prüfung</span></div><button class="btn sm" data-act="learn" data-a="${a}">Üben</button></div>`});
+  h+=`</div></section>`;
+  h+=`<section class="panel stack"><h2>Prüfung simulieren</h2><p>18 Fragen wie in der echten Prüfung: 6 pro Gebiet, bewertet nach den offiziellen Regeln. Die Lösungen siehst du erst am Ende.</p><button class="btn wide" data-act="exam">Prüfung starten</button>`;
+  if(S.exams.length){h+=`<div class="tablewrap"><table><thead><tr><th>Letzte Versuche</th><th class="r">Punkte</th><th class="r">Ergebnis</th></tr></thead><tbody>`+S.exams.slice(-5).reverse().map(x=>{const d=new Date(x.t);return `<tr><td>${pad(d.getDate())}.${pad(d.getMonth()+1)}., ${pad(d.getHours())}:${pad(d.getMinutes())} Uhr</td><td class="r">${fmt(x.g+x.d+x.s)} von 18</td><td class="r state ${x.pass?"g":"b"}">${x.pass?"Bestanden":"Nicht bestanden"}</td></tr>`}).join("")+`</tbody></table></div>`}
+  h+=`</section>`;
+  h+=`<section class="stack"><h2>Nachlesen</h2><div class="tiles">
+    <button class="tile" data-act="go" data-v="facts"><b>Merkblatt</b><span>Zahlen, Namen und Jahreszahlen auf einen Blick</span></button>
+    <button class="tile" data-act="go" data-v="browse"><b>Alle Fragen mit Lösung</b><span>Auch die 52 offiziellen Salzburg-Fragen</span></button>
+    <button class="tile" data-act="go" data-v="info"><b>So läuft die Prüfung</b><span>Ablauf, Bewertung, Tipps</span></button>
+  </div></section>`;
+  h+=`<details class="panel"><summary>Einstellungen</summary><div class="stack lg">
+    <label class="stack" for="examdate"><b>Prüfungstermin</b><input class="field" type="date" id="examdate" value="${esc(S.date||"")}"></label>
+    <label class="row" for="bigtype"><input type="checkbox" id="bigtype" ${S.big?"checked":""} style="width:1.4rem;height:1.4rem"> <span>Größere Schrift</span></label>
+    <div class="stack">${confirmReset?`<p><b>Wirklich den ganzen Lernfortschritt löschen?</b></p><div class="row"><button class="btn sm" data-act="reset2">Ja, löschen</button><button class="btn sm ghost" data-act="reset0">Abbrechen</button></div>`:`<button class="btn sm ghost" data-act="reset1">Lernfortschritt löschen</button>`}</div>
+  </div></details>`;
+  h+=`<footer><p>Privat erstellter Übungstrainer, kein offizielles Angebot. Grundlage: „Lernunterlage für die Staatsbürgerschaftsprüfung – Geschichte Land Salzburg“ (Land Salzburg, 7. Auflage, Stand Juli 2025) und „Mein Österreich – Lernunterlage zur Staatsbürgerschaftsprüfung“ (Bundesministerium für Inneres, Ausgabe März 2022).</p><p><a href="https://www.salzburg.gv.at/fileadmin/Dateien/Sicherheit/lernunterlage_salzburg.pdf">Lernunterlage Land Salzburg (PDF)</a> · <a href="https://www.staatsbuergerschaft.gv.at">Offizieller Online-Übungstest des Bundes</a></p></footer>`;
+  return h;
+}
+
+function vQuiz(){
+  const it=ses.items[ses.i],q=it.q,exam=ses.mode==="exam",n=ses.items.length,locked=it.done&&!exam;
+  let h=`<div class="stack"><div class="qtop"><button class="link" data-act="quit">${exam?"Prüfung abbrechen":"Beenden"}</button><span class="muted num">Frage ${ses.i+1} von ${n}</span></div>
+  <div class="bar thin"><i style="width:${(ses.i+(locked?1:0))/n*100}%"></i></div></div>`;
+  h+=`<div class="stack"><div class="chips"><span class="chip">${AREAS[q.a].name}</span>${exam?"":`<span class="chip">${esc(label(q))}</span>`}${it.rep?`<span class="chip">Wiederholung</span>`:""}</div>
+  <h1 class="q">${esc(q.q)}</h1><p class="muted">Eine, zwei oder drei Antworten sind richtig.</p></div>`;
+  h+=`<div class="opts">`+it.ord.map(i=>{const o=q.o[i],on=it.sel.has(i);let cls="opt",mark="";
+    if(locked){cls+=" off";if(o.c&&on){cls+=" ok";mark="Richtig angekreuzt"}else if(o.c){cls+=" miss";mark="Das wäre richtig gewesen"}else if(on){cls+=" bad";mark="Falsch"}}
+    else if(on)cls+=" on";
+    return `<label class="${cls}" for="opt${i}"><input type="checkbox" id="opt${i}" data-i="${i}" ${on?"checked":""} ${locked?"disabled":""}><span class="box" aria-hidden="true">${locked&&o.c&&on?"✓":""}</span><span class="txt">${esc(o.t)}${mark?`<em>${mark}</em>`:""}</span></label>`}).join("")+`</div>`;
+  if(!exam){
+    if(!it.done)h+=`<button class="btn wide" id="checkbtn" data-act="check" ${it.sel.size?"":"disabled"}>Antwort prüfen</button>`;
+    else{
+      let cls,t,sub;
+      if(it.pts===1){cls="good";t="Richtig!";sub="In der Prüfung: 1 Punkt."}
+      else if(it.pts>0){cls="part";t="Teilweise richtig";sub="In der Prüfung: "+pts1(it.pts)+". Nicht alle richtigen Antworten sind angekreuzt."}
+      else{cls="bad";t="Leider falsch";sub="In der Prüfung: 0 Punkte. Schon eine falsch angekreuzte Antwort ergibt 0 Punkte."}
+      h+=`<div class="fb ${cls}" role="status"><b class="t">${t}</b><span>${sub}</span><span><b>Merke:</b> ${esc(q.e)}</span></div>`;
+      h+=`<button class="btn wide" data-act="next">${ses.i<n-1?"Weiter":"Ergebnis ansehen"}</button>`;
+    }
+  }else{
+    const open=ses.items.filter(x=>!x.sel.size).length;
+    if(ses.warned&&open)h+=`<div class="note" role="status"><b>${open===1?"1 Frage ist":open+" Fragen sind"} noch nicht beantwortet.</b> Tippe unten auf eine Nummer, um hinzuspringen, oder gib trotzdem ab.</div>`;
+    h+=`<div class="row">${ses.i>0?`<button class="btn ghost grow" data-act="prev">Zurück</button>`:""}${ses.i<n-1?`<button class="btn grow" data-act="next">Weiter</button>`:`<button class="btn grow" data-act="submit">${ses.warned&&open?"Trotzdem abgeben":"Prüfung abgeben"}</button>`}</div>`;
+    h+=`<div class="stack"><p class="muted small">Alle 18 Fragen. Markiert = schon beantwortet.</p><div class="grid18">`+ses.items.map((x,k)=>`<button data-act="jump" data-n="${k}" class="${x.sel.size?"done":""}${k===ses.i?" cur":""}" aria-label="Frage ${k+1}">${k+1}</button>`).join("")+`</div>${ses.i<n-1?`<button class="link" data-act="submit">Prüfung jetzt abgeben</button>`:""}</div>`;
+  }
+  return h;
+}
+
+function vSummary(){
+  const all=sum.right===sum.first;
+  let h=`<section class="stack lg"><h1>${all?"Alles richtig!":"Runde geschafft"}</h1><p><b class="num">${sum.right} von ${sum.first}</b> Fragen beim ersten Versuch ganz richtig.</p>`;
+  if(sum.missed.length){h+=`<h2>Das schauen wir uns nochmal an</h2><div class="qlist">`+sum.missed.map(q=>`<div class="qitem"><b>${esc(q.q)}</b><ul>${correctList(q)}</ul><span class="muted small">${esc(q.e)}</span></div>`).join("")+`</div>`}
+  h+=`<button class="btn wide" data-act="learn" data-a="${sum.a||""}">Weiter üben (10 Fragen)</button><button class="btn ghost wide" data-act="home">Zur Übersicht</button></section>`;
+  return h;
+}
+
+function vResult(){
+  const r=res,tot=r.g+r.d+r.s;
+  let h=`<section class="stack lg"><div class="verdict ${r.pass?"pass":"fail"}"><span class="big">${r.pass?"Bestanden":"Nicht bestanden"}</span><span class="num"><b>${fmt(tot)} von 18 Punkten</b></span><span>${r.pass?(r.each?"In jedem Gebiet mindestens 3 Punkte erreicht.":"Insgesamt mindestens 12 Punkte erreicht."):"Zum Bestehen braucht es in jedem Gebiet mindestens 3 Punkte oder insgesamt mindestens 12 Punkte."}</span></div>`;
+  h+=`<div class="tablewrap"><table><thead><tr><th>Gebiet</th><th class="r">Punkte</th><th class="r">mind. 3</th></tr></thead><tbody>`+ORDER.map(a=>`<tr><td>${AREAS[a].name}</td><td class="r">${fmt(r[a])} von 6</td><td class="r state ${r[a]>=3?"g":"b"}">${r[a]>=3?"erreicht":"zu wenig"}</td></tr>`).join("")+`<tr class="sum"><td>Gesamt</td><td class="r">${fmt(tot)} von 18</td><td class="r state ${tot>=12?"g":"b"}">${tot>=12?"12 erreicht":"unter 12"}</td></tr></tbody></table></div>`;
+  const wrong=r.items.filter(x=>x.pts<1);
+  h+=`<div class="row">${wrong.length?`<button class="btn grow" data-act="examwrong">Diese ${wrong.length} Fehler üben</button>`:""}<button class="btn ghost grow" data-act="exam">Neue Prüfung</button><button class="btn ghost grow" data-act="home">Zur Übersicht</button></div>`;
+  h+=`<h2>Alle 18 Fragen im Überblick</h2><div class="qlist">`+r.items.map((x,k)=>{const q=x.q;
+    return `<div class="qitem"><div class="hd"><span class="num">Frage ${k+1}</span><span>${AREAS[q.a].name}</span><span class="state ${x.pts===1?"g":"b"}">${pts1(x.pts)}</span></div><b>${esc(q.q)}</b><ul>${q.o.map((o,i)=>{const on=x.sel.has(i);if(o.c)return `<li>${esc(o.t)}${on?"":" <span class='muted small'>(nicht angekreuzt)</span>"}</li>`;return on?`<li class="x">${esc(o.t)} <span class="small">(falsch angekreuzt)</span></li>`:""}).join("")}</ul><span class="muted small">${esc(q.e)}</span></div>`}).join("")+`</div></section>`;
+  return h;
+}
+
+function browseList(){
+  const t=browse.t.trim().toLowerCase();
+  let qs=byArea(browse.a);
+  if(browse.a==="s")qs=qs.slice().sort((x,y)=>(x.num||99)-(y.num||99));
+  if(t)qs=qs.filter(q=>(q.q+" "+q.o.map(o=>o.t).join(" ")+" "+q.e).toLowerCase().includes(t));
+  if(!qs.length)return `<p class="muted">Keine Frage gefunden. Probiere ein anderes Wort.</p>`;
+  return qs.map(q=>{const p=P(q.id);const st=p.s>=2?`<span class="state g">sitzt</span>`:p.n?(p.s?`<span>einmal richtig</span>`:`<span class="state b">noch üben</span>`):`<span>neu</span>`;
+    return `<div class="qitem"><div class="hd"><span>${esc(label(q))}</span>${st}</div><b>${esc(q.q)}</b><ul>${correctList(q)}</ul><span class="muted small">${esc(q.e)}</span></div>`}).join("");
+}
+function vBrowse(){
+  return `<section class="stack lg"><h1>Alle Fragen mit Lösung</h1>
+  <div class="chips">${ORDER.map(a=>`<button class="chip ${browse.a===a?"on":""}" data-act="barea" data-a="${a}">${AREAS[a].name} (${byArea(a).length})</button>`).join("")}</div>
+  <label class="stack" for="suche"><span class="muted small">Suchen, zum Beispiel „Landtag“ oder „1955“</span><input class="field" id="suche" type="search" value="${esc(browse.t)}" autocomplete="off"></label>
+  ${browse.a==="s"?`<p class="note">Die Fragen 1 bis 52 entsprechen der offiziellen Fragenliste des Landes Salzburg. 6 davon kommen in der Prüfung. Die Antwortmöglichkeiten sind nicht veröffentlicht und hier aus der Lernunterlage abgeleitet.</p>`:`<p class="note">Für dieses Gebiet veröffentlicht der Bund nur Beispielfragen. Die Fragen hier decken alle Kapitel der Lernunterlage ab.</p>`}
+  <div class="qlist" id="blist">${browseList()}</div></section>`;
+}
+
+const FACTS=[
+ ["Land Salzburg: Politik und Zahlen",[
+  ["Landeshauptfrau","Mag. Karoline Edtstadler, seit 2. Juli 2025. Amtssitz: Chiemseehof"],
+  ["Landtag","36 Abgeordnete, tagt im Chiemseehof, Wahl alle 5 Jahre (zuletzt 23. April 2023)"],
+  ["Parteien","ÖVP 12, FPÖ 10, SPÖ 7, KPÖ 4, Grüne 3 Mandate"],
+  ["Regierung","Landesregierung mit 7 Mitgliedern"],
+  ["Wählen","Landtag: österreichische Staatsbürgerschaft, Hauptwohnsitz im Land Salzburg, 16 Jahre"],
+  ["Fläche","Etwas mehr als 7.000 km²"],
+  ["Einwohner","Knapp 570.000. Stadt Salzburg ca. 160.000, Hallein ca. 21.000"],
+  ["Flüsse","Salzach und Saalach"],
+  ["Berg","Großvenediger, 3.674 m"],
+  ["Bezirke","Flachgau (Seekirchen), Tennengau (Hallein), Pongau (St. Johann), Pinzgau (Zell am See), Lungau (Tamsweg) und die Stadt Salzburg"],
+  ["Gemeinden","119, an der Spitze je ein Bürgermeister"],
+  ["Nachbarn","Oberösterreich, Steiermark, Kärnten, Tirol. Staatsgrenze mit Deutschland (Bayern) und Italien (Südtirol)"],
+  ["Symbole","Farben Rot-Weiß. Wappen: ein schwarzer Löwe auf Gold, daneben Rot-Weiß-Rot, darüber der Fürstenhut"],
+  ["Patron","Hl. Rupert. Landesfeiertag am 24. September"],
+  ["Verkehr","Westautobahn A 1, Tauernautobahn A 10, Salzburger Lokalbahn, Salzburg Airport W. A. Mozart, Kleines Deutsches Eck"]]],
+ ["Land Salzburg: Geschichte",[
+  ["vor 3.000 J.","Salzbergbau am Dürrnberg bei Hallein beginnt (bis 1989). Kelten"],
+  ["vor 2.000 J.","Römer regieren fast 500 Jahre. Stadt Juvavum"],
+  ["7./8. Jh.","Hl. Rupert gründet das Kloster St. Peter. Hl. Virgil baut den ersten Dom (774)"],
+  ["bis 1803","Geistliches Fürstentum, regiert vom Erzbischof. Festungen Hohensalzburg und Hohenwerfen"],
+  ["1756","Mozart wird in Salzburg geboren. Michael Haydn wirkt 1763–1806 in Salzburg"],
+  ["1816","Salzburg kommt endgültig zu Österreich"],
+  ["1818","„Stille Nacht“ in Oberndorf: Josef Mohr (Text), Franz Xaver Gruber (Melodie)"],
+  ["1850 / 1861","Wieder eigenständiges Land / eigener Landtag"],
+  ["April 1919","Erste demokratische Landtagswahl, Frauen dürfen wählen"],
+  ["1920","Erste Salzburger Festspiele, „Jedermann“ auf dem Domplatz"],
+  ["1925–1935","Festspielhaus (1925–27), Gaisbergstraße (1929), Großglockner Hochalpenstraße (1935, Salzburg–Kärnten)"],
+  ["1945–1955","US-Besatzungszone. Die Tauernkraftwerke Kaprun werden 1955 fertig"],
+  ["1959","Dom nach Kriegsschäden neu eingeweiht"],
+  ["1962 / 1986","Universität wiedererrichtet / Naturwissenschaftliche Fakultät in Freisaal"],
+  ["1971","Nationalpark Hohe Tauern (Salzburg, Kärnten, Tirol)"],
+  ["1989","Ende des Salzbergbaus. Tod von Herbert von Karajan"],
+  ["1997","Altstadt wird UNESCO-Weltkulturerbe (1. Jänner)"],
+  ["2006","„Haus für Mozart“. Salzburg Museum in der Neuen Residenz (2006/07)"]]],
+ ["Land Salzburg: Alltag",[
+  ["144","Rettung. Euro-Notruf 112: gebührenfrei, in jedem Netz, auch ohne SIM-Karte"],
+  ["e-card","Bei Verlust: Krankenversicherungsträger. Rückseite: EKVK, gilt in EU, Schweiz, Liechtenstein, Norwegen"],
+  ["Reisepass","Bei jeder Passbehörde"],
+  ["AMS","Bei Arbeitslosigkeit oder Jobwechsel"],
+  ["SIR","Erste Anlaufstelle für Wohnen und Wohnbauförderung"],
+  ["ÖGB","Freiwillige Interessenvertretung der Arbeitnehmer"],
+  ["Spitäler","Landeskrankenhaus (St. Johanns-Spital, Mülln) und Christian-Doppler-Klinik (Liefering)"],
+  ["Kultur","Festspiele, Szene Salzburg (Avantgarde-Festival), Keltenmuseum Hallein, Salzburg Museum"],
+  ["Tourismus","Wichtigster Wirtschaftsfaktor. Schifahren wirbt am stärksten für den Winter"]]],
+ ["Geschichte Österreichs: Jahreszahlen",[
+  ["um 0","Römerzeit beginnt, dauert fast 500 Jahre. Donau als Grenze"],
+  ["996","„Ostarrichi“ erstmals erwähnt"],
+  ["1273","Habsburger beginnen zu regieren (fast 650 Jahre, bis 1918)"],
+  ["1740–1780","Maria Theresia: Schulpflicht, Folter abgeschafft, Militärakademie"],
+  ["1804","Kaiserreich Österreich"],
+  ["1848","Revolution: Freiheit, Verfassung, Parlament (Reichsrat). 1849 unterdrückt"],
+  ["1867","Österreich-Ungarn. Staatsgrundgesetz"],
+  ["1914–1918","Erster Weltkrieg"],
+  ["Nov. 1918","Republik ausgerufen. Karl Renner erster Staatskanzler"],
+  ["1919","Friedensvertrag von Saint Germain. Frauen wählen zum ersten Mal"],
+  ["1920 / 1921","Bundesverfassung / neun Bundesländer"],
+  ["1933 / 1934","Dollfuß schaltet das Parlament aus / Bürgerkrieg, Dollfuß ermordet"],
+  ["März 1938","„Anschluss“ an Hitler-Deutschland. Größtes KZ: Mauthausen"],
+  ["1939–1945","Zweiter Weltkrieg"],
+  ["1945","Zweite Republik. Vier Besatzungszonen bis 1955. Marshall-Plan"],
+  ["1955","Staatsvertrag (Raab, Figl). 26. Oktober: Neutralität, heute Nationalfeiertag"],
+  ["1970–1983","Bundeskanzler Kreisky, viele Reformen"],
+  ["1989","Fall des Eisernen Vorhangs"],
+  ["1995","Beitritt zur EU (Volksabstimmung 1994)"],
+  ["2002","Euro als Bargeld"]]],
+ ["Demokratische Grundordnung: Zahlen und Begriffe",[
+  ["16","Wahlalter in Österreich"],
+  ["14","Ab diesem Alter entscheiden Kinder selbst über ihre Religion"],
+  ["183","Abgeordnete im Nationalrat. Wahl spätestens alle 5 Jahre"],
+  ["6 Jahre","Amtszeit des Bundespräsidenten (Alexander Van der Bellen, seit Jänner 2017)"],
+  ["100.000","Unterschriften für ein Volksbegehren"],
+  ["9","Bundesländer. Über 2.000 Gemeinden"],
+  ["3","Staatsaufgaben: Gesetzgebung, Verwaltung, Gerichtsbarkeit"],
+  ["6","Wahlgrundsätze: allgemein, gleich, unmittelbar, persönlich, geheim, frei"],
+  ["4","Grundfreiheiten der EU: Personen, Waren, Dienstleistungen, Kapital- und Zahlungsverkehr"],
+  ["1811","ABGB: Jeder Mensch hat angeborene Rechte"],
+  ["Parlament","Nationalrat und Bundesrat beschließen Bundesgesetze. Landtage beschließen Landesgesetze"],
+  ["Kontrolle","Verfassungsgerichtshof, Verwaltungsgerichtshof, Volksanwaltschaft, Rechnungshof"],
+  ["Direkt","Volksabstimmung (bindend), Volksbefragung (nicht bindend), Volksbegehren"],
+  ["EU","Kommission, Europäischer Rat, Rat der EU, Europäisches Parlament"]]]
+];
+function vFacts(){
+  return `<section class="stack lg"><h1>Merkblatt</h1><p class="muted">Das Wichtigste aus beiden Lernunterlagen zum schnellen Wiederholen.</p>`+FACTS.map((f,i)=>`<details class="panel" ${i===0?"open":""}><summary>${f[0]}</summary><dl class="facts">${f[1].map(x=>`<dt>${esc(x[0])}</dt><dd>${esc(x[1])}</dd>`).join("")}</dl></details>`).join("")+`</section>`;
+}
+function vInfo(){
+  return `<section class="stack lg"><h1>So läuft die Prüfung</h1>
+  <div class="panel stack"><h2>Ablauf</h2><ul class="plain">
+    <li>Schriftlicher Test zum Ankreuzen mit <b>18 Fragen</b>: je 6 zu Geschichte Österreichs, demokratischer Grundordnung und Land Salzburg.</li>
+    <li>Zu jeder Frage gibt es <b>vier Antworten</b>. Mindestens eine und höchstens drei sind richtig.</li>
+    <li>Jede Frage bringt höchstens 1 Punkt, insgesamt also 18 Punkte.</li></ul></div>
+  <div class="panel stack"><h2>Bewertung</h2><ul class="plain">
+    <li>Alle richtigen Antworten angekreuzt und keine falsche: <b>1 Punkt</b>.</li>
+    <li>Nur ein Teil der richtigen Antworten angekreuzt, aber keine falsche: Teilpunkte (zum Beispiel 0,5 oder 0,33).</li>
+    <li><b>Eine falsche Antwort angekreuzt: 0 Punkte</b> für diese Frage.</li>
+    <li>Deshalb: Nur ankreuzen, was du sicher weißt. Raten zahlt sich nicht aus.</li></ul>
+    <p class="muted small">Diese Regeln stehen in der Lernunterlage des Bundes für die Teile Geschichte und Demokratie. Der Trainer bewertet den Salzburg-Teil gleich.</p></div>
+  <div class="panel stack"><h2>Bestanden ist bei</h2><ul class="plain">
+    <li>mindestens <b>3 Punkten in jedem</b> der drei Gebiete</li>
+    <li>oder insgesamt mindestens <b>12 von 18 Punkten</b>.</li></ul>
+    <p>Wer nicht besteht, kann die Prüfung wiederholen.</p></div>
+  <div class="panel stack"><h2>Was dieser Trainer abdeckt</h2><ul class="plain">
+    <li><b>Land Salzburg:</b> Das Land veröffentlicht eine Liste mit 52 Fragen. Alle 52 sind hier enthalten. Die Antwortmöglichkeiten sind nicht veröffentlicht und wurden aus der Lernunterlage abgeleitet.</li>
+    <li><b>Geschichte und Demokratie:</b> Der Bund veröffentlicht nur Beispielfragen, keinen vollständigen Katalog. Die Fragen hier decken jedes Kapitel der Lernunterlage ab. Die genauen Formulierungen in der Prüfung können anders sein.</li>
+    <li>Zusätzlich lohnt sich der offizielle Online-Übungstest auf <a href="https://www.staatsbuergerschaft.gv.at">staatsbuergerschaft.gv.at</a>.</li></ul></div>
+  <div class="panel stack"><h2>Plan für die letzten Tage</h2><ul class="plain">
+    <li>Zuerst das Gebiet „Land Salzburg“ ganz durcharbeiten: Das sind die offiziellen Fragen.</li>
+    <li>Dann jeden Tag 5 bis 6 Runden üben (je 10 Fragen), abwechselnd Demokratie und Geschichte.</li>
+    <li>Am Ende jedes Tages „Fehler wiederholen“, bis die Liste leer ist.</li>
+    <li>Ab dem 4. Tag jeden Tag eine Prüfungssimulation.</li>
+    <li>Am Tag davor: Merkblatt lesen und eine letzte Simulation.</li></ul></div>
+  </section>`;
+}
+
+/* ---------- render + events ---------- */
+function render(){
+  document.documentElement.classList.toggle("big",!!S.big);
+  document.getElementById("homebtn").hidden=view==="home"||view==="quiz";
+  app.innerHTML=({home:vHome,quiz:vQuiz,summary:vSummary,result:vResult,browse:vBrowse,facts:vFacts,info:vInfo}[view]||vHome)();
+}
+function finishExam(){
+  const r={g:0,d:0,s:0,items:ses.items};
+  ses.items.forEach(x=>{x.pts=score(x.q,x.sel);r[x.q.a]+=x.pts;record(x.q,x.pts===1)});
+  ORDER.forEach(a=>r[a]=Math.round(r[a]*100)/100);
+  r.each=r.g>=3&&r.d>=3&&r.s>=3;
+  r.pass=r.each||Math.round((r.g+r.d+r.s)*100)/100>=12;
+  S.exams.push({t:Date.now(),g:r.g,d:r.d,s:r.s,pass:r.pass});S.exams=S.exams.slice(-10);save();
+  res=r;ses=null;go("result");
+}
+document.addEventListener("click",ev=>{
+  const b=ev.target.closest("[data-act]");if(!b)return;
+  const act=b.dataset.act;
+  if(act==="home"){ses=null;confirmReset=false;go("home")}
+  else if(act==="go")go(b.dataset.v);
+  else if(act==="learn")startLearn(b.dataset.a||null);
+  else if(act==="wrong")startLearn(null,rnd(QS.filter(isWrong)).slice(0,10));
+  else if(act==="exam")startExam();
+  else if(act==="examwrong")startLearn(null,res.items.filter(x=>x.pts<1).map(x=>x.q));
+  else if(act==="quit"){ses=null;go("home")}
+  else if(act==="check"){
+    const it=ses.items[ses.i];if(!it.sel.size)return;
+    it.pts=score(it.q,it.sel);it.done=true;const full=it.pts===1;
+    record(it.q,full);
+    if(!it.rep){if(full)ses.right++;else{ses.missed.push(it.q);const again=mk(it.q);again.rep=true;ses.items.push(again)}}
+    render();
+    const fb=app.querySelector(".fb");if(fb&&fb.scrollIntoView)fb.scrollIntoView({block:"nearest",behavior:"smooth"});
+  }
+  else if(act==="next"){
+    if(ses.i<ses.items.length-1){ses.i++;go("quiz")}
+    else if(ses.mode==="learn"){sum={right:ses.right,first:ses.first,missed:ses.missed,a:ses.a};ses=null;go("summary")}
+  }
+  else if(act==="prev"){if(ses.i>0){ses.i--;go("quiz")}}
+  else if(act==="jump"){ses.i=+b.dataset.n;go("quiz")}
+  else if(act==="submit"){
+    const open=ses.items.filter(x=>!x.sel.size).length;
+    if(open&&!ses.warned){ses.warned=true;ses.i=ses.items.length-1;go("quiz")}else finishExam();
+  }
+  else if(act==="barea"){browse.a=b.dataset.a;render()}
+  else if(act==="reset1"){confirmReset=true;render();const d=app.querySelector("details.panel:last-of-type");if(d)d.open=true}
+  else if(act==="reset0"){confirmReset=false;render()}
+  else if(act==="reset2"){S.p={};S.days={};S.exams=[];S.rst=Date.now();confirmReset=false;save();go("home")}
+});
+document.addEventListener("change",ev=>{
+  const t=ev.target;
+  if(t.matches(".opt input")&&ses){
+    const it=ses.items[ses.i],i=+t.dataset.i;
+    if(it.done&&ses.mode==="learn")return;
+    if(t.checked)it.sel.add(i);else it.sel.delete(i);
+    t.closest(".opt").classList.toggle("on",t.checked);
+    const cb=document.getElementById("checkbtn");if(cb)cb.disabled=!it.sel.size;
+    const g=app.querySelector(".grid18 .cur");if(g)g.classList.toggle("done",it.sel.size>0);
+  }
+  else if(t.id==="examdate"){S.date=t.value;S.u=Date.now();save();render();const d=app.querySelector("details.panel");if(d)d.open=true}
+  else if(t.id==="bigtype"){S.big=t.checked;S.u=Date.now();save();document.documentElement.classList.toggle("big",S.big)}
+});
+document.addEventListener("input",ev=>{
+  if(ev.target.id==="suche"){browse.t=ev.target.value;const l=document.getElementById("blist");if(l)l.innerHTML=browseList()}
+});
+render();
+initCloud();
+
+</script>
+<script>try{if(navigator.storage&&navigator.storage.persist)navigator.storage.persist().catch(function(){})}catch(e){}</script>
+</body>
+</html>
