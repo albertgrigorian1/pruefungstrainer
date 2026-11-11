@@ -11,7 +11,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="Prüfungstrainer">
 <style>:root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0;font:14px system-ui,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Source+Serif+4:opsz,wght@8..60,600&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Noto+Sans+Armenian:wght@400;600&family=Source+Serif+4:opsz,wght@8..60,600&display=swap">
 <style>
 /* Layout: one calm reading column (max 42rem) under a passport-burgundy band; large type, large tap targets, one main action per screen. */
 :root{
@@ -51,13 +51,15 @@ button,input{font:inherit;color:inherit}
 /* band */
 .pass{background:var(--pass);color:var(--on-pass)}
 .passin{display:flex;align-items:center;justify-content:space-between;gap:1rem;padding-block:.9rem}
+.passin>div{flex:1 1 0;min-width:0}
+.pk,.pt{overflow-wrap:anywhere}
 .pk{font-size:.75rem;letter-spacing:.08em;text-transform:uppercase;opacity:.85}
 .pt{font-family:var(--f-disp);font-weight:600;font-size:1.3rem;line-height:1.2}
-.hbtn{background:transparent;border:1.5px solid var(--on-pass);color:var(--on-pass);border-radius:999px;padding:.45rem 1rem;min-height:2.6rem;cursor:pointer;white-space:nowrap}
+.hbtn{background:transparent;border:1.5px solid var(--on-pass);color:var(--on-pass);border-radius:999px;padding:.45rem .9rem;min-height:2.6rem;cursor:pointer;white-space:nowrap;flex:none}
 .flag i{display:block;height:3px;background:var(--flag)}
 .flag i:nth-child(2){background:var(--flag-w)}
 
-main{display:flex;flex-direction:column;gap:1.5rem;padding-block:1.5rem 3rem}
+main{display:flex;flex-direction:column;gap:1.5rem;padding-block:1.5rem 3rem;overflow-wrap:break-word}
 main h1{font-family:var(--f-disp);font-weight:600;font-size:1.7rem;line-height:1.2;text-wrap:balance}
 main h2{font-family:var(--f-disp);font-weight:600;font-size:1.25rem;line-height:1.25;text-wrap:balance}
 main h3{font-size:1rem;font-weight:700}
@@ -98,6 +100,8 @@ main h3{font-size:1rem;font-weight:700}
 .chip.on{background:var(--btn);border-color:var(--btn);color:var(--on-btn)}
 button.chip{cursor:pointer;min-height:2.5rem;padding:.3rem 1rem;font-size:.95rem}
 h1.q{font-size:1.4rem;line-height:1.3;text-wrap:pretty}
+.hy{font-family:"Noto Sans Armenian",var(--f-body);font-size:1.12rem;line-height:1.5;color:var(--ink);text-wrap:pretty;overflow-wrap:anywhere}
+.hy.sm{font-size:.95rem;color:var(--muted)}
 .opts{display:flex;flex-direction:column;gap:.7rem}
 .opt{position:relative;display:flex;gap:.8rem;align-items:flex-start;padding:.95rem 1rem;border:2px solid var(--line);border-radius:12px;background:var(--surface);cursor:pointer;min-height:3.5rem}
 .opt input{position:absolute;opacity:0;width:1px;height:1px}
@@ -156,7 +160,9 @@ tr.sum td{font-weight:700;border-bottom:0}
 .field{width:100%;min-height:3rem;padding:.6rem .9rem;border-radius:10px;border:2px solid var(--line);background:var(--surface)}
 .facts{display:grid;grid-template-columns:minmax(5.5rem,auto) 1fr;gap:.45rem 1rem}
 .facts dt{font-weight:700;font-variant-numeric:tabular-nums}
-.facts dd{min-width:0}
+.facts dd{min-width:0;overflow-wrap:anywhere;hyphens:auto}
+.facts dt{overflow-wrap:anywhere}
+@media (max-width:26rem){.facts{grid-template-columns:1fr;gap:.1rem}.facts dd{margin-bottom:.6rem}}
 .plain{display:flex;flex-direction:column;gap:.45rem}
 .plain li{padding-left:1.1rem;position:relative}
 .plain li::before{content:"";position:absolute;left:0;top:.62em;width:.4rem;height:.4rem;border-radius:50%;background:var(--muted)}
@@ -172,14 +178,14 @@ footer a,.panel a{color:inherit}
 <header class="pass">
   <div class="wrap passin">
     <div>
-      <p class="pk">Prüfungsvorbereitung · Land Salzburg</p>
-      <p class="pt">Staatsbürgerschaftstrainer</p>
+      <p class="pk">Prüfungs&shy;vorbereitung · Land Salzburg</p>
+      <p class="pt">Staatsbürger&shy;schafts&shy;trainer</p>
     </div>
     <button class="hbtn" id="homebtn" data-act="home" hidden>Übersicht</button>
   </div>
   <div class="flag" aria-hidden="true"><i></i><i></i><i></i></div>
 </header>
-<main class="wrap" id="app"></main>
+<main class="wrap" id="app" lang="de"></main>
 <script>
 "use strict";
 const AREAS={
@@ -190,6 +196,7 @@ const AREAS={
 const ORDER=["g","d","s"];
 const QS=[];
 function add(a,rows){rows.forEach((r,i)=>QS.push({id:a+(i+1),a,ch:a==="s"?null:r[0],num:a==="s"?r[0]:null,q:r[1],o:r[2].map((t,j)=>({t,c:r[3][j]==="1"})),e:r[4]}))}
+const HY={};function hy(o){Object.assign(HY,o)}
 add("g",[
 [0,"Zu welchem Reich gehörte das Gebiet des heutigen Österreich ab Christi Geburt fast 500 Jahre lang?",["Römisches Reich","Osmanisches Reich","Persisches Reich","Russisches Reich"],"1000","Die Römerzeit begann um Christi Geburt und dauerte fast 500 Jahre."],
 [0,"Wer lebte vor rund 2000 Jahren auf dem Gebiet des heutigen Österreich?",["Kelten","Römer","Wikinger","Mongolen"],"1100","Es gab keltische Königreiche. Sie wurden um Christi Geburt Teil des Römischen Reiches."],
@@ -515,11 +522,320 @@ add("s",[
 [0,"Was ist heute der wichtigste Wirtschaftszweig im Land Salzburg?",["Der Dienstleistungssektor, vor allem der Tourismus","Der Bergbau","Die Schifffahrt","Der Weinbau"],"1000","Salzburg hat mehr als 25 Millionen Gästenächtigungen im Jahr."],
 [0,"Welche Universitäten gibt es laut Lernunterlage in Salzburg?",["Die Universität Salzburg (1962 wiedererrichtet)","Die Paracelsus Medizinische Privatuniversität (seit 2003)","Die Universität Klagenfurt","Die Universität Innsbruck"],"1100","Die Naturwissenschaftliche Fakultät steht in Freisaal."]
 ]);
+hy({
+g1:"Ո՞ր կայսրության կազմում էր ներկայիս Ավստրիայի տարածքը Քրիստոսի ծննդից սկսած գրեթե 500 տարի։",
+g2:"Ովքե՞ր էին ապրում ներկայիս Ավստրիայի տարածքում մոտ 2000 տարի առաջ։",
+g3:"Ո՞ր գետն էր հռոմեական ժամանակաշրջանում Հռոմեական կայսրության սահմանը։",
+g4:"Ինչի՞ հետևանքով ավարտվեց հռոմեական ժամանակաշրջանը։",
+g5:"Ո՞ր խմբերն եկան ներկայիս Ավստրիայի տարածք հռոմեական ժամանակաշրջանի ավարտից հետո։",
+g6:"Ո՞ր թվականին է «Ostarrichi» (Ավստրիա) անունն առաջին անգամ հիշատակվել փաստաթղթում։",
+g7:"Հռոմեական ժամանակաշրջանի մասին ո՞ր պնդումներն են ճիշտ։",
+g8:"Ինչո՞ւ են այսօր Ավստրիայում հիմնականում գերմաներեն խոսում։",
+g9:"Ավստրիայի փոքրամասնությունների մասին ո՞ր պնդումներն են ճիշտ։",
+g10:"Ո՞ր անուններն ունեն սլավոնական ծագում։",
+g11:"Որտե՞ղ էր ի սկզբանե ապրում Հաբսբուրգների ընտանիքը։",
+g12:"Ո՞ր թվականից սկսեցին Հաբսբուրգները կառավարել Ավստրիայում։",
+g13:"Որքա՞ն ժամանակ են Հաբսբուրգները կառավարել Ավստրիայում։",
+g14:"Վիեննայից բացի՝ ո՞ր քաղաքներն էին Հաբսբուրգների մայրաքաղաքներ և նստավայրեր։",
+g15:"Ինչպե՞ս Հաբսբուրգները մոտ 1500 թվականից այդքան հզորացան Եվրոպայում։",
+g16:"Ո՞ր երկրները Հաբսբուրգները ձեռք բերեցին ամուսնությունների միջոցով։",
+g17:"Որտե՞ղ էին Հաբսբուրգներն իշխում սկզբում։",
+g18:"Ե՞րբ սկսեցին Հաբսբուրգները կառավարել Զալցբուրգը։",
+g19:"Ինչպե՞ս էր կոչվում Գերմանիան միջնադարից մինչև 19-րդ դարի սկիզբը։ Ներկայիս Ավստրիան նույնպես դրա մաս էր։",
+g20:"Ե՞րբ է հիմնադրվել «Ավստրիական կայսրությունը» (Kaiserreich Österreich)։",
+g21:"Ինչպե՞ս էր կոչվում Հաբսբուրգների պետությունը 1867-ից մինչև 1918 թվականը։",
+g22:"Ներկայիս ո՞ր պետություններն են ժամանակին ամբողջությամբ կամ մասամբ եղել Ավստրիական կայսրության կազմում։",
+g23:"Ներկայիս այս պետություններից որո՞նք են ժամանակին եղել Ավստրիական կայսրության կազմում։",
+g24:"Ի՞նչ բարեփոխումներ են եղել Մարիա Թերեզայի օրոք։",
+g25:"Ե՞րբ է կառավարել Մարիա Թերեզան։",
+g26:"Ո՞ւմ են Մարիա Թերեզայի օրոք հավատքի պատճառով վտարել Ավստրիայից։",
+g27:"Ի՞նչ տեղի ունեցավ 19-րդ դարի «արդյունաբերական հեղափոխության» ժամանակ։",
+g28:"Արդյունաբերության ո՞ր ճյուղերն էին հատկապես կարևոր 19-րդ դարում։",
+g29:"Ի՞նչ է նշանակում «բացարձակ իշխանություն» (absolute Herrschaft)։",
+g30:"Ի՞նչ էին պահանջում մարդիկ 1848 թվականի հեղափոխության ժամանակ։",
+g31:"Ի՞նչ էին լրացուցիչ ցանկանում հեղափոխականները Հունգարիայում և Հյուսիսային Իտալիայում 1848 թվականին։",
+g32:"Ինչպե՞ս էր կոչվում 1848 թվականին ընտրված խորհրդարանը։",
+g33:"Ո՞վ 1849 թվականին բռնի ուժով ճնշեց հեղափոխությունը։",
+g34:"Ի՞նչ պահպանվեց 1848 թվականի հեղափոխությունից։",
+g35:"Ի՞նչ է նշանակում երդվյալ ատենակալների դատարանների (Geschworenengerichte) ներդրումը։",
+g36:"Ի՞նչ տեղի ունեցավ 1867 թվականին։",
+g37:"Ի՞նչն էր 1867 թվականից հետո էլ ընդհանուր Ավստրիայի և Հունգարիայի համար։",
+g38:"Քանի՞ լեզու էր պաշտոնապես ճանաչված Ավստրիայում 19-րդ դարում։",
+g39:"Ինչո՞ւ էին 19-րդ դարում Ավստրիան անվանում «բազմազգ պետություն» (Vielvölkerstaat)։",
+g40:"Ո՞ր կրոններն էին ճանաչված միապետության ժամանակ։",
+g41:"Ի՞նչ է նշանակում ազգային պետության գաղափարը, որն առաջացել է 19-րդ դարում։",
+g42:"Որքա՞ն ժամանակ է կառավարել կայսր Ֆրանց Յոզեֆը (ո՞ր թվականներին)։",
+g43:"Ի՞նչ եղավ Ավստրո-Հունգարիայի հետ 1918 թվականին։",
+g44:"1918 թվականին առաջացած ո՞ր պետություններն էին իրենք նույնպես բազմալեզու, բազմազգ պետություններ։",
+g45:"Ո՞ր թվականից մինչև ո՞ր թվականն է տևել Առաջին համաշխարհային պատերազմը։",
+g46:"Ո՞ւմ հետ էր դաշնակից Ավստրո-Հունգարիան Առաջին համաշխարհային պատերազմում։",
+g47:"Ի՞նչ հետևանքներ ունեցավ Առաջին համաշխարհային պատերազմը Ավստրիայի համար։",
+g48:"Ո՞ր պետություններն առաջացան 1918 թվականին նախկին Ավստրո-Հունգարիայի տարածքում։",
+g49:"Ե՞րբ է առաջին անգամ հռչակվել Ավստրիայի Հանրապետությունը։",
+g50:"Ո՞վ էր Ավստրիայի Հանրապետության առաջին պետական կանցլերը (կառավարության ղեկավարը)։",
+g51:"Ինչպե՞ս պետք է ի սկզբանե կոչվեր հանրապետությունը 1918 թվականին։",
+g52:"Ի՞նչ սահմանեց Սեն Ժերմենի հաշտության պայմանագիրը (1919)։",
+g53:"Ե՞րբ է ընդունվել Ավստրիայի դաշնային սահմանադրությունը (B-VG), որը գործում է մինչև այսօր։",
+g54:"Ի՞նչն է ուժի մեջ 1921 թվականից ի վեր։",
+g55:"Ի՞նչ ճգնաժամեր է ապրել Առաջին Հանրապետությունը։",
+g56:"Ո՞վ 1933 թվականին դադարեցրեց խորհրդարանի գործունեությունը։",
+g57:"Ի՞նչն էր բնորոշ «դասային պետությանը» (Ständestaat)։",
+g58:"Ի՞նչ է նշանակում, երբ կառավարությունը կառավարում է «ավտորիտար» կերպով։",
+g59:"Ի՞նչ տեղի ունեցավ 1934 թվականին։",
+g60:"Ինչո՞ւ Առաջին Հանրապետությունը հենց սկզբից անբարենպաստ վիճակում էր։",
+g61:"Ի՞նչ ունեին խոշոր կուսակցությունները Առաջին Հանրապետությունում։",
+g62:"Ո՞վ հրաժարական տվեց 1938 թվականի մարտին հիտլերյան Գերմանիայի ճնշման տակ։",
+g63:"Ե՞րբ Ավստրիան «միացվեց» (Anschluss) նացիոնալ-սոցիալիստական Գերմանիային։",
+g64:"Ի՞նչն է ճիշտ 1938 թվականի ապրիլի հանրաքվեի մասին։",
+g65:"Ո՞ր խմբերին են հալածել և սպանել նացիոնալ-սոցիալիզմի ժամանակ։",
+g66:"Ո՞ւմ են նույնպես հալածել նացիոնալ-սոցիալիզմի ժամանակ։",
+g67:"Որտե՞ղ էր ներկայիս Ավստրիայի տարածքում գտնվող ամենամեծ համակենտրոնացման ճամբարը։",
+g68:"Ինչպե՞ս էր կոչվում Ավստրիան նացիոնալ-սոցիալիզմի ժամանակ։",
+g69:"Մոտավորապես քանի՞ ավստրիացի հրեա է սպանվել համակենտրոնացման ճամբարներում։",
+g70:"Ավստրիայում նացիստական ժամանակաշրջանի մասին ո՞ր պնդումներն են ճիշտ։",
+g71:"Ինչո՞վ սկսվեց Երկրորդ համաշխարհային պատերազմը։",
+g72:"Որտե՞ղ գերմանական բանակը ջախջախիչ պարտություն կրեց 1943 թվականի սկզբին։",
+g73:"Ո՞վ ազատագրեց Վիեննան նացիոնալ-սոցիալիզմից 1945 թվականի ապրիլին։",
+g74:"Ե՞րբ ավարտվեց Երկրորդ համաշխարհային պատերազմը Եվրոպայում։",
+g75:"Ո՞ր երկրներն էին Երկրորդ համաշխարհային պատերազմի հաղթողների թվում։",
+g76:"Այս երկրներից որո՞նք էին օկուպացիոն տերություններ Ավստրիայում։",
+g77:"Ի՞նչ տեղի ունեցավ 1945 թվականի ապրիլին։",
+g78:"Ե՞րբ են կայացել Երկրորդ Հանրապետության առաջին ժողովրդավարական խորհրդարանական ընտրությունները։",
+g79:"Ո՞ր կուսակցություններն են 1945 թվականից հետո երկար ժամանակ միասին կառավարություն կազմել։",
+g80:"Ինչպե՞ս էր բաժանված Ավստրիան 1945-ից մինչև 1955 թվականը։",
+g81:"Ի՞նչն է ճիշտ Մարշալի պլանի մասին։",
+g82:"Ինչպե՞ս է կոչվում 1955 թվականի պայմանագիրը, որը Ավստրիային վերադարձրեց լիակատար անկախությունը։",
+g83:"Ո՞վ է կարևոր դեր խաղացել Պետական պայմանագրի (Staatsvertrag) բանակցություններում։",
+g84:"Ի՞նչ պարտավորություններ ստանձնեց Ավստրիան 1955 թվականի Պետական պայմանագրով (Staatsvertrag)։",
+g85:"Ի՞նչ որոշեց խորհրդարանը 1955 թվականի հոկտեմբերի 26-ին։ Այդ օրն այսօր ազգային տոն է։",
+g86:"Ի՞նչ տեղի ունեցավ 1955 թվականին։",
+g87:"Ինչո՞վ է Երկրորդ Հանրապետությունը տարբերվում Առաջին Հանրապետությունից։",
+g88:"Ի՞նչ է սոցիալական գործընկերությունը (Sozialpartnerschaft)։",
+g89:"Ո՞ր կազմակերպություններն են սոցիալական գործընկերների թվում։",
+g90:"Ո՞ւմ կառավարման տարիներին (1970–1983) ընդունվեցին բազմաթիվ բարեփոխումներ։",
+g91:"Ո՞ր բարեփոխումները փոխեցին Ավստրիան 1970-ական թվականներին։",
+g92:"Ի՞նչ փոխվեց ընտանեկան իրավունքում 1970-ական թվականներին։",
+g93:"Ե՞րբվանից կարող են միասեռական զույգերը գրանցել իրենց գործընկերությունը։",
+g94:"Ի՞նչ տեղի ունեցավ տնտեսության մեջ 1970-ական թվականներին։",
+g95:"Ի՞նչ հետևանքներ ունեցավ 2000 թվականից հետո այն, որ Ավստրիան ընդունեց իր մեղսակցությունը նացիստական հանցագործություններին։",
+g96:"Ո՞րն է 2000 թվականից հետո իրականացված կենսաթոշակային բարեփոխման նպատակը։",
+g97:"Ինչպե՞ս փոխեց Ավստրիան 1950-ից 1970 թվականների տնտեսական հաջողությունը։",
+g98:"Ի՞նչ տեղի ունեցավ Եվրոպայում 1989 թվականին։",
+g99:"Ե՞րբվանից է Ավստրիան Եվրոպական միության (ԵՄ, EU) անդամ։",
+g100:"Ե՞րբվանից ենք Ավստրիայում վճարում եվրոյով։",
+g101:"ԵՄ-ի ո՞ր որոշումներն են ազդում Ավստրիայի առօրյա կյանքի վրա։",
+g102:"Ի՞նչն է գործում ԵՄ այլ պետությունների քաղաքացիների համար Ավստրիայում։",
+g103:"Ի՞նչ փոխվեց Ավստրիայի համար «երկաթե վարագույրի» անկումից հետո։",
+g104:"Ըստ ուսումնական նյութի՝ քանի՞ մարդ է ապրում Ավստրիայում։"
+});
+hy({
+d1:"Ի՞նչ է նշանակում «մարդկային արժանապատվություն» (Menschenwürde)։",
+d2:"Ինչի՞ց կախված չէ մարդկային արժանապատվությունը։",
+d3:"Ե՞րբվանից է Ընդհանուր քաղաքացիական օրենսգրքում (ABGB) գրված, որ յուրաքանչյուր մարդ ունի բնածին իրավունքներ։",
+d4:"Հիմնարար և մարդու իրավունքների պաշտպանության ո՞ր միջազգային համաձայնագրերն է ստորագրել Ավստրիան։",
+d5:"Ինչո՞վ են Ավստրիայում պաշտպանվում հիմնարար և մարդու իրավունքները։",
+d6:"Ի՞նչն է ճիշտ խոշտանգումների արգելքի մասին։",
+d7:"Ի՞նչն է արգելված Ավստրիայում։",
+d8:"Խտրականության արգելքի մասին ո՞ր պնդումներն են ճիշտ։",
+d9:"Ո՞ր իրավունքն է գործում միայն Ավստրիայի քաղաքացիների համար։",
+d10:"Ի՞նչն է հակասում մարդկային արժանապատվությանը։",
+d11:"Ո՞ւր կարելի է դիմել, եթե աշխատավայրում խտրականության են ենթարկում։",
+d12:"Ի՞նչ է կարգավորում Հավասար վերաբերմունքի մասին օրենքը (Gleichbehandlungsgesetz)։",
+d13:"Ի՞նչ է Միավորված ազգերի կազմակերպությունը (ՄԱԿ, UN)։",
+d14:"Ի՞նչն է բնորոշ ազատական (լիբերալ) պետությանը։",
+d15:"Ինչի՞ մասին են չափահաս մարդիկ ազատական պետությունում իրենք որոշում։",
+d16:"Ի՞նչ է երաշխավորում ազատ տեղաշարժի իրավունքը (Freizügigkeit)։",
+d17:"Ի՞նչն է գործում ամուսնանալու և ընտանիք կազմելու իրավունքի դեպքում։",
+d18:"Ո՞ր տարիքից կարող են երեխաներն իրենք որոշել, թե որ կրոնին են հետևելու։",
+d19:"Ի՞նչ է թույլ տալիս դավանանքի ազատությունը։",
+d20:"Ի՞նչ է նշանակում կարծիքի ազատության իրավունքը։",
+d21:"Ի՞նչ է «գրաքննությունը» (Zensur)։",
+d22:"Ի՞նչ է նշանակում անձնական կյանքի անձեռնմխելիության իրավունքը (Privatsphäre)։",
+d23:"Ի՞նչ է նշանակում սեփականության պաշտպանության իրավունքը։",
+d24:"Ի՞նչն է գործում մասնագիտության ազատ ընտրության դեպքում։",
+d25:"Ի՞նչ ազատություններ կան տնտեսության մեջ։",
+d26:"Ի՞նչ է նշանակում «սոցիալական շուկայական տնտեսություն»։",
+d27:"Որտե՞ղ է ավարտվում սեփական ազատությունը։",
+d28:"Որո՞նք են իրավական պետության (Rechtsstaat) հատկանիշները։",
+d29:"Որո՞նք են Ավստրիայի իրավակարգի ամենակարևոր հիմքերը։",
+d30:"Ի՞նչ է կարգավորում դաշնային սահմանադրությունը։",
+d31:"Ի՞նչ է սահմանում ազատական իրավական պետությունը։",
+d32:"Ի՞նչ է վերահսկում Սահմանադրական դատարանը (Verfassungsgerichtshof)։",
+d33:"Ի՞նչ է վերահսկում Վարչական դատարանը (Verwaltungsgerichtshof)։",
+d34:"Ի՞նչն է գործում Ավստրիայի դատավորների համար։",
+d35:"Ի՞նչ է նշանակում, որ դատավորներին «չի կարելի պաշտոնանկ անել» (unabsetzbar)։",
+d36:"Ո՞վ է քրեական դատավարությունում մեղադրողը։",
+d37:"Ինչի՞ մասին է քաղաքացիական դատավարությունը։",
+d38:"Ի՞նչ է «ընդունելության օրը» (Amtstag) շրջանային դատարանում (Bezirksgericht)։",
+d39:"Ըստ ուսումնական նյութի՝ քանի՞ ատյան կա։",
+d40:"Ո՞ր դատարանն է վերջին ատյանում որոշում քաղաքացիական և քրեական իրավունքի բոլոր կարևոր հարցերը։",
+d41:"Ինչպե՞ս պետք է պետական մարմինները կիրառեն օրենքները։",
+d42:"Ի՞նչ է նշանակում «ժողովրդավարություն» (Demokratie) բառը։",
+d43:"Ո՞րն է ժողովրդավարության հակառակը։",
+d44:"Որո՞նք են ժողովրդավարության ամենակարևոր հատկանիշները։",
+d45:"Ըստ դաշնային սահմանադրության՝ ումի՞ց է բխում իրավունքը Ավստրիայում։",
+d46:"Ո՞ր տարիքից կարող են Ավստրիայի քաղաքացիները քվեարկել։",
+d47:"Ե՞րբ են կանայք Ավստրիայում առաջին անգամ ընտրելու իրավունք ունեցել։",
+d48:"Ընտրական իրավունքի պատմության ո՞ր թվականներն են ճիշտ։",
+d49:"Ո՞ր ընտրություններին կարող են մասնակցել նաև Ավստրիայում ապրող ԵՄ այլ պետությունների քաղաքացիները։",
+d50:"Ի՞նչ է նշանակում «անուղղակի ժողովրդավարություն»։",
+d51:"Ուղղակի ժողովրդավարության ի՞նչ ձևեր կան Ավստրիայում։",
+d52:"Ի՞նչն է ճիշտ հանրաքվեի (Volksabstimmung) մասին։",
+d53:"Ի՞նչն է ճիշտ ժողովրդական հարցման (Volksbefragung) մասին։",
+d54:"Քանի՞ ստորագրություն է պետք դաշնային մակարդակով ժողովրդական նախաձեռնությանը (Volksbegehren), որպեսզի Ազգային խորհուրդը (Nationalrat) պարտավոր լինի քննարկել այն։",
+d55:"Ինչի՞ մասին են ավստրիացիները քվեարկել 1994 թվականի հանրաքվեով։",
+d56:"Ի՞նչ սկզբունքներ են գործում Ավստրիայում ընտրական իրավունքի համար։",
+d57:"Ի՞նչ է նշանակում «հավասար ընտրական իրավունք» սկզբունքը։",
+d58:"Ի՞նչ է նշանակում «գաղտնի ընտրական իրավունք» սկզբունքը։",
+d59:"Ի՞նչ է նշանակում «անձնական ընտրական իրավունք» սկզբունքը։",
+d60:"Քանի՞ պատգամավոր ունի Ազգային խորհուրդը (Nationalrat)։",
+d61:"Որքա՞ն հաճախ են անցկացվում Ազգային խորհրդի (Nationalrat) ընտրությունները։",
+d62:"Ո՞ր երկու մասից է բաղկացած Ավստրիայի խորհրդարանը։",
+d63:"Որո՞նք են Ազգային խորհրդի (Nationalrat) խնդիրները։",
+d64:"Ի՞նչ է կոալիցիան։",
+d65:"Ի՞նչ է «ընդդիմությունը» (Opposition)։",
+d66:"Ի՞նչ է նշանակում «բացարձակ մեծամասնություն» խորհրդարանում։",
+d67:"Ի՞նչ են ընդունում լանդթագները (Landtage՝ երկրամասերի խորհրդարանները)։",
+d68:"Որո՞նք են քաղաքական կուսակցությունների խնդիրները։",
+d69:"Ի՞նչն է ճիշտ Ավստրիայում քվեարկելու մասին։",
+d70:"Ո՞վ է Ավստրիայում ընտրվում անմիջապես ժողովրդի կողմից։",
+d71:"Ո՞րն է հանրապետության հատկանիշը։",
+d72:"Ե՞րբ է Ավստրիայում հռչակվել հանրապետությունը։",
+d73:"Ո՞վ է Ավստրիայի Հանրապետության պետության գլուխը։",
+d74:"Ի՞նչ է Ավստրիայի դաշնային նախագահի անունը։",
+d75:"Որքա՞ն է տևում դաշնային նախագահի պաշտոնավարման ժամկետը։",
+d76:"Ի՞նչ խնդիրներ ունի դաշնային նախագահը։",
+d77:"Ինչո՞վ է հիմնականում ֆինանսավորվում հանրային կրթական համակարգը (դպրոցները)։",
+d78:"Ո՞վ է ֆինանսավորում սոցիալական ապահովագրության համակարգը։",
+d79:"Ի՞նչ է նշանակում «համերաշխություն» (Solidarität) հանրապետական հասարակությունում։",
+d80:"Ի՞նչ են պարտավոր անել Ավստրիայի բոլոր արական սեռի քաղաքացիները։",
+d81:"Ո՞ր օրինակներն են ցույց տալիս կամավոր գործունեությունը Ավստրիայում։",
+d82:"Ի՞նչ է երաշխավորում սահմանադրությունը հասարակական միությունների (Vereine) վերաբերյալ։",
+d83:"Ի՞նչ է դաշնային պետությունը (Bundesstaat)։",
+d84:"Քանի՞ դաշնային երկրամաս (Bundesland) ունի Ավստրիան։",
+d85:"Որո՞նք են Ավստրիայի դաշնային երկրամասեր (Bundesländer)։",
+d86:"Որո՞նք են Ավստրիայի դաշնային երկրամասեր (Bundesländer)։",
+d87:"Ի՞նչն է ճիշտ Ավստրիայի համայնքների (Gemeinden) մասին։",
+d88:"Որտե՞ղ է սահմանված, թե ինչ խնդիրներ ունի դաշնությունը (Bund) և ինչ խնդիրներ՝ դաշնային երկրամասերը։",
+d89:"Ինչի՞ համար է պատասխանատու միայն դաշնությունը (Bund)։",
+d90:"Ինչի՞ համար են պատասխանատու միայն դաշնային երկրամասերը։",
+d91:"Որո՞նք են դաշնության (Bund) մարմիններ։",
+d92:"Ո՞վ է գլխավորում դաշնային երկրամասի կառավարությունը (Landesregierung)։",
+d93:"Ինչի՞ համար են պատասխանատու համայնքները։",
+d94:"Ո՞ր պետություններն են նույնպես դաշնային պետություններ։",
+d95:"Ի՞նչ առավելություն ունի դաշնային պետությունը քաղաքացիների համար։",
+d96:"Ո՞վ է որոշում կայացնում եվրոյի, այսինքն՝ մեր ամեն օր օգտագործած փողի վերաբերյալ։",
+d97:"Որո՞նք են պետության երեք մեծ խնդիրները։",
+d98:"Ինչո՞ւ են պետության խնդիրները բաժանված տարբեր հաստատությունների միջև։",
+d99:"Ո՞վ է ընդունում դաշնային օրենքները։",
+d100:"Ումի՞ց է բաղկացած դաշնային կառավարությունը։",
+d101:"Ո՞րն է վարչական իշխանության (Verwaltung) խնդիրը։",
+d102:"Որո՞նք են վարչական մարմիններ։",
+d103:"Որո՞նք են վարչական մարմինների բնորոշ խնդիրները։",
+d104:"Ո՞րն է դատական իշխանության խնդիրը։",
+d105:"Ի՞նչ է անում Ժողովրդական պաշտպանի գրասենյակը (Volksanwaltschaft)։",
+d106:"Ի՞նչ է ստուգում Հաշվիչ պալատը (Rechnungshof)։",
+d107:"Որո՞նք են կարևոր վերահսկիչ հաստատություններ Ավստրիայում։",
+d108:"Ի՞նչ է «բողոքարկման կարգի պարզաբանումը» (Rechtsmittelbelehrung)։",
+d109:"Ի՞նչ կարելի է անել, եթե կարծում եք, որ վարչական մարմինը սխալ որոշում է կայացրել։",
+d110:"Ի՞նչ դեր ունեն լրատվամիջոցները։",
+d111:"Որո՞նք են ոչ պետական կազմակերպություններ (NGO)։",
+d112:"Որո՞նք են ոչ պետական կազմակերպություններ (NGO)։",
+d113:"Ի՞նչ կարող ենք անել մենք բոլորս՝ որպես անհատներ։",
+d114:"Ե՞րբվանից է Ավստրիան Եվրոպական միության անդամ։",
+d115:"Որո՞նք են Եվրոպական միության հաստատություններ։",
+d116:"Որո՞նք են Եվրոպական միության այլ հաստատություններ։",
+d117:"Ի՞նչն է ճիշտ Եվրոպական հանձնաժողովի (Europäische Kommission) մասին։",
+d118:"Ո՞վ է ընտրում Եվրոպական հանձնաժողովի նախագահին։",
+d119:"Ի՞նչն է ճիշտ Եվրոպական խորհրդի (Europäischer Rat) մասին։",
+d120:"Ի՞նչն է ճիշտ ԵՄ խորհրդի (Rat der EU) մասին։",
+d121:"Ի՞նչն է ճիշտ Եվրոպական խորհրդարանի մասին։",
+d122:"Ի՞նչ է անում Եվրոպական միության դատարանը։",
+d123:"Ո՞վ է մշակում ԵՄ արժութային և դրամավարկային քաղաքականությունը։",
+d124:"Ո՞րն է ԵՄ անդամ պետությունների մեծամասնության պաշտոնական արժույթը։",
+d125:"Ի՞նչ իրավունքներ ունեն Ավստրիայի քաղաքացիները որպես Եվրոպական միության քաղաքացիներ։",
+d126:"Որո՞նք են եվրոպական ներքին շուկայի չորս հիմնարար ազատությունների թվում։",
+d127:"Ի՞նչ է նշանակում «ապրանքների ազատ տեղաշարժ» ԵՄ-ում։",
+d128:"Ի՞նչ է գրված Ավստրիայի յուրաքանչյուր անձնագրի առջևի մասում։"
+});
+hy({
+s1:"Ո՞ր ժողովուրդն է կառավարել Զալցբուրգ երկրամասը մոտ 2000 տարի առաջ՝ գրեթե 500 տարի շարունակ։",
+s2:"Ո՞ր քրիստոնյա սրբերն էին 7-րդ և 8-րդ դարերում կարևոր Զալցբուրգ քաղաքում և երկրամասում քրիստոնեության տարածման համար։",
+s3:"Զալցբուրգը մինչև 19-րդ դարի սկիզբը ինքնուրույն հոգևոր իշխանություն էր։ Ո՞վ էր այդ ժամանակ կառավարում երկիրը։",
+s4:"Ո՞ր հայտնի կոմպոզիտորներն էին 18-րդ դարում ծառայում Զալցբուրգի արքեպիսկոպոսի մոտ։",
+s5:"Ե՞րբ Զալցբուրգը վերջնականապես դարձավ Ավստրիայի մաս։",
+s6:"Ե՞րբ են Զալցբուրգում կայացել լանդթագի (Landtag) առաջին ընդհանուր, ժողովրդավարական ընտրությունները, որոնց ժամանակ կանայք նույնպես կարող էին քվեարկել։",
+s7:"Միջպատերազմյան շրջանի (1918–1939) ո՞ր երեք կառույցներն են մինչև այսօր համարվում Զալցբուրգի զբոսաշրջության գլխավոր տեսարժան վայրերից։",
+s8:"Նացիստական ժամանակաշրջանում (1938–1945) կառուցվում էին մեծ ջրամբարային հիդրոէլեկտրակայաններ՝ նաև հարկադիր աշխատողների ուժերով։ Ո՞ր էլեկտրակայաններն ավարտվեցին միայն պատերազմից հետո։",
+s9:"Ի՞նչ է Զալցբուրգ երկրամասի ներկայիս ղեկավարի (Landeshauptfrau) անունը։",
+s10:"Ինչպե՞ս է կոչվում Զալցբուրգ երկրամասի խորհրդարանը, և քանի՞ պատգամավոր ունի այն։",
+s11:"Ի՞նչ պարբերականությամբ են Զալցբուրգում անցկացվում լանդթագի (Landtag) ընտրությունները։",
+s12:"Այս կուսակցություններից որո՞նք են ներկայումս ներկայացված Զալցբուրգի լանդթագում (Landtag)։",
+s13:"Այս կուսակցություններից որո՞նք են ներկայումս ներկայացված Զալցբուրգի լանդթագում (Landtag)։",
+s14:"Ի՞նչ պայմաններ պետք է բավարարել Զալցբուրգում լանդթագի (Landtag) ընտրություններին քվեարկելու համար։",
+s15:"Քանի՞ անդամից է ներկայումս բաղկացած Զալցբուրգ երկրամասի կառավարությունը (Landesregierung)։",
+s16:"Ինչպիսի՞ն է Զալցբուրգ երկրամասի զինանշանը։",
+s17:"Ո՞ր «գաուում» (Gau՝ շրջան) է գտնվում Թամսվեգի (Tamsweg) շրջանային վարչությունը (Bezirkshauptmannschaft)։",
+s18:"Զալցբուրգ երկրամասը բաժանված է 119 համայնքի։ Ո՞վ է գլխավորում յուրաքանչյուր համայնքը։",
+s19:"Մոտավորապես քանի՞ բնակիչ ունի Զալցբուրգ դաշնային երկրամասը։",
+s20:"Մոտավորապես որքա՞ն է Զալցբուրգ դաշնային երկրամասի տարածքը։",
+s21:"Որո՞նք են Զալցբուրգ դաշնային երկրամասի երկու ամենակարևոր գետերը։",
+s22:"Քիմզեեհոֆը (Chiemseehof) Զալցբուրգի երկրամասային քաղաքականության կենտրոնն է։ Ի՞նչն է ճիշտ։",
+s23:"Ո՞րն է Զալցբուրգ երկրամասի ամենամեծ եկեղեցական շինությունը (ամենամեծ աղոթատունը)։ Այն խիստ վնասվել է Երկրորդ համաշխարհային պատերազմի ժամանակ և 1959 թվականին վերաօծվել է։",
+s24:"Ո՞ր տեսարժան վայրերն են գտնվում Զալցբուրգի հին քաղաքում, որը 1997 թվականից ՅՈՒՆԵՍԿՕ-ի համաշխարհային մշակութային ժառանգության մաս է։",
+s25:"Որո՞նք են ամենամեծ ամրոցները, որոնք Զալցբուրգի արքեպիսկոպոսները կառուցել են տվել երկիրը պաշտպանելու համար։",
+s26:"Ո՞ր երկրների հետ ունի Զալցբուրգ երկրամասը ընդհանուր պետական սահման։",
+s27:"Ավստրիայի այս դաշնային երկրամասերից որո՞նց հետ է սահմանակից Զալցբուրգ երկրամասը։",
+s28:"Ավստրիայի այս դաշնային երկրամասերից որո՞նց հետ է սահմանակից Զալցբուրգ երկրամասը։",
+s29:"Զալցբուրգ քաղաքից դեպի Ցել ամ Զեե շրջան (Zell am See, Pinzgau) ամենակարճ ավտոճանապարհն անցնում է Գերմանիայի տարածքով։ Ինչպե՞ս են այն անվանում։",
+s30:"Ինչպե՞ս են կոչվում Զալցբուրգ երկրամասի երկու ամենամեծ քաղաքները։",
+s31:"Ինչպե՞ս է կոչվում տեղական երկաթուղային գիծը, որը սկսվում է Զալցբուրգ քաղաքից և սպասարկում Զալցբուրգ-Ումգեբունգ (Salzburg-Umgebung) շրջանի հյուսիսային մասը։",
+s32:"Ո՞ր ավտոմայրուղիներն են անցնում Զալցբուրգ դաշնային երկրամասով։",
+s33:"Ո՞ր երկու դաշնային երկրամասերն է միացնում 1935 թվականին բացված Գրոսգլոքների բարձրլեռնային ճանապարհը (Großglockner Hochalpenstraße)։",
+s34:"Ինչպե՞ս է պաշտոնապես կոչվում Զալցբուրգի օդանավակայանը։",
+s35:"Որտե՞ղ են Զալցբուրգում մոտ 3000 տարի (ընդհատումներով) մինչև 1989 թվականը աղ արդյունահանել։",
+s36:"Ո՞ր դաշնային երկրամասերն ունեն մաս Հոհե Տաուերն ազգային պարկում (Nationalpark Hohe Tauern), որն Ավստրիայի ամենամեծ ազգային պարկն է (1971 թվականից)։",
+s37:"Զալցբուրգ քաղաքի ո՞ր հիվանդանոցներն են Պարացելսուս բժշկական մասնավոր համալսարանի (Paracelsus Medizinische Privatuniversität) համալսարանական կլինիկա։",
+s38:"Ի՞նչն է 1997 թվականի հունվարի 1-ին ընդգրկվել ՅՈՒՆԵՍԿՕ-ի համաշխարհային մշակութային ժառանգության ցանկում։",
+s39:"Աշխարհահռչակ ո՞ր մշակութային մեծ միջոցառումն է 1920 թվականից ամեն ամառ անցկացվում Զալցբուրգում։",
+s40:"Որտե՞ղ են Զալցբուրգի փառատոնի (Salzburger Festspiele) ժամանակ 1920 թվականից լավ եղանակին բեմադրում «Jedermann» ներկայացումը։",
+s41:"Ո՞վ է վճռորոշ դեր խաղացել Զալցբուրգի փառատոնի (Salzburger Festspiele) համար 20-րդ դարի երկրորդ կեսին՝ մինչև իր մահը 1989 թվականին։",
+s42:"Ինչպե՞ս է կոչվում նոր թատերական շենքը, որը ստեղծվել է Մոցարտի տարվա՝ 2006 թվականի առթիվ՝ Փառատոնի տան (Festspielhaus) մի մասի վերակառուցմամբ։",
+s43:"Ո՞ւր պետք է դիմել, եթե կորցրել եք e-card քարտը։",
+s44:"e-card քարտի հետևի կողմում Եվրոպական բժշկական ապահովագրության քարտն է (EKVK)։ Ո՞ր պետություններում է այն վավեր։",
+s45:"Զալցբուրգի թանգարանը (Salzburg Museum) 2006/07 թվականից իր հավաքածուները ցուցադրում է Ռեզիդենցպլաց (Residenzplatz) հրապարակի մի պալատում։ Ինչպե՞ս է կոչվում այդ պալատը։",
+s46:"Որտե՞ղ է գտնվում Զալցբուրգի համալսարանի բնագիտական ֆակուլտետի նոր մասնաշենքը, որն ավարտվել է 1986 թվականին։",
+s47:"Ո՞վ է Զալցբուրգում երկար տարիներ փառատոնի շրջանում կազմակերպում միջազգային ավանգարդ փառատոն։",
+s48:"Ո՞վ է հեղինակել «Stille Nacht, Heilige Nacht» («Լուռ գիշեր, սուրբ գիշեր») ծննդյան երգը, որն առաջին անգամ հնչել է 1818 թվականին Օբերնդորֆում (Oberndorf)։",
+s49:"Որտե՞ղ կարող են Ավստրիայի քաղաքացիները նոր անձնագրի համար դիմել։",
+s50:"Ո՞ր հաստատությանը կարելի է դիմել գործազրկության կամ աշխատանքը փոխելու դեպքում։",
+s51:"Ո՞ր հեռախոսահամարով են արտակարգ դեպքում զանգում շտապ օգնություն (Rettung)։",
+s52:"Ո՞ր մարզաձևն ունի հատկապես մեծ գովազդային նշանակություն Զալցբուրգի ձմեռային զբոսաշրջության համար։",
+s53:"Ո՞ր հաստատությունն է Զալցբուրգում առաջին դիմելու վայրը բնակարանի և բնակարանաշինության աջակցության (Wohnbauförderung) հարցերով։",
+s54:"Ինչպե՞ս է կոչվում աշխատողների շահերը ներկայացնող կամավոր կազմակերպությունը Ավստրիայում։",
+s55:"Ո՞վ է Զալցբուրգ երկրամասի հովանավոր սուրբը (Landespatron)։",
+s56:"Ե՞րբ է Զալցբուրգ երկրամասի տոնը (Landesfeiertag)։",
+s57:"Ինչպե՞ս էր կոչվում հռոմեական քաղաքը ներկայիս Զալցբուրգի հին քաղաքի տարածքում։",
+s58:"Ի՞նչ հիմնեց Սուրբ Ռուպերտը Մյոնխսբերգ (Mönchsberg) լեռան ստորոտին։",
+s59:"Ո՞ր թվականին է Վոլֆգանգ Ամադեուս Մոցարտը ծնվել Զալցբուրգում։",
+s60:"Ո՞րն է Զալցբուրգ դաշնային երկրամասի ամենաբարձր լեռը։",
+s61:"Ինչպիսի՞ն է Զալցբուրգ երկրամասի քաղաքական-վարչական բաժանումը։",
+s62:"Ինչպե՞ս են նաև անվանում Զալցբուրգ-Ումգեբունգ (Salzburg-Umgebung) շրջանը։",
+s63:"Որտե՞ղ են գտնվում այս շրջանային վարչությունները (Bezirkshauptmannschaften)։ Ի՞նչն է ճիշտ։",
+s64:"Ի՞նչ գույներ ունի Զալցբուրգ դաշնային երկրամասը։",
+s65:"Ո՞ր կուսակցությունն ունի ներկայումս ամենաշատ մանդատները Զալցբուրգի լանդթագում (Landtag)։",
+s66:"Ո՞վ կարող է Զալցբուրգում քվեարկել համայնքային խորհրդի և քաղաքապետի ընտրություններին (16 տարեկանից, համայնքում հիմնական բնակության վայր ունենալու դեպքում)։",
+s67:"Ինչո՞վ բացվեց Զալցբուրգի փառատոնը (Salzburger Festspiele) 1920 թվականին։",
+s68:"Ո՞ր օկուպացիոն գոտու մեջ էր Զալցբուրգ դաշնային երկրամասը 1945-ից մինչև 1955 թվականը։",
+s69:"Ի՞նչն է ճիշտ եվրոպական արտակարգ կանչի 112 համարի (Euro-Notruf) մասին։",
+s70:"Ո՞րն է այսօր Զալցբուրգ երկրամասի տնտեսության ամենակարևոր ճյուղը։",
+s71:"Ըստ ուսումնական նյութի՝ ի՞նչ համալսարաններ կան Զալցբուրգում։"
+});
 
 
 /* ---------- storage ---------- */
 const KEY="stb-salzburg-v1";
-const S={p:{},days:{},exams:[],date:"2026-11-20",big:false,u:0,rst:0};
+const S={p:{},days:{},exams:[],date:"2026-11-20",big:false,hy:true,u:0,rst:0};
 try{const raw=localStorage.getItem(KEY);if(raw){const o=JSON.parse(raw);if(o&&typeof o==="object")Object.assign(S,o)}}catch(e){}
 function saveLocal(){try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}}
 function save(){saveLocal();queuePush()}
@@ -539,7 +855,7 @@ function saveNote(){
   return `<span class="state b">Nur auf diesem Gerät gespeichert.</span> Immer in diesem Browser üben und die Browserdaten nicht löschen.`;
 }
 function setCloud(st){cloudState=st;const el=document.getElementById("savenote");if(el)el.innerHTML=saveNote()}
-function snapshotState(){return JSON.parse(JSON.stringify({p:S.p,days:S.days,exams:S.exams,date:S.date||"",big:!!S.big,u:S.u||0,rst:S.rst||0}))}
+function snapshotState(){return JSON.parse(JSON.stringify({p:S.p,days:S.days,exams:S.exams,date:S.date||"",big:!!S.big,hy:S.hy!==false,u:S.u||0,rst:S.rst||0}))}
 function mergeRemote(r){
   let newer=false;const lr=S.rst||0,rr=+r.rst||0;
   if(rr>lr){S.p={};S.days={};S.exams=[];S.rst=rr}
@@ -557,7 +873,7 @@ function mergeRemote(r){
     re.forEach(x=>{if(!seen.has(x.t))S.exams.push({t:+x.t||0,g:+x.g||0,d:+x.d||0,s:+x.s||0,pass:!!x.pass})});
     S.exams.sort((a,b)=>a.t-b.t);S.exams=S.exams.slice(-10);
   }
-  if((+r.u||0)>(S.u||0)){if(typeof r.date==="string")S.date=r.date;S.big=!!r.big;S.u=+r.u}
+  if((+r.u||0)>(S.u||0)){if(typeof r.date==="string")S.date=r.date;S.big=!!r.big;if(typeof r.hy==="boolean")S.hy=r.hy;S.u=+r.u}
   else if((S.u||0)>(+r.u||0))newer=true;
   return newer;
 }
@@ -672,6 +988,7 @@ function label(q){
   if(q.a==="s")return q.num?"Offizielle Frage Nr. "+q.num:"Zusatzwissen";
   return AREAS[q.a].ch[q.ch];
 }
+const hyP=(q,cls)=>S.hy!==false&&HY[q.id]?`<p class="hy${cls||""}" lang="hy">${esc(HY[q.id])}</p>`:"";
 const correctList=q=>q.o.filter(o=>o.c).map(o=>"<li>"+esc(o.t)+"</li>").join("");
 
 /* ---------- picking questions ---------- */
@@ -746,6 +1063,8 @@ function vHome(){
   h+=`<details class="panel"><summary>Einstellungen</summary><div class="stack lg">
     <label class="stack" for="examdate"><b>Prüfungstermin</b><input class="field" type="date" id="examdate" value="${esc(S.date||"")}"></label>
     <label class="row" for="bigtype"><input type="checkbox" id="bigtype" ${S.big?"checked":""} style="width:1.4rem;height:1.4rem"> <span>Größere Schrift</span></label>
+    <label class="row" for="hytoggle"><input type="checkbox" id="hytoggle" ${S.hy!==false?"checked":""} style="width:1.4rem;height:1.4rem"> <span>Armenische Übersetzung unter der Frage <span class="hy sm" lang="hy">(հայերեն թարգմանություն)</span></span></label>
+    <p class="muted small">In der echten Prüfung stehen die Fragen nur auf Deutsch. Für die letzten Prüfungssimulationen die Übersetzung ausschalten.</p>
     <div class="stack">${confirmReset?`<p><b>Wirklich den ganzen Lernfortschritt löschen?</b></p><div class="row"><button class="btn sm" data-act="reset2">Ja, löschen</button><button class="btn sm ghost" data-act="reset0">Abbrechen</button></div>`:`<button class="btn sm ghost" data-act="reset1">Lernfortschritt löschen</button>`}</div>
   </div></details>`;
   h+=`<footer><p>Privat erstellter Übungstrainer, kein offizielles Angebot. Grundlage: „Lernunterlage für die Staatsbürgerschaftsprüfung – Geschichte Land Salzburg“ (Land Salzburg, 7. Auflage, Stand Juli 2025) und „Mein Österreich – Lernunterlage zur Staatsbürgerschaftsprüfung“ (Bundesministerium für Inneres, Ausgabe März 2022).</p><p><a href="https://www.salzburg.gv.at/fileadmin/Dateien/Sicherheit/lernunterlage_salzburg.pdf">Lernunterlage Land Salzburg (PDF)</a> · <a href="https://www.staatsbuergerschaft.gv.at">Offizieller Online-Übungstest des Bundes</a></p></footer>`;
@@ -757,7 +1076,7 @@ function vQuiz(){
   let h=`<div class="stack"><div class="qtop"><button class="link" data-act="quit">${exam?"Prüfung abbrechen":"Beenden"}</button><span class="muted num">Frage ${ses.i+1} von ${n}</span></div>
   <div class="bar thin"><i style="width:${(ses.i+(locked?1:0))/n*100}%"></i></div></div>`;
   h+=`<div class="stack"><div class="chips"><span class="chip">${AREAS[q.a].name}</span>${exam?"":`<span class="chip">${esc(label(q))}</span>`}${it.rep?`<span class="chip">Wiederholung</span>`:""}</div>
-  <h1 class="q">${esc(q.q)}</h1><p class="muted">Eine, zwei oder drei Antworten sind richtig.</p></div>`;
+  <h1 class="q">${esc(q.q)}</h1>${hyP(q)}<p class="muted">Eine, zwei oder drei Antworten sind richtig.</p></div>`;
   h+=`<div class="opts">`+it.ord.map(i=>{const o=q.o[i],on=it.sel.has(i);let cls="opt",mark="";
     if(locked){cls+=" off";if(o.c&&on){cls+=" ok";mark="Richtig angekreuzt"}else if(o.c){cls+=" miss";mark="Das wäre richtig gewesen"}else if(on){cls+=" bad";mark="Falsch"}}
     else if(on)cls+=" on";
@@ -784,7 +1103,7 @@ function vQuiz(){
 function vSummary(){
   const all=sum.right===sum.first;
   let h=`<section class="stack lg"><h1>${all?"Alles richtig!":"Runde geschafft"}</h1><p><b class="num">${sum.right} von ${sum.first}</b> Fragen beim ersten Versuch ganz richtig.</p>`;
-  if(sum.missed.length){h+=`<h2>Das schauen wir uns nochmal an</h2><div class="qlist">`+sum.missed.map(q=>`<div class="qitem"><b>${esc(q.q)}</b><ul>${correctList(q)}</ul><span class="muted small">${esc(q.e)}</span></div>`).join("")+`</div>`}
+  if(sum.missed.length){h+=`<h2>Das schauen wir uns nochmal an</h2><div class="qlist">`+sum.missed.map(q=>`<div class="qitem"><b>${esc(q.q)}</b>${hyP(q," sm")}<ul>${correctList(q)}</ul><span class="muted small">${esc(q.e)}</span></div>`).join("")+`</div>`}
   h+=`<button class="btn wide" data-act="learn" data-a="${sum.a||""}">Weiter üben (10 Fragen)</button><button class="btn ghost wide" data-act="home">Zur Übersicht</button></section>`;
   return h;
 }
@@ -796,7 +1115,7 @@ function vResult(){
   const wrong=r.items.filter(x=>x.pts<1);
   h+=`<div class="row">${wrong.length?`<button class="btn grow" data-act="examwrong">Diese ${wrong.length} Fehler üben</button>`:""}<button class="btn ghost grow" data-act="exam">Neue Prüfung</button><button class="btn ghost grow" data-act="home">Zur Übersicht</button></div>`;
   h+=`<h2>Alle 18 Fragen im Überblick</h2><div class="qlist">`+r.items.map((x,k)=>{const q=x.q;
-    return `<div class="qitem"><div class="hd"><span class="num">Frage ${k+1}</span><span>${AREAS[q.a].name}</span><span class="state ${x.pts===1?"g":"b"}">${pts1(x.pts)}</span></div><b>${esc(q.q)}</b><ul>${q.o.map((o,i)=>{const on=x.sel.has(i);if(o.c)return `<li>${esc(o.t)}${on?"":" <span class='muted small'>(nicht angekreuzt)</span>"}</li>`;return on?`<li class="x">${esc(o.t)} <span class="small">(falsch angekreuzt)</span></li>`:""}).join("")}</ul><span class="muted small">${esc(q.e)}</span></div>`}).join("")+`</div></section>`;
+    return `<div class="qitem"><div class="hd"><span class="num">Frage ${k+1}</span><span>${AREAS[q.a].name}</span><span class="state ${x.pts===1?"g":"b"}">${pts1(x.pts)}</span></div><b>${esc(q.q)}</b>${hyP(q," sm")}<ul>${q.o.map((o,i)=>{const on=x.sel.has(i);if(o.c)return `<li>${esc(o.t)}${on?"":" <span class='muted small'>(nicht angekreuzt)</span>"}</li>`;return on?`<li class="x">${esc(o.t)} <span class="small">(falsch angekreuzt)</span></li>`:""}).join("")}</ul><span class="muted small">${esc(q.e)}</span></div>`}).join("")+`</div></section>`;
   return h;
 }
 
@@ -804,10 +1123,10 @@ function browseList(){
   const t=browse.t.trim().toLowerCase();
   let qs=byArea(browse.a);
   if(browse.a==="s")qs=qs.slice().sort((x,y)=>(x.num||99)-(y.num||99));
-  if(t)qs=qs.filter(q=>(q.q+" "+q.o.map(o=>o.t).join(" ")+" "+q.e).toLowerCase().includes(t));
+  if(t)qs=qs.filter(q=>(q.q+" "+q.o.map(o=>o.t).join(" ")+" "+q.e+" "+(HY[q.id]||"")).toLowerCase().includes(t));
   if(!qs.length)return `<p class="muted">Keine Frage gefunden. Probiere ein anderes Wort.</p>`;
   return qs.map(q=>{const p=P(q.id);const st=p.s>=2?`<span class="state g">sitzt</span>`:p.n?(p.s?`<span>einmal richtig</span>`:`<span class="state b">noch üben</span>`):`<span>neu</span>`;
-    return `<div class="qitem"><div class="hd"><span>${esc(label(q))}</span>${st}</div><b>${esc(q.q)}</b><ul>${correctList(q)}</ul><span class="muted small">${esc(q.e)}</span></div>`}).join("");
+    return `<div class="qitem"><div class="hd"><span>${esc(label(q))}</span>${st}</div><b>${esc(q.q)}</b>${hyP(q," sm")}<ul>${correctList(q)}</ul><span class="muted small">${esc(q.e)}</span></div>`}).join("");
 }
 function vBrowse(){
   return `<section class="stack lg"><h1>Alle Fragen mit Lösung</h1>
@@ -991,6 +1310,7 @@ document.addEventListener("change",ev=>{
     const g=app.querySelector(".grid18 .cur");if(g)g.classList.toggle("done",it.sel.size>0);
   }
   else if(t.id==="examdate"){S.date=t.value;S.u=Date.now();save();render();const d=app.querySelector("details.panel");if(d)d.open=true}
+  else if(t.id==="hytoggle"){S.hy=t.checked;S.u=Date.now();save()}
   else if(t.id==="bigtype"){S.big=t.checked;S.u=Date.now();save();document.documentElement.classList.toggle("big",S.big)}
 });
 document.addEventListener("input",ev=>{
